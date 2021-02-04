@@ -1,24 +1,28 @@
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
+
+import { store } from './store';
+import { theme } from './utils/theme';
 
 import { GlobalStyles } from './styles/global';
 
-import { theme } from './utils/theme';
-
 import MainHeader from './components/MainHeader';
 
-import Home from './pages/Home';
+import Routes from './routes';
 
 const App: React.FC = () => {
   return (
     <>
-      <Router>
+      <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <MainHeader />
-          <Home />
-          <GlobalStyles />
+          <Router>
+            <MainHeader />
+            <Routes />
+            <GlobalStyles />
+          </Router>
         </ThemeProvider>
-      </Router>
+      </Provider>
     </>
   );
 };

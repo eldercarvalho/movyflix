@@ -1,49 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import Carousel from '../../components/Carousel';
+import { fetchGenres } from '../../store';
 
-import { http } from '../../services/http';
+import Banners from '../../components/Banners';
 
-import { Container, Banners } from './styles';
-
-import posterImg from '../../assets/images/venom.jpg';
-
-interface IMovie {
-  id: number;
-  poster_path: string;
-  backdrop_path: string;
-}
+import { Container } from './styles';
 
 const Home: React.FC = () => {
-  const [movies, setMovies] = useState<IMovie[]>([]);
-  // const carousel = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    http
-      .get('trending/movie/week')
-      .then((res) => res.data)
-      .then((data) => {
-        setMovies(data.results);
-      });
+    dispatch(fetchGenres());
   }, []);
 
   return (
     <Container>
-      <Banners>
-        <Carousel autoplay items={1}>
-          <Carousel.Item>
-            <img src={posterImg} alt="" />
-          </Carousel.Item>
-          {/* {movies.map((movie) => (
-            <Carousel.Item key={movie.id}>
-              <img
-                src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-                alt=""
-              />
-            </Carousel.Item>
-          ))} */}
-        </Carousel>
-      </Banners>
+      <Banners />
     </Container>
   );
 };

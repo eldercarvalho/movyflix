@@ -19,22 +19,24 @@ import {
   ItemContainer,
   Dots,
   Dot,
+  Pagination,
 } from './styles';
 
-interface ICarouselItemStyles {
+interface CarouselItemStyles {
   width: string;
 }
 
-interface ICarouselItemProps {
-  style?: ICarouselItemStyles;
+interface CarouselItemProps {
+  style?: CarouselItemStyles;
+  isActive?: boolean;
 }
 
-interface ICarouselBreakpoint {
+interface CarouselBreakpoint {
   breakpoint: number;
   items: number;
 }
 
-interface ICarouselProps {
+interface CarouselProps {
   items?: number;
   speed?: number;
   autoplay?: boolean;
@@ -43,11 +45,13 @@ interface ICarouselProps {
   prevNav?: string | ComponentType | HTMLElement;
   nextNav?: string | ComponentType | HTMLElement;
   dots?: boolean;
-  reponsive?: ICarouselBreakpoint[];
+  dotNumber?: boolean;
+  reponsive?: CarouselBreakpoint[];
+  className?: string;
 }
 
-interface ICarouselComposition {
-  Item: FC<ICarouselItemProps>;
+interface CarouselComposition {
+  Item: FC<CarouselItemProps>;
 }
 
 function generateRandomKey(length: number) {
@@ -72,16 +76,18 @@ const nextArrowSvg = (
   </svg>
 );
 
-const Carousel: FC<ICarouselProps> & ICarouselComposition = ({
+const Carousel: FC<CarouselProps> & CarouselComposition = ({
   children,
   items = 1,
   speed = 400,
   autoplay = false,
-  autoplayInterval = 6000,
+  autoplayInterval = 8000,
   navs = true,
   prevNav: PrevNav = prevArrowSvg,
   nextNav: NextNav = nextArrowSvg,
   dots = true,
+  dotNumber = false,
+  className = '',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -100,7 +106,7 @@ const Carousel: FC<ICarouselProps> & ICarouselComposition = ({
     return page === Children.count(children) + items;
   }, [children, page, items]);
 
-  const isMovePermitted = useMemo(() => true, []);
+  // const isMovePermitted = useMemo(() => true, []);
 
   const moveTrack = useCallback(() => {
     setIsSliding(true);
@@ -242,34 +248,38 @@ const Carousel: FC<ICarouselProps> & ICarouselComposition = ({
       <Dot
         key={dot}
         isActive={page / items === dot + 1}
+        showNumber={dotNumber}
+        className={page / items === dot + 1 ? '--active' : ''}
         onClick={() => handleNavCLick('goto', (dot + 1) * items)}
       >
-        {dot}
+        {dot + 1}
       </Dot>
     ));
   };
 
   return (
-    <Container ref={containerRef}>
+    <Container ref={containerRef} className={className}>
       <Track ref={trackRef} style={trackStyles} onTransitionEnd={handleTransitionEnd}>
         {renderItems()}
       </Track>
-      {dots && <Dots>{renderDots()}</Dots>}
-      {navs && (
-        <>
+      <Pagination>
+        {navs && (
           <PrevNavButton onClick={() => handleNavCLick('prev')}>
             {typeof PrevNav === 'function' ? <PrevNav /> : PrevNav}
           </PrevNavButton>
+        )}
+        {dots && <Dots>{renderDots()}</Dots>}
+        {navs && (
           <NextNavButton onClick={() => handleNavCLick('next')}>
             {typeof NextNav === 'function' ? <NextNav /> : NextNav}
           </NextNavButton>
-        </>
-      )}
+        )}
+      </Pagination>
     </Container>
   );
 };
 
-Carousel.Item = ({ children, style }) => {
+Carousel.Item = ({ children, style, isActive }) => {
   return <ItemContainer style={style}>{children}</ItemContainer>;
 };
 

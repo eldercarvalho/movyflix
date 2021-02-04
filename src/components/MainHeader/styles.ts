@@ -1,6 +1,11 @@
-import styled, { keyframes } from 'styled-components';
+import { rgba } from 'polished';
+import styled, { css, keyframes } from 'styled-components';
 
-export const Container = styled.header`
+interface IContainerProps {
+  isDarken: boolean;
+}
+
+export const Container = styled.header<IContainerProps>`
   position: fixed;
   width: 100%;
   display: flex;
@@ -9,6 +14,13 @@ export const Container = styled.header`
   padding: 0 5rem;
   z-index: 10;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
+  transition: background 0.7s;
+
+  ${({ isDarken }) =>
+    isDarken &&
+    css`
+      background: rgba(0, 0, 0, 0.8);
+    `}
 `;
 
 export const Logo = styled.h1`
@@ -41,7 +53,7 @@ const activeItemAnimation = keyframes`
 export const Menu = styled.header`
   display: flex;
   align-items: center;
-  margin-left: auto;
+  margin: 0 5rem;
 
   a {
     display: flex;
@@ -52,7 +64,7 @@ export const Menu = styled.header`
     font-weight: 600;
 
     &:hover:not(.--active) {
-      color: ${({ theme }) => theme.colors.accent};
+      opacity: 0.7;
     }
 
     & + a {
@@ -60,8 +72,6 @@ export const Menu = styled.header`
     }
 
     &.--active {
-      font-weight: 700;
-
       &::after {
         content: '';
         position: absolute;
@@ -74,4 +84,44 @@ export const Menu = styled.header`
   }
 `;
 
-export const SearchBar = styled.div``;
+interface ISearchProps {
+  isActive: boolean;
+}
+
+export const Search = styled.div<ISearchProps>`
+  position: relative;
+  margin-left: auto;
+
+  button {
+    position: relative;
+    z-index: 1;
+  }
+
+  input {
+    width: 40px;
+    height: 40px;
+    background: ${rgba('#000', 0.5)};
+    font-size: 1.4rem;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    color: #fff;
+    padding: 0 1.6rem;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: 0.3s;
+
+    &::placeholder {
+      color: ${rgba('#FFF', 0.5)};
+    }
+
+    ${({ isActive }) =>
+      isActive &&
+      css`
+        width: 250px;
+        opacity: 1;
+      `}
+  }
+`;

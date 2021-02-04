@@ -42,6 +42,9 @@
       "no-unused-expressions": "off",
       "no-use-before-define": "off",
       "@typescript-eslint/no-use-before-define": ["error"],
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": ["error"],
+      "radix": "off",
       "import/extensions": [
         "error",
         "ignorePackages",
