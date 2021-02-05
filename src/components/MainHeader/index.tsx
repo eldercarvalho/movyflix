@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { FiSearch } from 'react-icons/fi';
 
+import Search from '../Search';
 import Button from '../Button';
 
-import { Container, Logo, Menu, Search } from './styles';
+import { Container, Logo, Menu } from './styles';
 
 const MainHeader: React.FC = () => {
   const [isDarken, setIsDarken] = useState(false);
-  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const handleWindowScroll = () => {
     if (window.scrollY > 50) {
@@ -35,16 +34,7 @@ const MainHeader: React.FC = () => {
         </Link>
       </Logo>
 
-      <Search isActive={isSearchActive}>
-        <input type="text" placeholder="Search" />
-        <Button
-          iconOnly
-          textOnly
-          onClick={() => setIsSearchActive((oldValue) => !oldValue)}
-        >
-          <FiSearch size={22} />
-        </Button>
-      </Search>
+      <Search />
 
       <Menu>
         <NavLink to="/" activeClassName="--active">

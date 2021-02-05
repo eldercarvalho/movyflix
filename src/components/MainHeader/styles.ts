@@ -96,32 +96,4 @@ export const Search = styled.div<ISearchProps>`
     position: relative;
     z-index: 1;
   }
-
-  input {
-    width: 40px;
-    height: 40px;
-    background: ${rgba('#000', 0.5)};
-    font-size: 1.4rem;
-    border: 1px solid #fff;
-    border-radius: 3px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    color: #fff;
-    padding: 0 1.6rem;
-    opacity: 0;
-    transform: translateY(-50%);
-    transition: 0.3s;
-
-    &::placeholder {
-      color: ${rgba('#FFF', 0.5)};
-    }
-
-    ${({ isActive }) =>
-      isActive &&
-      css`
-        width: 250px;
-        opacity: 1;
-      `}
-  }
 `;
