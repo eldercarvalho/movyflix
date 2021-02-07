@@ -8,7 +8,11 @@ export const Track = styled.div`
   display: flex;
 `;
 
-export const ItemContainer = styled.div`
+interface ItemContainerProps {
+  className?: string;
+}
+
+export const ItemContainer = styled.div<ItemContainerProps>`
   flex-shrink: 0;
 `;
 

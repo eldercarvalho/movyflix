@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Pagination, Dot } from '../Carousel/styles';
 
 export const Container = styled.div`
@@ -7,7 +7,7 @@ export const Container = styled.div`
   ${Pagination} {
     position: absolute;
     right: 5vw;
-    bottom: 3rem;
+    bottom: 4rem;
 
     svg {
       fill: #fff;
@@ -86,7 +86,7 @@ export const BannerInfo = styled.div`
 
     span {
       display: inline-block;
-      margin-left: 2rem;
+      margin-left: 2.5rem;
       text-transform: uppercase;
       font-weight: 600;
       font-size: 1.4rem;

@@ -97,3 +97,18 @@ export const Search = styled.div<ISearchProps>`
     z-index: 1;
   }
 `;
+
+export const ModalContent = styled.div`
+  h2 {
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1.6rem;
+
+    & + p {
+      margin-top: 1.6rem;
+    }
+  }
+`;

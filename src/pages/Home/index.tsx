@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { fetchGenres } from '../../store';
+import { fetchConfigs, fetchGenres, fetchTrendingMovies } from '../../store';
 
 import Banners from '../../components/Banners';
 
@@ -11,7 +11,9 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchConfigs());
     dispatch(fetchGenres());
+    dispatch(fetchTrendingMovies());
   }, []);
 
   return (

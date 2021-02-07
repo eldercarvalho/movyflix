@@ -34,6 +34,17 @@ export const fetchConfigs = () => async (dispatch: Dispatch): Promise<void> => {
   const response = await http.get('configuration');
   dispatch({
     type: MoviesActions.FetchConfiguration,
-    payload: response.data.genres,
+    payload: response.data,
+  });
+};
+
+export const searchMovies = (query: string) => async (
+  dispatch: Dispatch,
+): Promise<void> => {
+  const response = await http.get(`search/movie?query=${query}`);
+
+  dispatch({
+    type: MoviesActions.SearchMovies,
+    payload: response.data,
   });
 };

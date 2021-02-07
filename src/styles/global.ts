@@ -43,4 +43,16 @@ export const GlobalStyles = createGlobalStyle`
   .spacer {
     flex: 1 !important;
   }
+
+  .no-scroll {
+    overflow: hidden;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .mt-1 { margin-top: 1rem; }
+  .mt-2 { margin-top: 2rem; }
+  .mt-3 { margin-top: 3rem; }
 `;

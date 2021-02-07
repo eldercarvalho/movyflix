@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { shade } from 'polished';
+import styled, { css, keyframes } from 'styled-components';
+import { rgba, shade } from 'polished';
 
 interface IContainerProps {
   variant: 'primary' | 'secondary';
@@ -9,7 +9,18 @@ interface IContainerProps {
   isSmall?: boolean;
   isDisabled: boolean;
   isTextOnly?: boolean;
+  isLigthed?: boolean;
+  isOutlined?: boolean;
+  isLoading?: boolean;
 }
+
+const loadingAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  } to {
+    transform: rotate(360deg);
+  }
+`;
 
 export const Container = styled.button<IContainerProps>`
   display: inline-flex;
@@ -20,7 +31,7 @@ export const Container = styled.button<IContainerProps>`
   background: ${({ theme }) => theme.colors.accent};
   color: #fff;
   transition: all 0.3s;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: 3px;
   font-weight: 600;
   padding: 0 3rem;
@@ -87,4 +98,34 @@ export const Container = styled.button<IContainerProps>`
       background: #FFF;
     }
   } */
+
+  ${(props) =>
+    props.isLigthed &&
+    css`
+      color: #333;
+
+      :hover {
+        color: ${rgba('#333', 0.7)};
+      }
+    `}
+
+    ${(props) =>
+    props.isOutlined &&
+    css`
+      background: transparent;
+      color: ${({ theme }) => theme.colors.accent};
+      border-color: ${({ theme }) => theme.colors.accent};
+
+      :hover {
+        color: #fff;
+      }
+    `}
+
+    ${(props) =>
+    props.isLoading &&
+    css`
+      svg {
+        animation: ${loadingAnimation} 0.5s linear infinite;
+      }
+    `}
 `;

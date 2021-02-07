@@ -1,26 +1,99 @@
-import { rgba } from 'polished';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface ContainerProps {
+  dark: boolean;
+  isFocused: boolean;
+  isFilled: boolean;
+  isErrored: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
+  position: relative;
   width: 100%;
-`;
 
-export const FieldControl = styled.div`
-  display: flex;
-
-  input {
-    width: 100%;
-    height: 40px;
-    background: ${rgba('#000', 0.5)};
+  label {
+    display: inline-block;
+    padding: 0 0.3rem;
     font-size: 1.4rem;
-    border: 1px solid #fff;
-    border-radius: 3px;
-    color: #fff;
-    padding: 0 1.6rem;
+    position: absolute;
+    top: 22px;
+    left: 1.3rem;
+    transform: translateY(-50%);
+    background: #fff;
     transition: 0.3s;
 
-    &::placeholder {
-      color: ${rgba('#FFF', 0.5)};
+    ${({ isFocused }) =>
+      isFocused &&
+      css`
+        font-size: 1.2rem;
+        top: 0%;
+        font-weight: 600;
+      `}
+
+    ${({ isFilled }) =>
+      isFilled &&
+      css`
+        font-size: 1.2rem;
+        top: 0%;
+        font-weight: 600;
+      `}
+
+      ${({ isErrored }) =>
+      isErrored &&
+      css`
+        color: ${({ theme }) => theme.colors.accent};
+      `}
+  }
+
+  div {
+    display: flex;
+    border: 2px solid #333;
+    border-radius: 3px;
+    transition: border-color 0.3s;
+
+    ${({ dark }) =>
+      dark &&
+      css`
+        border-color: #fff;
+      `}
+
+    ${({ isErrored }) =>
+      isErrored &&
+      css`
+        border-color: ${({ theme }) => theme.colors.accent};
+      `}
+
+    input {
+      width: 100%;
+      height: 40px;
+      background: #fff;
+      font-size: 1.4rem;
+      border-radius: 3px;
+      border: none;
+      color: #333;
+      padding: 0 1.6rem;
+      transition: 0.3s;
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.7);
+      }
+
+      ${({ dark }) =>
+        dark &&
+        css`
+          background: rgba(0, 0, 0, 0.7);
+          color: #fff;
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+          }
+        `}
     }
   }
+`;
+
+export const Error = styled.span`
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.accent};
 `;

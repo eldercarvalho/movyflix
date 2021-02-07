@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { Store, fetchTrendingMovies } from '../../store';
+import { Store } from '../../store';
 
 import Button from '../Button';
 import Carousel from '../Carousel';
@@ -9,20 +8,15 @@ import Carousel from '../Carousel';
 import { Container, BannerItem, BannerInfo } from './styles';
 
 const Banners: React.FC = () => {
-  const dispatch = useDispatch();
   const { movies } = useSelector((state: Store) => {
     return {
       movies: state.movies.trendingMovies,
     };
   });
 
-  useEffect(() => {
-    dispatch(fetchTrendingMovies());
-  }, []);
-
   return (
     <Container>
-      <Carousel autoplay dotNumber>
+      <Carousel dotNumber>
         {movies.map((movie) => (
           <Carousel.Item key={movie.id}>
             <BannerItem>

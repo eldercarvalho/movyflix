@@ -9,6 +9,7 @@ import {
   useState,
   ComponentType,
   ReactElement,
+  useContext,
 } from 'react';
 
 import {
@@ -22,6 +23,10 @@ import {
   Pagination,
 } from './styles';
 
+import generateRandomKey from '../../utils/generateRandomKey';
+
+import { CarouselContext, CarouselContextData } from './CarouselContext';
+
 interface CarouselItemStyles {
   width: string;
 }
@@ -29,6 +34,8 @@ interface CarouselItemStyles {
 interface CarouselItemProps {
   style?: CarouselItemStyles;
   isActive?: boolean;
+  identifier?: string;
+  className?: string;
 }
 
 interface CarouselBreakpoint {
@@ -52,16 +59,6 @@ interface CarouselProps {
 
 interface CarouselComposition {
   Item: FC<CarouselItemProps>;
-}
-
-function generateRandomKey(length: number) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
 }
 
 const prevArrowSvg = (
@@ -95,16 +92,18 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   const [trackStyles, setTrackStyles] = useState({});
   const [itemWidth, setItemWidth] = useState(0);
   const [trackWidth, setTrackWidth] = useState(0);
-  const [page, setPage] = useState(items);
+  const [step, setStep] = useState(items);
   const [isSliding, setIsSliding] = useState(false);
   const isLoopRef = useRef<boolean>(true);
   const playIntervalRef = useRef(0);
+  const pagesMapper = useRef<Record<string, string[]>>({});
+  // console.log('tes');
 
-  const isStart = useMemo(() => page === 0, [page]);
+  const isStart = useMemo(() => step === 0, [step]);
 
   const isEnd = useMemo(() => {
-    return page === Children.count(children) + items;
-  }, [children, page, items]);
+    return step === Children.count(children) + items;
+  }, [children, step, items]);
 
   // const isMovePermitted = useMemo(() => true, []);
 
@@ -123,19 +122,19 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   }, [trackWidth, trackDistance, isLoopRef, speed]);
 
   useEffect(() => {
-    const newTrackDistance = page * itemWidth * -1;
+    const newTrackDistance = step * itemWidth * -1;
     setTrackDistance(newTrackDistance);
     moveTrack();
-  }, [page, itemWidth, moveTrack, isLoopRef]);
+  }, [step, itemWidth, moveTrack, isLoopRef]);
 
   const move = useCallback(
-    (direction: string, toPage = 0) => {
+    (direction: string, toStep = 0) => {
       if (isSliding) return;
       if (isLoopRef.current) isLoopRef.current = false;
 
-      if (direction === 'prev') setPage((oldPage) => oldPage - 1);
-      if (direction === 'next') setPage((oldPage) => oldPage + 1);
-      if (direction === 'goto') setPage(toPage);
+      if (direction === 'prev') setStep((oldStep) => oldStep - 1);
+      if (direction === 'next') setStep((oldStep) => oldStep + 1);
+      if (direction === 'goto') setStep(toStep);
     },
     [isSliding],
   );
@@ -151,9 +150,9 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     }
   };
 
-  const handleNavCLick = (direction: string, toPage = 0) => {
+  const handleNavCLick = (direction: string, toStep = 0) => {
     resetAutoplayInterval();
-    move(direction, toPage);
+    move(direction, toStep);
   };
 
   const handleVisibilityChange = () => {
@@ -195,50 +194,69 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
 
     if (isEnd && !isLoopRef.current) {
       isLoopRef.current = true;
-      setPage(items);
+      setStep(items);
     }
 
     if (isStart && !isLoopRef.current) {
       isLoopRef.current = true;
-      setPage(Children.count(children));
+      setStep(Children.count(children));
     }
   }, [children, isEnd, isLoopRef, isStart, items]);
 
   const renderItems = useCallback(() => {
     const nodes = Children.toArray(children);
+    const identifiers: string[] = [];
+    const pagesCount = Math.ceil(Children.count(children) / items);
+    const tmpPagesMapper: Record<string, string[]> = {};
+    let acum = 0;
 
     const childrenNodes: ReactElement[] = [];
     const firstCloneNodes: ReactElement[] = [];
     const lastCloneNodes: ReactElement[] = [];
 
     nodes.forEach((child, index) => {
-      childrenNodes.push(
-        cloneElement(child as ReactElement, {
-          style: { width: `${itemWidth}px` },
-        }),
-      );
+      const identifier = generateRandomKey(8);
 
       if (index < items) {
         lastCloneNodes.push(
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
             key: generateRandomKey(8),
+            identifier: generateRandomKey(8),
           }),
         );
       }
+
+      identifiers.push(identifier);
+
+      childrenNodes.push(
+        cloneElement(child as ReactElement, {
+          style: { width: `${itemWidth}px` },
+          identifier,
+        }),
+      );
 
       if (index > Children.count(children) - 1 - items) {
         firstCloneNodes.push(
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
             key: generateRandomKey(8),
+            identifier: generateRandomKey(8),
           }),
         );
       }
     });
 
+    for (let i = 0; i < pagesCount; i++) {
+      tmpPagesMapper[`${i + 1}`] = identifiers.slice(acum, acum + items);
+      acum += items;
+    }
+    pagesMapper.current = tmpPagesMapper;
+
+    // console.log(pagesMapper.current);
+
     return [...firstCloneNodes, ...childrenNodes, ...lastCloneNodes];
-  }, [children, itemWidth, items]);
+  }, [children, itemWidth, items, pagesMapper]);
 
   const renderDots = () => {
     const pagesCount = Math.ceil(Children.count(children) / items);
@@ -247,9 +265,9 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     return dotsArr.map((dot) => (
       <Dot
         key={dot}
-        isActive={page / items === dot + 1}
+        isActive={Math.floor(step / items) === dot + 1}
         showNumber={dotNumber}
-        className={page / items === dot + 1 ? '--active' : ''}
+        className={Math.floor(step / items) === dot + 1 ? '--active' : ''}
         onClick={() => handleNavCLick('goto', (dot + 1) * items)}
       >
         {dot + 1}
@@ -257,30 +275,66 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     ));
   };
 
+  const memoizedContextValue = useMemo(
+    () => ({
+      currentPage: Math.floor(step / items),
+      pagesMapper: pagesMapper.current,
+    }),
+    [items, step, pagesMapper],
+  );
+
   return (
-    <Container ref={containerRef} className={className}>
-      <Track ref={trackRef} style={trackStyles} onTransitionEnd={handleTransitionEnd}>
-        {renderItems()}
-      </Track>
-      <Pagination>
-        {navs && (
-          <PrevNavButton onClick={() => handleNavCLick('prev')}>
-            {typeof PrevNav === 'function' ? <PrevNav /> : PrevNav}
-          </PrevNavButton>
-        )}
-        {dots && <Dots>{renderDots()}</Dots>}
-        {navs && (
-          <NextNavButton onClick={() => handleNavCLick('next')}>
-            {typeof NextNav === 'function' ? <NextNav /> : NextNav}
-          </NextNavButton>
-        )}
-      </Pagination>
-    </Container>
+    <CarouselContext.Provider value={memoizedContextValue}>
+      <Container ref={containerRef} className={className}>
+        <Track ref={trackRef} style={trackStyles} onTransitionEnd={handleTransitionEnd}>
+          {renderItems()}
+        </Track>
+        <Pagination>
+          {navs && (
+            <PrevNavButton onClick={() => handleNavCLick('prev')}>
+              {typeof PrevNav === 'function' ? <PrevNav /> : PrevNav}
+            </PrevNavButton>
+          )}
+          {dots && <Dots>{renderDots()}</Dots>}
+          {navs && (
+            <NextNavButton onClick={() => handleNavCLick('next')}>
+              {typeof NextNav === 'function' ? <NextNav /> : NextNav}
+            </NextNavButton>
+          )}
+        </Pagination>
+      </Container>
+    </CarouselContext.Provider>
   );
 };
 
-Carousel.Item = ({ children, style, isActive }) => {
-  return <ItemContainer style={style}>{children}</ItemContainer>;
+const useCarousel = (): CarouselContextData => {
+  const context = useContext(CarouselContext);
+
+  if (!context) {
+    throw new Error('This component must be used within a <Carousel> component.');
+  }
+
+  return context;
 };
+
+const Item: React.FC<CarouselItemProps> = ({ children, style, identifier }) => {
+  const { currentPage, pagesMapper } = useCarousel();
+  const isActive = useMemo(() => {
+    // console.log(identifier, pagesMapper);
+    return (
+      identifier &&
+      pagesMapper[currentPage] &&
+      pagesMapper[currentPage].includes(identifier)
+    );
+  }, [currentPage, identifier, pagesMapper]);
+
+  return (
+    <ItemContainer style={style} className={isActive ? '--active' : ''}>
+      {children}
+    </ItemContainer>
+  );
+};
+
+Carousel.Item = Item;
 
 export default Carousel;
