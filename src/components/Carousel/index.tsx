@@ -78,7 +78,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   items = 1,
   speed = 400,
   autoplay = false,
-  autoplayInterval = 8000,
+  autoplayInterval = 6000,
   navs = true,
   prevNav: PrevNav = prevArrowSvg,
   nextNav: NextNav = nextArrowSvg,
@@ -97,15 +97,11 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   const isLoopRef = useRef<boolean>(true);
   const playIntervalRef = useRef(0);
   const pagesMapper = useRef<Record<string, string[]>>({});
-  // console.log('tes');
-
+  const itemsTotal = Children.count(children);
   const isStart = useMemo(() => step === 0, [step]);
-
   const isEnd = useMemo(() => {
     return step === Children.count(children) + items;
   }, [children, step, items]);
-
-  // const isMovePermitted = useMemo(() => true, []);
 
   const moveTrack = useCallback(() => {
     setIsSliding(true);
@@ -139,8 +135,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     [isSliding],
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const resetAutoplayInterval = () => {
+  const resetAutoplayInterval = useCallback(() => {
     if (autoplay) {
       clearInterval(playIntervalRef.current);
 
@@ -148,7 +143,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
         move('next');
       }, autoplayInterval);
     }
-  };
+  }, [autoplay, autoplayInterval, move]);
 
   const handleNavCLick = (direction: string, toStep = 0) => {
     resetAutoplayInterval();
@@ -159,11 +154,17 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     if (document.hidden) {
       clearInterval(playIntervalRef.current);
     } else {
-      playIntervalRef.current = window.setInterval(() => {
-        move('next');
-      }, autoplayInterval);
+      resetAutoplayInterval();
     }
   };
+
+  useEffect(() => {
+    if (itemsTotal < items) {
+      setStep(0);
+    } else {
+      setStep(items);
+    }
+  }, [itemsTotal, items]);
 
   useEffect(() => {
     const itemsCount = Children.count(children) + items * 2;
@@ -254,6 +255,10 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     pagesMapper.current = tmpPagesMapper;
 
     // console.log(pagesMapper.current);
+
+    if (Children.count(children) < items) {
+      return childrenNodes;
+    }
 
     return [...firstCloneNodes, ...childrenNodes, ...lastCloneNodes];
   }, [children, itemWidth, items, pagesMapper]);

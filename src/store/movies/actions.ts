@@ -2,11 +2,11 @@ import { Dispatch } from 'redux';
 import { format } from 'date-fns';
 import { http } from '../../services/http';
 
-import { MoviesActions, Movie } from './actionsTypes';
+import { MoviesActions, IMovie } from './actionsTypes';
 
 export const fetchTrendingMovies = () => async (dispatch: Dispatch): Promise<void> => {
   const response = await http.get('trending/movie/week');
-  const movies = response.data.results.slice(0, 5).map((movie: Movie) => {
+  const movies = response.data.results.map((movie: IMovie) => {
     const dateArr = movie.release_date?.split('-');
     const year = dateArr ? parseInt(dateArr[0]) : 0;
     const month = dateArr ? parseInt(dateArr[1]) - 1 : 0;

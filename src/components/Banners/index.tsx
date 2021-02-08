@@ -8,11 +8,7 @@ import Carousel from '../Carousel';
 import { Container, BannerItem, BannerInfo } from './styles';
 
 const Banners: React.FC = () => {
-  const { movies } = useSelector((state: Store) => {
-    return {
-      movies: state.movies.trendingMovies,
-    };
-  });
+  const movies = useSelector((state: Store) => state.movies.trendingMovies.slice(0, 6));
 
   return (
     <Container>

@@ -35,10 +35,6 @@ export const useModal = (): UseModal => {
   }, [isVisible]);
 
   const RenderModal = ({ children, showClose, width = 600 }: ModalContent) => {
-    useEffect(() => {
-      console.log('eita');
-    }, []);
-
     return (
       <>
         {isVisible && (

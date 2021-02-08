@@ -94,11 +94,11 @@ const MainHeader: React.FC = () => {
         <NavLink to="/" activeClassName="--active">
           Home
         </NavLink>
-        <NavLink to="/popular" activeClassName="--active">
-          Popular
+        <NavLink to="/discoer" activeClassName="--active">
+          Discover
         </NavLink>
-        <NavLink to="/trending" activeClassName="--active">
-          Trending
+        <NavLink to="/genres" activeClassName="--active">
+          Genres
         </NavLink>
         {request_token && (
           <NavLink to="/trending" activeClassName="--active">

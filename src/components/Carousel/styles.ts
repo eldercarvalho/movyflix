@@ -19,6 +19,7 @@ export const ItemContainer = styled.div<ItemContainerProps>`
 export const Pagination = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const NavButton = styled.button`

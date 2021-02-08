@@ -3,7 +3,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-import { BiLoaderAlt } from 'react-icons/bi';
 import { signIn, Store } from '../../store';
 
 import Button from '../Button';

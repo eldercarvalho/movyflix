@@ -5,7 +5,7 @@ export enum MoviesActions {
   SearchMovies = 'SEARCH_MOVIES',
 }
 
-export interface Movie {
+export interface IMovie {
   id?: number;
   poster_path?: string;
   backdrop_path?: string;
@@ -14,11 +14,12 @@ export interface Movie {
   vote_average?: number;
   release_date?: string;
   formatted_relese_date?: string;
+  genre_ids?: number[];
 }
 
 export interface PaginatedResult {
   page: number;
-  results: Movie[];
+  results: IMovie[];
   total_results: number;
   total_pages: number;
 }
@@ -39,7 +40,7 @@ export interface Genre {
 
 export interface FetchTrendingAction {
   type: MoviesActions.FetchTrending;
-  payload: Movie[];
+  payload: IMovie[];
 }
 
 export interface FetchConfigurationAction {

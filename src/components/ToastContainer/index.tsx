@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useTransition } from 'react-spring';
 
-import { useEffect } from 'react';
 import { Store } from '../../store';
 
 import Toast from './Toast';

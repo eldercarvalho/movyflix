@@ -3,6 +3,7 @@ import { Pagination, Dot } from '../Carousel/styles';
 
 export const Container = styled.div`
   position: relative;
+  margin-bottom: 8rem;
 
   ${Pagination} {
     position: absolute;

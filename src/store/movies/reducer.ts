@@ -1,23 +1,23 @@
 import {
   MoviesActions,
   MoviesActionsType,
-  Movie,
+  IMovie,
   Genre,
   Configuration,
 } from './actionsTypes';
 
 export interface MoviesState {
   configuration: Configuration;
-  trendingMovies: Movie[];
-  searchedMovies: Movie[];
+  trendingMovies: IMovie[];
+  searchedMovies: IMovie[];
   genres: Genre[];
 }
 
 const intitalState = {
   configuration: {} as Configuration,
-  trendingMovies: [] as Movie[],
+  trendingMovies: [] as IMovie[],
   genres: [] as Genre[],
-  searchedMovies: [] as Movie[],
+  searchedMovies: [] as IMovie[],
 };
 
 export const moviesReducer = (
