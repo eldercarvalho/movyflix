@@ -1,4 +1,3 @@
-import { rgba } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 interface IContainerProps {
