@@ -1,16 +1,42 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const Container = styled(Link)`
+interface ContainerProps {
+  type: string;
+}
+
+export const Container = styled(Link)<ContainerProps>`
   position: relative;
   display: block;
   border-radius: 3px;
+  background: #000;
+  transition: transform 0.3s;
 
-  :hover {
-    img {
-      transform: scale(1.1);
-    }
-  }
+  ${({ type }) =>
+    type === 'poster' &&
+    css`
+      :hover {
+        z-index: 1;
+
+        img {
+          transform: scale(1.1);
+        }
+      }
+    `}
+
+  ${({ type }) =>
+    type === 'backdrop' &&
+    css`
+      :hover {
+        z-index: 1;
+        transform: scale(1.15);
+        box-shadow: 0 5px 5px rgba(229, 9, 20, 0.5);
+
+        > div {
+          padding-left: 1.6rem;
+        }
+      }
+    `}
 
   img {
     transition: transform 0.3s;

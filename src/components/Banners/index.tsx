@@ -8,11 +8,11 @@ import Carousel from '../Carousel';
 import { Container, BannerItem, BannerInfo } from './styles';
 
 const Banners: React.FC = () => {
-  const movies = useSelector((state: Store) => state.movies.trendingMovies.slice(0, 6));
+  const movies = useSelector((store: Store) => store.movies.trending.slice(0, 8));
 
   return (
     <Container>
-      <Carousel dotNumber>
+      <Carousel dotNumber autoplay>
         {movies.map((movie) => (
           <Carousel.Item key={movie.id}>
             <BannerItem>
@@ -26,7 +26,7 @@ const Banners: React.FC = () => {
                 <p>{movie.overview}</p>
                 <div>
                   <Button>More details</Button>
-                  <span>{movie.formatted_relese_date}</span>
+                  <span>{movie.formatted_release_date}</span>
                 </div>
               </BannerInfo>
             </BannerItem>

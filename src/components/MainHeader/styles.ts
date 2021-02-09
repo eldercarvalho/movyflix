@@ -27,8 +27,7 @@ export const Logo = styled.h1`
 
   a {
     span {
-      font-family: 'Quicksand';
-      font-weight: 600;
+      font-weight: 700;
       color: ${(props) => props.theme.colors.accent};
     }
   }

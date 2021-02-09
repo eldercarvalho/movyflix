@@ -19,7 +19,7 @@ export const ItemContainer = styled.div<ItemContainerProps>`
 export const Pagination = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 const NavButton = styled.button`
@@ -34,6 +34,7 @@ const NavButton = styled.button`
   svg {
     width: 50px;
     height: 30px;
+    fill: #fff;
   }
 `;
 
@@ -46,7 +47,8 @@ export const NextNavButton = styled(NavButton)`
 `;
 
 export const Dots = styled.div`
-  text-align: center;
+  display: flex;
+  align-items: center;
   margin: 0 2.2rem;
 `;
 
@@ -56,9 +58,9 @@ interface DotProps {
 }
 
 export const Dot = styled.button<DotProps>`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  width: 20px;
+  height: 8px;
+  border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.accent};
   background: transparent;
   font-size: 0;

@@ -94,8 +94,8 @@ const MainHeader: React.FC = () => {
         <NavLink to="/" activeClassName="--active">
           Home
         </NavLink>
-        <NavLink to="/discoer" activeClassName="--active">
-          Discover
+        <NavLink to="/top-rated" activeClassName="--active">
+          Top Rated
         </NavLink>
         <NavLink to="/genres" activeClassName="--active">
           Genres
