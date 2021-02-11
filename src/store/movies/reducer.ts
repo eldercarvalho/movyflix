@@ -14,10 +14,11 @@ export interface MoviesState {
   nowPlaying: PaginableResult;
   upcoming: PaginableResult;
   search: PaginableResult;
+  searchLoading: boolean;
   genres: Genre[];
 }
 
-const initialPaginableResult: PaginableResult = {
+export const initialPaginableResult: PaginableResult = {
   page: 0,
   results: [],
   total_pages: 0,
@@ -31,6 +32,7 @@ const intitalState = {
   nowPlaying: initialPaginableResult,
   upcoming: initialPaginableResult,
   search: initialPaginableResult,
+  searchLoading: false,
   genres: [] as Genre[],
 };
 
@@ -51,8 +53,10 @@ export const moviesReducer = (
       return { ...state, genres: action.payload };
     case MoviesActions.FetchConfiguration:
       return { ...state, configuration: action.payload };
+    case MoviesActions.SetSearchLoading:
+      return { ...state, searchLoading: action.payload };
     case MoviesActions.SearchMovies:
-      return { ...state, search: action.payload };
+      return { ...state, search: action.payload, searchLoading: false };
     default:
       return state;
   }

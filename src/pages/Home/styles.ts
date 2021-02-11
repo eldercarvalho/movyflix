@@ -1,12 +1,12 @@
 import styled from 'styled-components';
+import { animated } from 'react-spring';
 
-export const Container = styled.div`
+export const Container = styled(animated.div)`
   margin: auto;
 `;
 
 export const Content = styled.div`
-  max-width: 1200px;
-  margin: auto;
+  padding: 0 6rem;
 `;
 
 export const Section = styled.section`
@@ -15,7 +15,7 @@ export const Section = styled.section`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 4rem 2.2rem;
   margin-bottom: 4rem;
 

@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { http } from '../../services/http';
 
 import { MoviesActions, IMovie } from './actionsTypes';
+import { initialPaginableResult } from './reducer';
 
 const formatReleaseDate = (date: string): string => {
   const dateArr = date.split('-');
@@ -69,13 +70,29 @@ export const fetchConfigs = () => async (dispatch: Dispatch): Promise<void> => {
   });
 };
 
+export const setSearchLoading = (payload: boolean) => {
+  return {
+    type: MoviesActions.SetSearchLoading,
+    payload,
+  };
+};
+
 export const searchMovies = (query: string) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
-  const response = await http.get(`search/movie?query=${query}`);
+  if (query) {
+    dispatch(setSearchLoading(true));
+    const response = await http.get(`search/movie?query=${query}`);
+
+    dispatch({
+      type: MoviesActions.SearchMovies,
+      payload: response.data,
+    });
+    return;
+  }
 
   dispatch({
     type: MoviesActions.SearchMovies,
-    payload: response.data,
+    payload: initialPaginableResult,
   });
 };

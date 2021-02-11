@@ -11,10 +11,10 @@ import {
   Store,
 } from '../../store';
 
-import Banners from '../../components/Banners';
-import Button from '../../components/Button';
-import MoviesCarousel from '../../components/MoviesCarousel';
-import Movie from '../../components/Movie';
+import Banners from '../../components/layout/Banners';
+import Button from '../../components/shared/Button';
+import MoviesCarousel from '../../components/layout/MoviesCarousel';
+import Movie from '../../components/layout/Movie';
 
 import { SectionTitle } from '../../styles/SectionTitle';
 import { Container, Content, Section, Grid } from './styles';
@@ -41,14 +41,10 @@ const Home: React.FC = () => {
           <SectionTitle>Popular Movies</SectionTitle>
 
           <Grid>
-            {popular.results.map((movie) => (
+            {popular.results.slice(0, 14).map((movie) => (
               <Movie key={movie.id} data={movie} />
             ))}
           </Grid>
-
-          <div className="text-center">
-            <Button>More</Button>
-          </div>
         </Section>
 
         <Section>

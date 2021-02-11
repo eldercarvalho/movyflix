@@ -7,8 +7,7 @@ import { theme } from './utils/theme';
 
 import { GlobalStyles } from './styles/global';
 
-import MainHeader from './components/MainHeader';
-import ToastContainer from './components/ToastContainer';
+import Layout from './components/layout';
 
 import Routes from './routes';
 
@@ -18,9 +17,9 @@ const App: React.FC = () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Router>
-            <ToastContainer />
-            <MainHeader />
-            <Routes />
+            <Layout>
+              <Routes />
+            </Layout>
             <GlobalStyles />
           </Router>
         </ThemeProvider>

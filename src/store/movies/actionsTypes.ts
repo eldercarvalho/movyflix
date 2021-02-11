@@ -6,6 +6,7 @@ export enum MoviesActions {
   FetchGenres = 'FETCH_GENRES',
   FetchConfiguration = 'FETCH_CONFIGURATION',
   SearchMovies = 'SEARCH_MOVIES',
+  SetSearchLoading = 'SET_SEARCH_LOADING',
 }
 
 export interface IMovie {
@@ -77,6 +78,11 @@ export interface SearchMoviesAction {
   payload: PaginableResult;
 }
 
+export interface SetSearchLoadingAction {
+  type: MoviesActions.SetSearchLoading;
+  payload: boolean;
+}
+
 export type MoviesActionsType =
   | FetchTrendingAction
   | FetchPopularAction
@@ -84,4 +90,5 @@ export type MoviesActionsType =
   | FetchNowPlayingAction
   | FetchGenresAction
   | FetchConfigurationAction
-  | SearchMoviesAction;
+  | SearchMoviesAction
+  | SetSearchLoadingAction;
