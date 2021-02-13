@@ -53,7 +53,7 @@ interface CarouselProps {
   nextNav?: string | ComponentType | HTMLElement;
   dots?: boolean;
   dotNumber?: boolean;
-  reponsive?: CarouselBreakpoint[];
+  responsive?: CarouselBreakpoint[];
   className?: string;
 }
 
@@ -73,6 +73,22 @@ const nextArrowSvg = (
   </svg>
 );
 
+const checkResponsiveItems = (
+  responsiveProp: CarouselBreakpoint[],
+  itemsProp: number,
+): number => {
+  let responsiveItems = itemsProp;
+
+  if (responsiveProp.length) {
+    responsiveItems =
+      responsiveProp
+        .filter((responsiveItem) => responsiveItem.breakpoint >= window.screen.width)
+        .pop()?.items || itemsProp;
+  }
+
+  return responsiveItems;
+};
+
 const Carousel: FC<CarouselProps> & CarouselComposition = ({
   children,
   items = 1,
@@ -86,6 +102,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   dots = true,
   dotNumber = false,
   className = '',
+  responsive = [],
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -93,16 +110,18 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   const [trackStyles, setTrackStyles] = useState({});
   const [itemWidth, setItemWidth] = useState(0);
   const [trackWidth, setTrackWidth] = useState(0);
-  const [step, setStep] = useState(items);
+  const [step, setStep] = useState(() => checkResponsiveItems(responsive, items));
   const [isSliding, setIsSliding] = useState(false);
   const isLoopRef = useRef<boolean>(true);
   const playIntervalRef = useRef(0);
   const pagesMapper = useRef<Record<string, string[]>>({});
   const itemsTotal = Children.count(children);
+  const innerItems = checkResponsiveItems(responsive, items);
+
   const isStart = useMemo(() => step === 0, [step]);
   const isEnd = useMemo(() => {
-    return step === Children.count(children) + items;
-  }, [children, step, items]);
+    return step === itemsTotal + innerItems;
+  }, [innerItems, itemsTotal, step]);
 
   const moveTrack = useCallback(() => {
     setIsSliding(true);
@@ -128,14 +147,25 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     (direction: string, toStep = 0) => {
       if (isSliding) return;
       if (isLoopRef.current) isLoopRef.current = false;
+      let updatedItems = checkResponsiveItems(responsive, items);
 
-      if (direction === 'prev')
-        setStep((oldStep) => (perPage ? oldStep - items : oldStep - 1));
-      if (direction === 'next')
-        setStep((oldStep) => (perPage ? oldStep + items : oldStep + 1));
+      if (direction === 'prev') {
+        if (step - updatedItems < 0) {
+          updatedItems = step;
+        }
+
+        setStep((oldStep) => (perPage ? oldStep - updatedItems : oldStep - 1));
+      }
+      if (direction === 'next') {
+        if (itemsTotal + updatedItems - step < updatedItems) {
+          updatedItems = itemsTotal % updatedItems;
+        }
+
+        setStep((oldStep) => (perPage ? oldStep + updatedItems : oldStep + 1));
+      }
       if (direction === 'goto') setStep(toStep);
     },
-    [isSliding, items, perPage],
+    [isSliding, responsive, items, itemsTotal, step, perPage],
   );
 
   const resetAutoplayInterval = useCallback(() => {
@@ -162,22 +192,28 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
   };
 
   useEffect(() => {
-    if (itemsTotal < items) {
+    if (itemsTotal < innerItems) {
       setStep(0);
     } else {
-      setStep(items);
+      setStep(innerItems);
     }
-  }, [itemsTotal, items]);
+  }, [itemsTotal, innerItems]);
 
-  useEffect(() => {
-    const itemsCount = Children.count(children) + items * 2;
+  const calculateWidths = useCallback(() => {
+    const updatedItems = checkResponsiveItems(responsive, items);
+
+    const itemsCount = itemsTotal + updatedItems * 2;
     const tmpItemWidth = containerRef.current
-      ? containerRef?.current.offsetWidth / items
+      ? containerRef?.current.offsetWidth / updatedItems
       : 0;
     const tmpTrackWidth = tmpItemWidth * itemsCount;
 
     setItemWidth(tmpItemWidth);
     setTrackWidth(tmpTrackWidth);
+  }, [items, itemsTotal, responsive]);
+
+  useEffect(() => {
+    calculateWidths();
 
     if (autoplay) {
       playIntervalRef.current = window.setInterval(() => {
@@ -186,31 +222,35 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('resize', calculateWidths);
 
     return () => {
       clearInterval(playIntervalRef.current);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('resize', calculateWidths);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTransitionEnd = useCallback(() => {
     setIsSliding(false);
+    const updatedItems = checkResponsiveItems(responsive, items);
 
     if (isEnd && !isLoopRef.current) {
       isLoopRef.current = true;
-      setStep(items);
+      setStep(updatedItems);
     }
 
     if (isStart && !isLoopRef.current) {
       isLoopRef.current = true;
       setStep(Children.count(children));
     }
-  }, [children, isEnd, isLoopRef, isStart, items]);
+  }, [responsive, items, isEnd, isStart, children]);
 
   const renderItems = useCallback(() => {
     const nodes = Children.toArray(children);
     const identifiers: string[] = [];
-    const pagesCount = Math.ceil(Children.count(children) / items);
+    const pagesCount = Math.ceil(Children.count(children) / innerItems);
+
     const tmpPagesMapper: Record<string, string[]> = {};
     let acum = 0;
 
@@ -221,7 +261,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     nodes.forEach((child, index) => {
       const identifier = generateRandomKey(8);
 
-      if (index < items) {
+      if (index < innerItems) {
         lastCloneNodes.push(
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
@@ -240,7 +280,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
         }),
       );
 
-      if (index > Children.count(children) - 1 - items) {
+      if (index > Children.count(children) - 1 - innerItems) {
         firstCloneNodes.push(
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
@@ -252,30 +292,31 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     });
 
     for (let i = 0; i < pagesCount; i++) {
-      tmpPagesMapper[`${i + 1}`] = identifiers.slice(acum, acum + items);
-      acum += items;
+      tmpPagesMapper[`${i + 1}`] = identifiers.slice(acum, acum + innerItems);
+      acum += innerItems;
     }
     pagesMapper.current = tmpPagesMapper;
 
     // console.log(pagesMapper.current);
 
-    if (Children.count(children) < items) {
+    if (Children.count(children) < innerItems) {
       return childrenNodes;
     }
 
     return [...firstCloneNodes, ...childrenNodes, ...lastCloneNodes];
-  }, [children, itemWidth, items, pagesMapper]);
+  }, [children, innerItems, itemWidth]);
 
   const renderDots = () => {
-    const currentPage = Math.floor(step / items);
-    const pagesCount = Math.ceil(Children.count(children) / items);
+    const updatedItems = checkResponsiveItems(responsive, items);
+    const currentPage = Math.floor(step / updatedItems);
+    const pagesCount = Math.ceil(Children.count(children) / updatedItems);
     const dotsArrIndex = [...Array(pagesCount).keys()];
 
     const dotsArr = dotsArrIndex.map((dot) => {
       const dotPage = dot + 1;
       const isActive = currentPage === dotPage;
-      const activeClassName = isActive ? '--active' : '';
-      const nextStep = dotPage * items;
+      const activeClassName = isActive ? 'carousel__dot --active' : 'carousel__dot';
+      const nextStep = dotPage * updatedItems;
 
       return (
         <Dot

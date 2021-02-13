@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import devices from '../utils/media';
+
 export const SectionTitle = styled.h2`
   position: relative;
   font-weight: 600;
@@ -15,5 +17,9 @@ export const SectionTitle = styled.h2`
     background: linear-gradient(to right, ${(props) => props.theme.colors.accent}, #000);
     width: 100%;
     height: 2px;
+  }
+
+  @media ${devices.mobileL} {
+    font-size: 2rem;
   }
 `;

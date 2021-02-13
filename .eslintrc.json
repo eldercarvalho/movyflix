@@ -49,6 +49,7 @@
       "radix": "off",
       "func-names": "off",
       "no-nested-ternary": "off",
+      "no-debugger": "off",
       "import/extensions": [
         "error",
         "ignorePackages",

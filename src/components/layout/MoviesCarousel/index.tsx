@@ -36,7 +36,15 @@ const MoviesCarousel: React.FC<MoviesCarouselProps> = ({ data }) => {
           onMouseLeave={handleMovieMouseLeave}
         />
       )}
-      <Carousel items={5} perPage>
+      <Carousel
+        items={5}
+        perPage
+        responsive={[
+          { breakpoint: 1366, items: 4 },
+          { breakpoint: 768, items: 2 },
+          { breakpoint: 640, items: 1 },
+        ]}
+      >
         {data.map((movie) => (
           <Carousel.Item key={movie.id}>
             <Movie

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { animated } from 'react-spring';
-import { Pagination, Dot } from '../../shared/Carousel/styles';
+import { Dot } from '../../shared/Carousel/styles';
 
 import devices from '../../../utils/media';
 
@@ -8,7 +8,7 @@ export const Container = styled.div`
   position: relative;
   margin-bottom: 8rem;
   height: 44vw;
-  min-height: 600px;
+  min-height: 500px;
 
   > svg {
     position: absolute;
@@ -18,7 +18,7 @@ export const Container = styled.div`
     color: ${({ theme }) => theme.colors.accent};
   }
 
-  ${Pagination} {
+  .carousel__pagination {
     position: absolute;
     right: 5vw;
     bottom: 4rem;
@@ -41,6 +41,27 @@ export const Container = styled.div`
     &.--active {
       transform: translateY(-10px) scale(2.2);
       color: ${({ theme }) => theme.colors.accent};
+    }
+  }
+
+  @media ${devices.mobileL} {
+    margin-bottom: 3rem;
+
+    .carousel__pagination {
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    ${Dot} {
+      font-size: 1.6rem;
+
+      & + button {
+        margin-left: 1.2rem;
+      }
+
+      &.--active {
+        transform: translateY(-5px) scale(1.8);
+      }
     }
   }
 `;
@@ -99,8 +120,8 @@ export const BannerItem = styled(animated.div)`
 
 export const BannerInfo = styled.div`
   position: absolute;
-  bottom: 12%;
   left: 10vw;
+  bottom: 20%;
   width: 600px;
   z-index: 2;
 
@@ -135,6 +156,16 @@ export const BannerInfo = styled.div`
 
     h1 {
       font-size: 3rem;
+    }
+  }
+
+  @media ${devices.tablet} {
+    h1 {
+      font-size: 2.6rem;
+    }
+
+    p {
+      font-size: 1.2rem;
     }
   }
 `;

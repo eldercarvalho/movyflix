@@ -50,6 +50,7 @@ export const Dots = styled.div`
   display: flex;
   align-items: center;
   margin: 0 2.2rem;
+  /* overflow-x: auto; */
 `;
 
 interface DotProps {
