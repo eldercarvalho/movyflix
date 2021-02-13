@@ -1,10 +1,13 @@
 import styled, { css, keyframes } from 'styled-components';
+import devices from '../../../utils/media';
 
-interface IContainerProps {
+import Button from '../../shared/Button';
+
+interface ContainerProps {
   isDarken: boolean;
 }
 
-export const Container = styled.header<IContainerProps>`
+export const Container = styled.header<ContainerProps>`
   position: fixed;
   width: 100%;
   display: flex;
@@ -20,16 +23,47 @@ export const Container = styled.header<IContainerProps>`
     css`
       background: rgba(0, 0, 0, 0.9);
     `}
+
+  @media ${devices.laptopM} {
+    padding: 0 4rem;
+  }
+
+  @media ${devices.tablet} {
+    height: 5.8rem;
+    padding: 0 1.6rem;
+  }
 `;
 
-export const Logo = styled.h1`
-  font-weight: 300;
+interface MenuWrapperProps {
+  isMenuOpened: boolean;
+}
 
-  a {
-    span {
-      font-weight: 700;
-      color: ${(props) => props.theme.colors.accent};
+export const MenuWrapper = styled.div<MenuWrapperProps>`
+  display: flex;
+  align-items: center;
+
+  @media ${devices.tablet} {
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding-top: 6.8rem;
+    background: #000;
+    width: 260px;
+    height: 100%;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    z-index: 2;
+
+    button {
+      margin-top: 3rem;
     }
+
+    ${({ isMenuOpened }) =>
+      isMenuOpened &&
+      css`
+        transform: translateX(0);
+      `}
   }
 `;
 
@@ -48,7 +82,7 @@ const activeItemAnimation = keyframes`
   }
 `;
 
-export const Menu = styled.header`
+export const Menu = styled.nav`
   display: flex;
   align-items: center;
   margin: 0 5rem;
@@ -80,8 +114,34 @@ export const Menu = styled.header`
       }
     }
   }
+
+  @media ${devices.tablet} {
+    flex-direction: column;
+    margin: 0;
+
+    a {
+      & + a {
+        margin-top: 3rem;
+        margin-left: 0;
+      }
+    }
+  }
 `;
 
+export const MenuButton = styled(Button)`
+  display: none;
+  position: relative;
+  margin-left: 1.6rem;
+  z-index: 3;
+
+  svg {
+    margin-top: 0.3rem;
+  }
+
+  @media ${devices.tablet} {
+    display: initial;
+  }
+`;
 interface ISearchProps {
   isActive: boolean;
 }

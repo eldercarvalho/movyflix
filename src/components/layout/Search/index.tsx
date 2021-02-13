@@ -7,7 +7,8 @@ import { Store } from '../../../store';
 import TextField from '../../shared/TextField';
 import Button from '../../shared/Button';
 
-import { Container, SearchLoading } from './styles';
+import { LoadingIcon } from '../../../styles/LoadingIcon';
+import { Container } from './styles';
 
 interface SearchProps {
   onSearchChange(query: string): void;
@@ -68,7 +69,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
 
       {isSearchActive && search.length > 0 ? (
         <Button iconOnly textOnly onClick={handleClearSearch}>
-          {!searchLoading ? <FiX size={22} /> : <SearchLoading size={22} />}
+          {!searchLoading ? <FiX size={22} /> : <LoadingIcon size={22} />}
         </Button>
       ) : (
         <Button iconOnly textOnly onClick={handleOpenClick}>

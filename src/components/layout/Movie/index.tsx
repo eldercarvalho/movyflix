@@ -5,12 +5,27 @@ import { IMovie, Store } from '../../../store';
 
 import { Container, MovieImage, MovieInfo } from './styles';
 
+export interface ElementData {
+  width: string;
+  top: string;
+  left: string;
+  movieData: IMovie;
+}
 interface MovieProps {
   type?: 'poster' | 'backdrop';
   data: IMovie;
+  style?: Record<string, string>;
+  onMouseEnter?(elementData: ElementData): void;
+  onMouseLeave?(): void;
 }
 
-const Movie: React.FC<MovieProps> = ({ type = 'poster', data }) => {
+const Movie: React.FC<MovieProps> = ({
+  type = 'poster',
+  data,
+  style,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   const containerRef = useRef<HTMLAnchorElement>(null);
   const containerCloneRef = useRef<HTMLAnchorElement>();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -47,19 +62,20 @@ const Movie: React.FC<MovieProps> = ({ type = 'poster', data }) => {
     const container = event.currentTarget;
     containerCloneRef.current = (containerRef.current?.cloneNode(true) ||
       document.createElement('a')) as HTMLAnchorElement;
-    const width = container.offsetWidth;
-    const top = container.getBoundingClientRect().top + window.scrollY;
-    const left = container.getBoundingClientRect().left + window.scrollX;
+    const width = `${container.offsetWidth}px`;
+    const top = '0';
+    const left = `${container.getBoundingClientRect().left - 60}px`;
 
-    if (containerRef.current) containerRef.current.style.visibility = 'hidden';
-    containerCloneRef.current.style.position = 'absolute';
-    containerCloneRef.current.style.width = `${width}px`;
-    containerCloneRef.current.style.top = `${top}px`;
-    containerCloneRef.current.style.left = `${left}px`;
-    containerCloneRef.current.onmouseleave = handleMouseLeave;
-    containerCloneRef.current.onclick = handlecloneClick;
+    // if (containerRef.current) containerRef.current.style.visibility = 'hidden';
+    // containerCloneRef.current.style.position = 'absolute';
+    // containerCloneRef.current.style.width = `${width}px`;
+    // containerCloneRef.current.style.top = `${top}px`;
+    // containerCloneRef.current.style.left = `${left}px`;
+    // containerCloneRef.current.onmouseleave = handleMouseLeave;
+    // containerCloneRef.current.onclick = handlecloneClick;
 
-    document.body.appendChild(containerCloneRef.current);
+    // document.body.appendChild(containerCloneRef.current);
+    if (onMouseEnter) onMouseEnter({ width, top, left, movieData: data });
   };
 
   return (
@@ -67,7 +83,9 @@ const Movie: React.FC<MovieProps> = ({ type = 'poster', data }) => {
       ref={containerRef}
       to={`/movies/${data.id}`}
       type={type}
+      style={style}
       onMouseEnter={type === 'backdrop' ? handleMouseEnter : undefined}
+      onMouseLeave={type === 'backdrop' ? onMouseLeave : undefined}
     >
       <MovieImage type={type}>
         <img

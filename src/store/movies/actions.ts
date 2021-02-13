@@ -14,7 +14,15 @@ const formatReleaseDate = (date: string): string => {
   return format(new Date(year, month, day), 'MMMM dd, yyyy');
 };
 
+export const IsFetchingTrending = () => {
+  return {
+    type: MoviesActions.IsFetchingTrending,
+  };
+};
+
 export const fetchTrendingMovies = () => async (dispatch: Dispatch): Promise<void> => {
+  dispatch(IsFetchingTrending());
+
   const response = await http.get('trending/movie/week');
   const movies = response.data.results.map((movie: IMovie) => {
     movie.formatted_release_date = formatReleaseDate(movie.release_date);

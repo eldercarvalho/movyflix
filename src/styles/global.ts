@@ -13,8 +13,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    /* background: url('/img/bg-body.png') center bottom no-repeat, #000000; */
-    background: #000;
+    background: url('/img/bg-body.png') center bottom no-repeat, #000000;
+    /* background-size: contain; */
+    /* background: #000; */
     color: #FFFFFF;
     -webkit-font-smoothing: antialiased;
   }

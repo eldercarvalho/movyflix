@@ -1,5 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
-import { BiLoaderAlt } from 'react-icons/bi';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   isActive: boolean;
@@ -29,17 +28,4 @@ export const Container = styled.div<ContainerProps>`
     position: relative;
     z-index: 1;
   }
-`;
-
-const LoadingAnimation = keyframes`
-  from {
-    transform: rotate(0)
-  }
-  to {
-    transform: rotate(360deg)
-  }
-`;
-
-export const SearchLoading = styled(BiLoaderAlt)`
-  animation: ${LoadingAnimation} 1s linear forwards;
 `;

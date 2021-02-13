@@ -61,7 +61,7 @@ export const Dot = styled.button<DotProps>`
   width: 20px;
   height: 8px;
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.accent};
+  border: 1px solid #fff;
   background: transparent;
   font-size: 0;
   color: #fff;
@@ -82,5 +82,6 @@ export const Dot = styled.button<DotProps>`
     isActive &&
     css`
       background: ${({ theme }) => theme.colors.accent};
+      border-color: ${({ theme }) => theme.colors.accent};
     `}
 `;

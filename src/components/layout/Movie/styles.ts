@@ -1,6 +1,8 @@
 import styled, { css, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import devices from '../../../utils/media';
+
 interface ContainerProps {
   type: string;
 }
@@ -9,7 +11,7 @@ export const Container = styled(Link)<ContainerProps>`
   position: relative;
   display: block;
   border-radius: 3px;
-  background: #000;
+  /* background: #000; */
   transition: transform 0.3s;
 
   ${({ type }) =>
@@ -17,7 +19,7 @@ export const Container = styled(Link)<ContainerProps>`
     css`
       :hover {
         z-index: 1;
-        transform: scale(1.15);
+        /* transform: scale(1.15); */
       }
     `}
 `;
@@ -32,7 +34,6 @@ const FadeIn = keyframes`
 
 export const MovieImage = styled.div<MovieImageProps>`
   position: relative;
-  height: 18.4vw;
   background: #222;
   border-radius: 3px;
   margin-bottom: 1.6rem;
@@ -41,6 +42,8 @@ export const MovieImage = styled.div<MovieImageProps>`
   transition: transform 0.3s;
 
   img {
+    position: absolute;
+    top: 0;
     display: block;
     object-fit: cover;
     height: 100%;
@@ -49,13 +52,22 @@ export const MovieImage = styled.div<MovieImageProps>`
   ${({ type }) =>
     type === 'poster' &&
     css`
+      height: 0;
+      padding-top: 150%;
+      min-height: 220px;
+
       :hover {
         z-index: 1;
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
 
       img {
         animation: ${FadeIn} 300ms forwards;
+        height: 100%;
+      }
+
+      @media ${devices.mobileL} {
+        width: 200px;
       }
     `}
 
@@ -132,6 +144,8 @@ export const MovieInfo = styled.div<MovieInfoProps>`
         color: #ccc;
 
         span {
+          line-height: 1;
+
           svg {
             fill: #ccc;
           }

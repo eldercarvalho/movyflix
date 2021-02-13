@@ -1,10 +1,12 @@
 import { useSelector } from 'react-redux';
+import { CgClapperBoard } from 'react-icons/cg';
 
 import { Store } from '../../store';
 
 import Movie from '../../components/layout/Movie';
+import MoviesGrid from '../../components/layout/MoviesGrid';
 
-import { Container, Content, Section, Grid } from './styles';
+import { Container, Content, Section, Grid, NoResultFound } from './styles';
 
 const Home: React.FC = () => {
   const { search, searchLoading } = useSelector((store: Store) => store.movies);
@@ -13,13 +15,16 @@ const Home: React.FC = () => {
     <Container>
       <Content>
         <Section>
-          {/* <SectionTitle>Results</SectionTitle> */}
+          {search.results.length > 0 && !searchLoading && (
+            <MoviesGrid data={search.results} />
+          )}
 
-          <Grid>
-            {search.results.length
-              ? search.results.map((movie) => <Movie key={movie.id} data={movie} />)
-              : !searchLoading && <h2>No result found</h2>}
-          </Grid>
+          {search.results.length === 0 && !searchLoading && (
+            <NoResultFound>
+              <CgClapperBoard size={100} />
+              <h2>No movies found</h2>
+            </NoResultFound>
+          )}
         </Section>
       </Content>
     </Container>

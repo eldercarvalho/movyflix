@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
-import { NavLink, Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { FiHeart, FiLogOut } from 'react-icons/fi';
+import { FiHeart, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { searchMovies, requestToken, Store, signOut } from '../../../store';
 
 import Button from '../../shared/Button';
+import Logo from '../Logo';
 import SignInForm from '../SignInForm';
 import Search from '../Search';
 
 import { debounce } from '../../../utils/debounce';
 
-import { Container, Logo, Menu, ModalContent } from './styles';
+import { Container, MenuWrapper, Menu, MenuButton, ModalContent } from './styles';
 import { useModal } from '../../shared/Modal';
 
 const MainHeader: React.FC = () => {
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [isDarken, setIsDarken] = useState(false);
   const history = useHistory();
   const match = useRouteMatch('/search');
@@ -29,9 +31,11 @@ const MainHeader: React.FC = () => {
 
   const handleSearch = (query: string) => {
     if (!match?.isExact) history.push('/search');
-    dispatch(searchMovies(query));
 
+    if (query) window.history.replaceState({}, 'query', `?query=${query}`);
     if (!query) history.goBack();
+
+    dispatch(searchMovies(query));
   };
 
   const handleSignInClick = useCallback(() => {
@@ -87,38 +91,44 @@ const MainHeader: React.FC = () => {
 
   return (
     <Container isDarken={isDarken}>
-      <Logo>
-        <Link to="/">
-          Movy<span>Flix</span>
-        </Link>
-      </Logo>
+      <Logo />
 
       <Search onSearchChange={debounce(handleSearch, 500)} />
 
-      <Menu>
-        <NavLink to="/" activeClassName="--active">
-          Home
-        </NavLink>
-        <NavLink to="/top-rated" activeClassName="--active">
-          Top Rated
-        </NavLink>
-        <NavLink to="/genres" activeClassName="--active">
-          Genres
-        </NavLink>
-        {request_token && (
-          <NavLink to="/trending" activeClassName="--active">
-            <FiHeart size={22} />
+      <MenuWrapper isMenuOpened={isMenuOpened}>
+        <Menu>
+          <NavLink to="/" exact activeClassName="--active">
+            Home
           </NavLink>
-        )}
-      </Menu>
+          <NavLink to="/top-rated" activeClassName="--active">
+            Top Rated
+          </NavLink>
+          <NavLink to="/genres" activeClassName="--active">
+            Genres
+          </NavLink>
+          {request_token && (
+            <NavLink to="/trending" activeClassName="--active">
+              <FiHeart size={22} />
+            </NavLink>
+          )}
+        </Menu>
 
-      {request_token ? (
-        <Button textOnly iconOnly onClick={handleSignOutClick}>
-          <FiLogOut size={22} />
-        </Button>
-      ) : (
-        <Button onClick={handleSignInClick}>Sign in</Button>
-      )}
+        {request_token ? (
+          <Button textOnly iconOnly onClick={handleSignOutClick}>
+            <FiLogOut size={22} />
+          </Button>
+        ) : (
+          <Button onClick={handleSignInClick}>Sign in</Button>
+        )}
+      </MenuWrapper>
+
+      <MenuButton
+        iconOnly
+        textOnly
+        onClick={() => setIsMenuOpened((oldValue) => !oldValue)}
+      >
+        {isMenuOpened ? <FiX size={30} /> : <FiMenu size={30} />}
+      </MenuButton>
 
       <RenderModal width={450} showClose={false}>
         <ModalContent>

@@ -24,8 +24,10 @@ const Route: React.FC<RouteProps> = ({
       render={() => {
         return isPrivate === !!request_token ? (
           <Component />
-        ) : (
+        ) : isPrivate ? (
           <Redirect to={{ pathname: '/' }} />
+        ) : (
+          <Component />
         );
       }}
     />

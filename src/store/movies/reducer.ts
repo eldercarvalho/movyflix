@@ -10,6 +10,7 @@ import {
 export interface MoviesState {
   configuration: Configuration;
   trending: IMovie[];
+  isFetchingTrending: boolean;
   popular: PaginableResult;
   nowPlaying: PaginableResult;
   upcoming: PaginableResult;
@@ -28,6 +29,7 @@ export const initialPaginableResult: PaginableResult = {
 const intitalState = {
   configuration: {} as Configuration,
   trending: [] as IMovie[],
+  isFetchingTrending: false,
   popular: initialPaginableResult,
   nowPlaying: initialPaginableResult,
   upcoming: initialPaginableResult,
@@ -42,7 +44,9 @@ export const moviesReducer = (
 ): MoviesState => {
   switch (action.type) {
     case MoviesActions.FetchTrending:
-      return { ...state, trending: action.payload };
+      return { ...state, trending: action.payload, isFetchingTrending: false };
+    case MoviesActions.IsFetchingTrending:
+      return { ...state, isFetchingTrending: true };
     case MoviesActions.FetchPopular:
       return { ...state, popular: action.payload };
     case MoviesActions.FetchNowPlaying:

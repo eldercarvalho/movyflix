@@ -1,5 +1,6 @@
 export enum MoviesActions {
   FetchTrending = 'FETCH_TRENDING',
+  IsFetchingTrending = 'SET_IS_FETCHING_TRENDING',
   FetchPopular = 'FETCH_POPULAR',
   FetchNowPlaying = 'FETCH_NOW_PLAYNG',
   FetchUpcoming = 'FETCH_UPCOMING',
@@ -48,6 +49,10 @@ export interface FetchTrendingAction {
   payload: IMovie[];
 }
 
+export interface IsFetchingTrendingAction {
+  type: MoviesActions.IsFetchingTrending;
+}
+
 export interface FetchPopularAction {
   type: MoviesActions.FetchPopular;
   payload: PaginableResult;
@@ -85,6 +90,7 @@ export interface SetSearchLoadingAction {
 
 export type MoviesActionsType =
   | FetchTrendingAction
+  | IsFetchingTrendingAction
   | FetchPopularAction
   | FetchUpcomingAction
   | FetchNowPlayingAction

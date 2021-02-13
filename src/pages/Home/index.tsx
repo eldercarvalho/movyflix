@@ -12,12 +12,11 @@ import {
 } from '../../store';
 
 import Banners from '../../components/layout/Banners';
-import Button from '../../components/shared/Button';
+import MoviesGrid from '../../components/layout/MoviesGrid';
 import MoviesCarousel from '../../components/layout/MoviesCarousel';
-import Movie from '../../components/layout/Movie';
 
 import { SectionTitle } from '../../styles/SectionTitle';
-import { Container, Content, Section, Grid } from './styles';
+import { Container, Content, Section } from './styles';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,11 +39,7 @@ const Home: React.FC = () => {
         <Section>
           <SectionTitle>Popular Movies</SectionTitle>
 
-          <Grid>
-            {popular.results.slice(0, 14).map((movie) => (
-              <Movie key={movie.id} data={movie} />
-            ))}
-          </Grid>
+          <MoviesGrid data={popular.results} />
         </Section>
 
         <Section>

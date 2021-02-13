@@ -335,13 +335,19 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
         </Track>
         <Pagination className="carousel__pagination">
           {navs && (
-            <PrevNavButton onClick={() => handleNavCLick('prev')}>
+            <PrevNavButton
+              className="carousel__nav carousel__nav-prev"
+              onClick={() => handleNavCLick('prev')}
+            >
               {typeof PrevNav === 'function' ? <PrevNav /> : PrevNav}
             </PrevNavButton>
           )}
-          {dots && <Dots>{renderDots()}</Dots>}
+          {dots && <Dots className="carousel__dots">{renderDots()}</Dots>}
           {navs && (
-            <NextNavButton onClick={() => handleNavCLick('next')}>
+            <NextNavButton
+              className="carousel__nav carousel__nav-next"
+              onClick={() => handleNavCLick('next')}
+            >
               {typeof NextNav === 'function' ? <NextNav /> : NextNav}
             </NextNavButton>
           )}

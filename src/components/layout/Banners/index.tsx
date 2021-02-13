@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Store } from '../../../store';
@@ -5,30 +6,37 @@ import { Store } from '../../../store';
 import Button from '../../shared/Button';
 import Carousel from '../../shared/Carousel';
 
+import { LoadingIcon } from '../../../styles/LoadingIcon';
 import { Container, BannerItem, BannerInfo } from './styles';
 
 const Banners: React.FC = () => {
-  const movies = useSelector((store: Store) => store.movies.trending.slice(0, 8));
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const { trending, isFetchingTrending } = useSelector((store: Store) => store.movies);
 
   return (
     <Container>
-      <Carousel dotNumber autoplay>
-        {movies.map((movie) => (
+      {isFetchingTrending && <LoadingIcon size={50} />}
+
+      <Carousel dotNumber>
+        {trending.slice(0, 6).map((movie) => (
           <Carousel.Item key={movie.id}>
-            <BannerItem>
+            <BannerItem className={isImageLoaded ? 'show' : ''}>
               <img
                 src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
                 alt={movie.title}
+                onLoad={() => setIsImageLoaded(true)}
               />
 
-              <BannerInfo>
-                <h1>{movie.title}</h1>
-                <p>{movie.overview}</p>
-                <div>
-                  <Button>More details</Button>
-                  <span>{movie.formatted_release_date}</span>
-                </div>
-              </BannerInfo>
+              {isImageLoaded && (
+                <BannerInfo>
+                  <h1>{movie.title}</h1>
+                  <p>{movie.overview}</p>
+                  <div>
+                    <Button>More details</Button>
+                    <span>{movie.formatted_release_date}</span>
+                  </div>
+                </BannerInfo>
+              )}
             </BannerItem>
           </Carousel.Item>
         ))}

@@ -8,7 +8,7 @@ const Layout: React.FC = ({ children }) => {
       <ToastContainer />
       <MainHeader />
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

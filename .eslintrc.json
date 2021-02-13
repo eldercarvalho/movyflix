@@ -48,6 +48,7 @@
       "@typescript-eslint/no-shadow": ["error"],
       "radix": "off",
       "func-names": "off",
+      "no-nested-ternary": "off",
       "import/extensions": [
         "error",
         "ignorePackages",
