@@ -14,15 +14,13 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     background: url('/img/bg-body.png') center bottom no-repeat, #000000;
-    /* background-size: contain; */
-    /* background: #000; */
+    font-size: 1.6rem;
     color: #FFFFFF;
     -webkit-font-smoothing: antialiased;
   }
 
   body, input, button {
     font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
   }
 
   h1, h2, h3, h4, h5, h6 {

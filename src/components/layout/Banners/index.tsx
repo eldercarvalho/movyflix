@@ -15,7 +15,11 @@ const Banners: React.FC = () => {
 
   return (
     <Container>
-      {isFetchingTrending && <LoadingIcon size={50} />}
+      {isFetchingTrending && (
+        <span>
+          <LoadingIcon size={50} />
+        </span>
+      )}
 
       <Carousel dotNumber>
         {trending.slice(0, 6).map((movie) => (

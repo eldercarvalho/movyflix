@@ -16,7 +16,7 @@ export const Container = styled.header<ContainerProps>`
   padding: 0 6rem;
   z-index: 10;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
-  transition: background 0.7s;
+  transition: background 0.5s;
 
   ${({ isDarken }) =>
     isDarken &&

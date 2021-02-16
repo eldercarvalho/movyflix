@@ -15,8 +15,9 @@ import Banners from '../../components/layout/Banners';
 import MoviesGrid from '../../components/layout/MoviesGrid';
 import MoviesCarousel from '../../components/layout/MoviesCarousel';
 
+import { Content } from '../../styles/Content';
 import { SectionTitle } from '../../styles/SectionTitle';
-import { Container, Content, Section } from './styles';
+import { Container, Section } from './styles';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,9 +38,9 @@ const Home: React.FC = () => {
 
       <Content>
         <Section>
-          <SectionTitle>Popular Movies</SectionTitle>
+          <SectionTitle>Popular</SectionTitle>
 
-          <MoviesGrid data={popular.results} />
+          <MoviesGrid data={popular.results.slice(0, 16)} />
         </Section>
 
         <Section>

@@ -15,6 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   light?: boolean;
   outline?: boolean;
   loading?: boolean;
+  rounded?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   light = false,
   outline,
   loading = false,
+  rounded = false,
   ...rest
 }) => {
   const history = useHistory();
@@ -59,6 +61,7 @@ const Button: React.FC<ButtonProps> = ({
       isLigthed={light}
       isOutlined={outline}
       isLoading={loading}
+      isRounded={rounded}
       onClick={(event: MouseEvent<HTMLButtonElement>) => handleClick(event)}
       {...rest}
     >

@@ -12,6 +12,7 @@ interface IContainerProps {
   isLigthed?: boolean;
   isOutlined?: boolean;
   isLoading?: boolean;
+  isRounded?: boolean;
 }
 
 const loadingAnimation = keyframes`
@@ -127,5 +128,11 @@ export const Container = styled.button<IContainerProps>`
       svg {
         animation: ${loadingAnimation} 0.5s linear infinite;
       }
+    `}
+
+    ${(props) =>
+    props.isRounded &&
+    css`
+      border-radius: 20px;
     `}
 `;

@@ -4,17 +4,23 @@ import Route from './Route';
 
 import Home from '../pages/Home';
 import Search from '../pages/Search';
-import Movies from '../pages/Movies';
 import Genres from '../pages/Genres';
+import Movies from '../pages/Movies';
+import MovieDetails from '../pages/MovieDetails';
+import ScrollToTop from './ScrollToTop';
 
 const Routes: React.FC = () => {
   return (
-    <Switch>
-      <Route path="/" exact component={Home} />
-      <Route path="/search" component={Search} />
-      <Route path="/top-rated" component={Movies} />
-      <Route path="/genres" component={Genres} />
-    </Switch>
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/search" component={Search} />
+        <Route path="/top-rated" component={Movies} />
+        <Route path="/genres" component={Genres} />
+        <Route path="/movies/:id" component={MovieDetails} />
+      </Switch>
+    </>
   );
 };
 

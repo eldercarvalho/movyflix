@@ -47,8 +47,10 @@ export const NextNavButton = styled(NavButton)`
 `;
 
 export const Dots = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 0 2.2rem;
   /* overflow-x: auto; */
 `;

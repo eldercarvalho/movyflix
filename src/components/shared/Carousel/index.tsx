@@ -48,7 +48,7 @@ interface CarouselProps {
   speed?: number;
   autoplay?: boolean;
   autoplayInterval?: number;
-  navs?: number;
+  navs?: boolean;
   prevNav?: string | ComponentType | HTMLElement;
   nextNav?: string | ComponentType | HTMLElement;
   dots?: boolean;
@@ -129,7 +129,9 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     setTrackStyles({
       width: `${trackWidth}px`,
       transform: `translateX(${trackDistance}px)`,
-      transition: !isLoopRef.current ? `transform ${speed}ms` : 'none',
+      transition: !isLoopRef.current
+        ? `transform ${speed}ms cubic-bezier(0.645, 0.045, 0.355, 1)`
+        : 'none',
     });
 
     if (isLoopRef.current) {

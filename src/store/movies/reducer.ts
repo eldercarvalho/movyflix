@@ -17,6 +17,8 @@ export interface MoviesState {
   search: PaginableResult;
   searchLoading: boolean;
   genres: Genre[];
+  movieDetails: IMovie;
+  isFetchingMovieDetails: boolean;
 }
 
 export const initialPaginableResult: PaginableResult = {
@@ -26,8 +28,19 @@ export const initialPaginableResult: PaginableResult = {
   total_results: 0,
 };
 
+export const initialConfiguration: Configuration = {
+  images: {
+    secure_base_url: '',
+    poster_sizes: [],
+    backdrop_sizes: [],
+    profile_sizes: [],
+    logo_sizes: [],
+  },
+  change_keys: [],
+};
+
 const intitalState = {
-  configuration: {} as Configuration,
+  configuration: initialConfiguration,
   trending: [] as IMovie[],
   isFetchingTrending: false,
   popular: initialPaginableResult,
@@ -36,6 +49,8 @@ const intitalState = {
   search: initialPaginableResult,
   searchLoading: false,
   genres: [] as Genre[],
+  movieDetails: {} as IMovie,
+  isFetchingMovieDetails: false,
 };
 
 export const moviesReducer = (
@@ -61,6 +76,10 @@ export const moviesReducer = (
       return { ...state, searchLoading: action.payload };
     case MoviesActions.SearchMovies:
       return { ...state, search: action.payload, searchLoading: false };
+    case MoviesActions.FetchMovieDetails:
+      return { ...state, movieDetails: action.payload, isFetchingMovieDetails: false };
+    case MoviesActions.SetIsFetchingMovieDetails:
+      return { ...state, isFetchingMovieDetails: true };
     default:
       return state;
   }

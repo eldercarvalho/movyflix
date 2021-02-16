@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { theme } from './utils/theme';
 
+import { SupportProvider } from './hooks/support';
+
 import { GlobalStyles } from './styles/global';
 
 import Layout from './components/layout';
@@ -16,12 +18,14 @@ const App: React.FC = () => {
     <>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <Router>
-            <Layout>
-              <Routes />
-            </Layout>
-            <GlobalStyles />
-          </Router>
+          <SupportProvider>
+            <Router>
+              <Layout>
+                <Routes />
+              </Layout>
+              <GlobalStyles />
+            </Router>
+          </SupportProvider>
         </ThemeProvider>
       </Provider>
     </>

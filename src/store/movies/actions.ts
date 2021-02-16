@@ -104,3 +104,21 @@ export const searchMovies = (query: string) => async (
     payload: initialPaginableResult,
   });
 };
+
+export const setIsFetchingMovieDetails = () => ({
+  type: MoviesActions.SetIsFetchingMovieDetails,
+});
+
+export const fetchMovieDetails = (movieId: string) => async (
+  dispatch: Dispatch,
+): Promise<void> => {
+  dispatch(setIsFetchingMovieDetails());
+  const response = await http.get(
+    `/movie/${movieId}?&append_to_response=credits,similar,videos`,
+  );
+
+  dispatch({
+    type: MoviesActions.FetchMovieDetails,
+    payload: response.data,
+  });
+};

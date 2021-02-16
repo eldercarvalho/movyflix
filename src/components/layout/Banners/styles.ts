@@ -10,12 +10,15 @@ export const Container = styled.div`
   height: 44vw;
   min-height: 500px;
 
-  > svg {
+  > span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: ${({ theme }) => theme.colors.accent};
+
+    svg {
+      color: ${({ theme }) => theme.colors.accent};
+    }
   }
 
   .carousel__pagination {

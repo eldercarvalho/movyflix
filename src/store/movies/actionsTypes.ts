@@ -8,6 +8,33 @@ export enum MoviesActions {
   FetchConfiguration = 'FETCH_CONFIGURATION',
   SearchMovies = 'SEARCH_MOVIES',
   SetSearchLoading = 'SET_SEARCH_LOADING',
+  FetchMovieDetails = 'SET_MOVIE_DETAILS',
+  SetIsFetchingMovieDetails = 'SET_IS_FETCHING_MOVIE_DETAILS',
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface CastPerson {
+  adult: boolean;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  order: number;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+}
+
+export interface Cast {
+  cast: CastPerson[];
+  crew: CastPerson[];
 }
 
 export interface IMovie {
@@ -17,9 +44,25 @@ export interface IMovie {
   title: string;
   overview: string;
   vote_average: number;
+  vote_count: number;
   release_date: string;
   formatted_release_date?: string;
   genre_ids: number[];
+  genres: Genre[];
+  belongs_to_collection?: Record<string, any>;
+  budget?: number;
+  homepage?: string;
+  imdb_id?: string;
+  popularity: number;
+  production_companies: Record<string, any>[];
+  production_countries: Record<string, any>[];
+  revenue: number;
+  runtime: number;
+  status: string;
+  tagline?: string;
+  video: boolean;
+  credits: Cast;
+  similar: PaginableResult;
 }
 
 export interface PaginableResult {
@@ -31,17 +74,16 @@ export interface PaginableResult {
 }
 
 export interface ImageConfiguration {
-  [key: string]: string[];
+  secure_base_url: string;
+  backdrop_sizes: string[];
+  logo_sizes: string[];
+  poster_sizes: string[];
+  profile_sizes: string[];
 }
 
 export interface Configuration {
   change_keys: string[];
   images: ImageConfiguration;
-}
-
-export interface Genre {
-  id: number;
-  name: string;
 }
 
 export interface FetchTrendingAction {
@@ -88,6 +130,15 @@ export interface SetSearchLoadingAction {
   payload: boolean;
 }
 
+export interface SetIsFetchingMovieDetailsAction {
+  type: MoviesActions.SetIsFetchingMovieDetails;
+}
+
+export interface FetchMovieDetailsaAction {
+  type: MoviesActions.FetchMovieDetails;
+  payload: IMovie;
+}
+
 export type MoviesActionsType =
   | FetchTrendingAction
   | IsFetchingTrendingAction
@@ -97,4 +148,6 @@ export type MoviesActionsType =
   | FetchGenresAction
   | FetchConfigurationAction
   | SearchMoviesAction
-  | SetSearchLoadingAction;
+  | SetSearchLoadingAction
+  | FetchMovieDetailsaAction
+  | SetIsFetchingMovieDetailsAction;

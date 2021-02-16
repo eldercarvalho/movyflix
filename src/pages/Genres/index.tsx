@@ -1,10 +1,13 @@
 import { Container } from './styles';
 
+import { Content } from '../../styles/Content';
+
 const Home: React.FC = () => {
   return (
-    <Container>
+    <Content headerOffset>
       <h1>Genres</h1>
-    </Container>
+      <p>Coming Soon</p>
+    </Content>
   );
 };
 
