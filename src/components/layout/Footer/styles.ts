@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.footer`
+  position: relative;
   padding: 5rem 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 
   h1 {
     margin-bottom: 3rem;

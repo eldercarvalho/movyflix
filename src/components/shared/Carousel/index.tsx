@@ -314,6 +314,8 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     const pagesCount = Math.ceil(Children.count(children) / updatedItems);
     const dotsArrIndex = [...Array(pagesCount).keys()];
 
+    if (pagesCount === 1) return null;
+
     const dotsArr = dotsArrIndex.map((dot) => {
       const dotPage = dot + 1;
       const isActive = currentPage === dotPage;

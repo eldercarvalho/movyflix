@@ -25,6 +25,7 @@ export const Container = styled.div`
     position: absolute;
     right: 5vw;
     bottom: 4rem;
+    margin-top: 0;
 
     svg {
       fill: #fff;

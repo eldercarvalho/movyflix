@@ -1,5 +1,5 @@
 import { BiLoaderAlt } from 'react-icons/bi';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const LoadingAnimation = keyframes`
   from {
@@ -10,6 +10,22 @@ const LoadingAnimation = keyframes`
   }
 `;
 
-export const LoadingIcon = styled(BiLoaderAlt)`
-  animation: ${LoadingAnimation} 1s linear forwards;
+interface LoadingIcon {
+  screenCenter?: boolean;
+}
+
+export const LoadingIcon = styled(BiLoaderAlt)<LoadingIcon>`
+  animation: ${LoadingAnimation} 1s linear forwards infinite;
+  fill: ${({ theme }) => theme.colors.accent};
+
+  ${({ screenCenter }) =>
+    screenCenter &&
+    css`
+      position: absolute;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      animation: ${LoadingAnimation} 1s linear forwards infinite;
+    `}
 `;

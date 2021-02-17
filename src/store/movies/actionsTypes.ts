@@ -9,6 +9,7 @@ export enum MoviesActions {
   SearchMovies = 'SEARCH_MOVIES',
   SetSearchLoading = 'SET_SEARCH_LOADING',
   FetchMovieDetails = 'SET_MOVIE_DETAILS',
+  ClearMovieDetails = 'CLEAR_MOVIE_DETAILS',
   SetIsFetchingMovieDetails = 'SET_IS_FETCHING_MOVIE_DETAILS',
 }
 
@@ -37,6 +38,8 @@ export interface Cast {
   crew: CastPerson[];
 }
 
+// export interface MovieImage {}
+
 export interface IMovie {
   id: number;
   poster_path: string;
@@ -63,6 +66,7 @@ export interface IMovie {
   video: boolean;
   credits: Cast;
   similar: PaginableResult;
+  year: string;
 }
 
 export interface PaginableResult {
@@ -138,6 +142,9 @@ export interface FetchMovieDetailsaAction {
   type: MoviesActions.FetchMovieDetails;
   payload: IMovie;
 }
+export interface ClearMovieDetailsAction {
+  type: MoviesActions.ClearMovieDetails;
+}
 
 export type MoviesActionsType =
   | FetchTrendingAction
@@ -150,4 +157,5 @@ export type MoviesActionsType =
   | SearchMoviesAction
   | SetSearchLoadingAction
   | FetchMovieDetailsaAction
-  | SetIsFetchingMovieDetailsAction;
+  | SetIsFetchingMovieDetailsAction
+  | ClearMovieDetailsAction;

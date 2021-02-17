@@ -20,6 +20,7 @@ export const Pagination = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 1.4rem;
 `;
 
 const NavButton = styled.button`
@@ -62,12 +63,11 @@ interface DotProps {
 
 export const Dot = styled.button<DotProps>`
   width: 20px;
-  height: 8px;
-  border-radius: 4px;
-  border: 1px solid #fff;
-  background: transparent;
+  height: 4px;
   font-size: 0;
   color: #fff;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
 
   & + button {
     margin-left: 1rem;

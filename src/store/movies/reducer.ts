@@ -80,6 +80,8 @@ export const moviesReducer = (
       return { ...state, movieDetails: action.payload, isFetchingMovieDetails: false };
     case MoviesActions.SetIsFetchingMovieDetails:
       return { ...state, isFetchingMovieDetails: true };
+    case MoviesActions.ClearMovieDetails:
+      return { ...state, movieDetails: {} as IMovie };
     default:
       return state;
   }

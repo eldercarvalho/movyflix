@@ -5,13 +5,13 @@ import { http } from '../../services/http';
 import { MoviesActions, IMovie } from './actionsTypes';
 import { initialPaginableResult } from './reducer';
 
-const formatReleaseDate = (date: string): string => {
+const formatReleaseDate = (date: string, pattern: string): string => {
   const dateArr = date.split('-');
   const year = dateArr ? parseInt(dateArr[0]) : 0;
   const month = dateArr ? parseInt(dateArr[1]) - 1 : 0;
   const day = dateArr ? parseInt(dateArr[2]) : 0;
 
-  return format(new Date(year, month, day), 'MMMM dd, yyyy');
+  return format(new Date(year, month, day), pattern);
 };
 
 export const IsFetchingTrending = () => {
@@ -25,7 +25,7 @@ export const fetchTrendingMovies = () => async (dispatch: Dispatch): Promise<voi
 
   const response = await http.get('trending/movie/week');
   const movies = response.data.results.map((movie: IMovie) => {
-    movie.formatted_release_date = formatReleaseDate(movie.release_date);
+    movie.formatted_release_date = formatReleaseDate(movie.release_date, 'MMMM dd, yyyy');
     return movie;
   });
 
@@ -114,11 +114,19 @@ export const fetchMovieDetails = (movieId: string) => async (
 ): Promise<void> => {
   dispatch(setIsFetchingMovieDetails());
   const response = await http.get(
-    `/movie/${movieId}?&append_to_response=credits,similar,videos`,
+    `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations`,
   );
+
+  response.data.year = formatReleaseDate(response.data.release_date, 'yyyy');
 
   dispatch({
     type: MoviesActions.FetchMovieDetails,
     payload: response.data,
   });
+};
+
+export const clearMovieDetails = () => {
+  return {
+    type: MoviesActions.ClearMovieDetails,
+  };
 };
