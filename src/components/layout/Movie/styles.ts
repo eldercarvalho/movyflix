@@ -60,7 +60,7 @@ export const MovieImage = styled.div<MovieImageProps>`
       }
 
       img {
-        animation: ${FadeIn} 300ms forwards;
+        /* animation: ${FadeIn} 300ms forwards; */
         height: 100%;
       }
 

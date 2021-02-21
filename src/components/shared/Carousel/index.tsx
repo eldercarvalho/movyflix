@@ -33,6 +33,8 @@ interface CarouselItemStyles {
 interface CarouselItemProps {
   style?: CarouselItemStyles;
   isActive?: boolean;
+  isFirstActive?: boolean;
+  isLastActive?: boolean;
   identifier?: string;
   className?: string;
 }
@@ -303,8 +305,16 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
       return childrenNodes;
     }
 
-    return [...firstCloneNodes, ...childrenNodes, ...lastCloneNodes];
-  }, [children, innerItems, itemWidth]);
+    const finalNodeItems = [...firstCloneNodes, ...childrenNodes, ...lastCloneNodes];
+
+    return finalNodeItems.map((node, index) => {
+      const isActive = !!(index >= step && index < step + innerItems);
+      const isFirstActive = index === step;
+      const isLastActive = index === step - 1 + innerItems;
+
+      return cloneElement(node, { isActive, isFirstActive, isLastActive });
+    });
+  }, [children, innerItems, itemWidth, step]);
 
   const renderDots = () => {
     const updatedItems = checkResponsiveItems(responsive, items);
@@ -410,7 +420,13 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
 //   return context;
 // };
 
-const Item: React.FC<CarouselItemProps> = ({ children, style }) => {
+const Item: React.FC<CarouselItemProps> = ({
+  children,
+  style,
+  isActive,
+  isLastActive,
+  isFirstActive,
+}) => {
   // const { currentPage, pagesMapper } = useCarousel();
   // const isActive = useMemo(() => {
   // console.log(identifier, pagesMapper);
@@ -422,7 +438,12 @@ const Item: React.FC<CarouselItemProps> = ({ children, style }) => {
   // }, [currentPage, identifier, pagesMapper]);
 
   return (
-    <ItemContainer style={style} className="carousel__item">
+    <ItemContainer
+      style={style}
+      className={`carousel__item ${isActive ? '--active' : ''}  ${
+        isFirstActive ? '--first-active' : ''
+      } ${isLastActive ? '--last-active' : ''}`}
+    >
       {children}
     </ItemContainer>
   );

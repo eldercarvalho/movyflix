@@ -44,7 +44,6 @@ const MoviesCarousel: React.FC<MoviesCarouselProps> = ({
       )}
       <Carousel
         items={items}
-        navs={false}
         responsive={[
           { breakpoint: 1366, items: 4 },
           { breakpoint: 768, items: 2 },
@@ -57,7 +56,7 @@ const MoviesCarousel: React.FC<MoviesCarouselProps> = ({
               key={movie.id}
               data={movie}
               type={movieType}
-              onMouseEnter={handleMovieMouseEnter}
+              // onMouseEnter={handleMovieMouseEnter}
             />
           </Carousel.Item>
         ))}
