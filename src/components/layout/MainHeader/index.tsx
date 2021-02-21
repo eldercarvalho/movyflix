@@ -101,10 +101,10 @@ const MainHeader: React.FC = () => {
             Home
           </NavLink>
           <NavLink to="/top-rated" activeClassName="--active">
-            Top Rated
+            Melhores Avaliados
           </NavLink>
           <NavLink to="/genres" activeClassName="--active">
-            Genres
+            Gêneros
           </NavLink>
           {request_token && (
             <NavLink to="/trending" activeClassName="--active">
@@ -132,7 +132,7 @@ const MainHeader: React.FC = () => {
 
       <RenderModal width={450} showClose={false}>
         <ModalContent>
-          <h2>Permission Required</h2>
+          {/* <h2>Permission Required</h2>
           <p>
             You will need to grant permission to access your TMDb information. Click on
             the continue button to be redirected to the TMDb website.
@@ -140,14 +140,25 @@ const MainHeader: React.FC = () => {
           <p>
             If you don't have a TMDb account, create one to enjoy all the features of
             MovyFlix.
+          </p> */}
+
+          <h2>Permissão Necessária</h2>
+          <p>
+            Você precisa conceder permissão para o MovyFlix acessar as informações da sua
+            conta TMDb. Clique no botão de continuar para ser redirecionado para o site do
+            TMDb.
+          </p>
+          <p>
+            Se você não tem conta no TMDb, crie uma para aproveita todas as
+            funcionalidades do MovyFlix.
           </p>
 
           <Button full className="mt-3" onClick={handleAuthenticationClick}>
-            Continue
+            Continuar
           </Button>
 
           <Button textOnly full small light className="mt-1" onClick={() => hide()}>
-            Cancel
+            Cancelar
           </Button>
         </ModalContent>
       </RenderModal>
@@ -165,7 +176,7 @@ const MainHeader: React.FC = () => {
             className="mt-1"
             onClick={() => hideSigInModal()}
           >
-            Cancel
+            Cancelar
           </Button>
         </ModalContent>
       </SigInModal>

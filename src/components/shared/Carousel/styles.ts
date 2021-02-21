@@ -49,9 +49,11 @@ export const NextNavButton = styled(NavButton)`
 
 export const Dots = styled.div`
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  white-space: nowrap;
+  text-align: center;
   margin: 0 2.2rem;
   /* overflow-x: auto; */
 `;
@@ -62,12 +64,14 @@ interface DotProps {
 }
 
 export const Dot = styled.button<DotProps>`
+  display: inline-block;
   width: 20px;
   height: 4px;
   font-size: 0;
   color: #fff;
   border: none;
   background: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
 
   & + button {
     margin-left: 1rem;

@@ -129,9 +129,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
     setTrackStyles({
       width: `${trackWidth}px`,
       transform: `translateX(${trackDistance}px)`,
-      transition: !isLoopRef.current
-        ? `transform ${speed}ms cubic-bezier(0.645, 0.045, 0.355, 1)`
-        : 'none',
+      transition: !isLoopRef.current ? `transform ${speed}ms ease` : 'none',
     });
 
     if (isLoopRef.current) {

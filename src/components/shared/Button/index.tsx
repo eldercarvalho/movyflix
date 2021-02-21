@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes, useCallback, MouseEvent } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
+import Loading from '../Loading';
 
 import { Container } from './style';
 
@@ -65,7 +66,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={(event: MouseEvent<HTMLButtonElement>) => handleClick(event)}
       {...rest}
     >
-      {loading ? <BiLoaderAlt size={22} /> : children}
+      {loading ? <Loading dark size={22} thickness={2} /> : children}
     </Container>
   );
 };

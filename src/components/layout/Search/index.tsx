@@ -2,19 +2,21 @@ import { ChangeEvent, useEffect, useRef, useState, MouseEvent } from 'react';
 import { FiSearch, FiX } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 
+import { useHistory } from 'react-router-dom';
 import { Store } from '../../../store';
 
 import TextField from '../../shared/TextField';
 import Button from '../../shared/Button';
 
-import { LoadingIcon } from '../../../styles/LoadingIcon';
 import { Container } from './styles';
+import Loading from '../../shared/Loading';
 
 interface SearchProps {
   onSearchChange(query: string): void;
 }
 
 const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
+  const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
   const textFieldRef = useRef<HTMLInputElement>(null);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -24,9 +26,10 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
   useEffect(() => {
     const handleOutsideClick = (event: Event) => {
       if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node) &&
-        textFieldRef.current?.value === ''
+        (containerRef.current &&
+          !containerRef.current.contains(event.target as Node) &&
+          textFieldRef.current?.value === '') ||
+        (event.target as Node).nodeName === 'A'
       ) {
         setIsSearchActive(false);
         setSearch('');
@@ -35,10 +38,18 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
 
     document.addEventListener('click', handleOutsideClick);
 
+    const unlisten = history.listen((route) => {
+      if (route.pathname !== '/search') {
+        setSearch('');
+      }
+    });
+
     return () => {
       document.addEventListener('click', handleOutsideClick);
+
+      unlisten();
     };
-  }, []);
+  }, [history]);
 
   const handleOpenClick = () => {
     setIsSearchActive(true);
@@ -62,14 +73,14 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
         ref={textFieldRef}
         dark
         className="search-field"
-        placeholder="Search"
+        placeholder="Pesquisa"
         value={search}
         onChange={handleTextFieldChange}
       />
 
       {isSearchActive && search.length > 0 ? (
         <Button iconOnly textOnly onClick={handleClearSearch}>
-          {!searchLoading ? <FiX size={22} /> : <LoadingIcon size={22} />}
+          {!searchLoading ? <FiX size={22} /> : <Loading dark size={22} thickness={2} />}
         </Button>
       ) : (
         <Button iconOnly textOnly onClick={handleOpenClick}>

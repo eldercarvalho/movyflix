@@ -1,17 +1,28 @@
 import { Dispatch } from 'redux';
-import { format } from 'date-fns';
 import { http } from '../../services/http';
+import { formatReleaseDate } from '../../utils/formatReleaseDate';
 
-import { MoviesActions, IMovie } from './actionsTypes';
+import { MoviesActions, IMovie, CastPerson } from './actionsTypes';
 import { initialPaginableResult } from './reducer';
 
-const formatReleaseDate = (date: string, pattern: string): string => {
-  const dateArr = date.split('-');
-  const year = dateArr ? parseInt(dateArr[0]) : 0;
-  const month = dateArr ? parseInt(dateArr[1]) - 1 : 0;
-  const day = dateArr ? parseInt(dateArr[2]) : 0;
+const reduceCrewByDepartment = (crew: CastPerson[]) => {
+  const filteredDepartments = ['Director', 'Story', 'Screenplay', 'Characters', 'Writer'];
 
-  return format(new Date(year, month, day), pattern);
+  const reducedCrew = crew
+    .filter((person) => filteredDepartments.includes(person.job))
+    .reduce((acum, cur) => {
+      if (acum.some((person) => person.id === cur.id)) {
+        const personIndex = acum.findIndex((person) => person.id === cur.id);
+        acum[personIndex].job += `, ${cur.job}`;
+        return acum;
+      }
+
+      acum.push(cur);
+
+      return acum;
+    }, [] as CastPerson[]);
+
+  return reducedCrew;
 };
 
 export const IsFetchingTrending = () => {
@@ -113,11 +124,12 @@ export const fetchMovieDetails = (movieId: string) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
   dispatch(setIsFetchingMovieDetails());
-  const response = await http.get(
-    `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations`,
+  const response = await http.get<IMovie>(
+    `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations,external_ids`,
   );
 
   response.data.year = formatReleaseDate(response.data.release_date, 'yyyy');
+  response.data.credits.crew = reduceCrewByDepartment(response.data.credits.crew);
 
   dispatch({
     type: MoviesActions.FetchMovieDetails,

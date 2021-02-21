@@ -44,13 +44,13 @@ const Home: React.FC = () => {
         </Section>
 
         <Section>
-          <SectionTitle>Now Playing</SectionTitle>
+          <SectionTitle>Em Cartaz</SectionTitle>
 
           <MoviesCarousel data={nowPlaying.results} />
         </Section>
 
         <Section>
-          <SectionTitle>Upcoming</SectionTitle>
+          <SectionTitle>Próximas Estréias</SectionTitle>
 
           <MoviesCarousel data={upcoming.results} />
         </Section>

@@ -11,7 +11,6 @@ export const Container = styled(Link)<ContainerProps>`
   position: relative;
   display: block;
   border-radius: 3px;
-  /* background: #000; */
   transition: transform 0.3s;
 
   ${({ type }) =>
@@ -37,7 +36,6 @@ export const MovieImage = styled.div<MovieImageProps>`
   background: #222;
   border-radius: 3px;
   margin-bottom: 1.6rem;
-  position: relative;
   overflow: hidden;
   transition: transform 0.3s;
 
@@ -67,7 +65,7 @@ export const MovieImage = styled.div<MovieImageProps>`
       }
 
       @media ${devices.mobileL} {
-        width: 200px;
+        /* width: 50%; */
       }
     `}
 

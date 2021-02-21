@@ -6,7 +6,7 @@ interface ContentProps {
   headerOffset?: boolean;
 }
 
-export const Content = styled.main<ContentProps>`
+export const Content = styled.div<ContentProps>`
   padding: 0 6rem;
   min-height: 100vh;
 

@@ -31,6 +31,8 @@ export interface CastPerson {
   original_name: string;
   popularity: number;
   profile_path: string;
+  department: string;
+  job: string;
 }
 
 export interface Cast {
@@ -38,7 +40,26 @@ export interface Cast {
   crew: CastPerson[];
 }
 
-// export interface MovieImage {}
+export interface MovieImage {
+  id: number;
+  file_path: string;
+}
+
+export interface MovieImages {
+  backdrops: MovieImage[];
+  posters: MovieImage[];
+}
+
+export interface MovieVideo {
+  id: number;
+  name: string;
+  key: string;
+  type: string;
+}
+
+export interface MovieVideoResults {
+  results: MovieVideo[];
+}
 
 export interface IMovie {
   id: number;
@@ -53,7 +74,7 @@ export interface IMovie {
   genre_ids: number[];
   genres: Genre[];
   belongs_to_collection?: Record<string, any>;
-  budget?: number;
+  budget: number;
   homepage?: string;
   imdb_id?: string;
   popularity: number;
@@ -67,6 +88,10 @@ export interface IMovie {
   credits: Cast;
   similar: PaginableResult;
   year: string;
+  original_title: string;
+  original_language: string;
+  videos: MovieVideoResults;
+  images: MovieImages;
 }
 
 export interface PaginableResult {

@@ -1,6 +1,13 @@
-interface Size {
-  [key: string]: number;
-}
+type Sizes = {
+  mobileS: number;
+  mobileM: number;
+  mobileL: number;
+  tablet: number;
+  laptop: number;
+  laptopM: number;
+  laptopL: number;
+  desktop: number;
+};
 
 type DevicesUnion =
   | 'mobileS'
@@ -12,7 +19,7 @@ type DevicesUnion =
   | 'laptopL'
   | 'desktop';
 
-export const size: Size = {
+export const mediaSizes: Sizes = {
   mobileS: 320,
   mobileM: 375,
   mobileL: 425,
@@ -23,8 +30,10 @@ export const size: Size = {
   desktop: 2560,
 };
 
-const devices = Object.keys(size).reduce((acc, cur) => {
-  acc[cur as DevicesUnion] = `only screen and (max-width: ${size[cur]}px)`;
+const devices = Object.keys(mediaSizes).reduce((acc, cur) => {
+  acc[cur as DevicesUnion] = `only screen and (max-width: ${
+    mediaSizes[cur as keyof Sizes]
+  }px)`;
   return acc;
 }, {} as Record<DevicesUnion, string>);
 

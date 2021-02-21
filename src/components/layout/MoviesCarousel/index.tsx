@@ -7,10 +7,16 @@ import Movie, { ElementData } from '../Movie';
 import { Container } from './styles';
 
 interface MoviesCarouselProps {
+  movieType?: 'poster' | 'backdrop';
+  items?: number;
   data: IMovie[];
 }
 
-const MoviesCarousel: React.FC<MoviesCarouselProps> = ({ data }) => {
+const MoviesCarousel: React.FC<MoviesCarouselProps> = ({
+  data,
+  movieType = 'backdrop',
+  items = 5,
+}) => {
   const [currentMovieData, setCurrentMovieData] = useState<IMovie | null>(null);
   const [currentMovieStyles, setCurrentMovieStyles] = useState({
     position: 'absolute',
@@ -37,8 +43,8 @@ const MoviesCarousel: React.FC<MoviesCarouselProps> = ({ data }) => {
         />
       )}
       <Carousel
-        items={5}
-        perPage
+        items={items}
+        navs={false}
         responsive={[
           { breakpoint: 1366, items: 4 },
           { breakpoint: 768, items: 2 },
@@ -50,7 +56,7 @@ const MoviesCarousel: React.FC<MoviesCarouselProps> = ({ data }) => {
             <Movie
               key={movie.id}
               data={movie}
-              type="backdrop"
+              type={movieType}
               onMouseEnter={handleMovieMouseEnter}
             />
           </Carousel.Item>

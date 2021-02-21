@@ -93,6 +93,7 @@ export const Container = styled.button<IContainerProps>`
 
       &:hover {
         background: transparent;
+        opacity: 0.7;
       }
     `} /* @media (min-width: 1024px) {
     &:hover {

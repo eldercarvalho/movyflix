@@ -6,8 +6,8 @@ import { Store } from '../../../store';
 import Button from '../../shared/Button';
 import Carousel from '../../shared/Carousel';
 
-import { LoadingIcon } from '../../../styles/LoadingIcon';
 import { Container, BannerItem, BannerInfo } from './styles';
+import Loading from '../../shared/Loading';
 
 const Banners: React.FC = () => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -17,7 +17,7 @@ const Banners: React.FC = () => {
     <Container>
       {isFetchingTrending && (
         <span>
-          <LoadingIcon size={50} />
+          <Loading size={80} />
         </span>
       )}
 
@@ -36,7 +36,7 @@ const Banners: React.FC = () => {
                   <h1>{movie.title}</h1>
                   <p>{movie.overview}</p>
                   <div>
-                    <Button>More details</Button>
+                    <Button to={`/movies/${movie.id}`}>Mais detalhes</Button>
                     <span>{movie.formatted_release_date}</span>
                   </div>
                 </BannerInfo>

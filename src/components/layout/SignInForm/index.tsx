@@ -11,8 +11,8 @@ import TextField from '../../shared/TextField';
 import { Form } from './styles';
 
 const schema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
+  username: Yup.string().required('O usuário é obrigatório'),
+  password: Yup.string().required('A senha é obrigatória'),
 });
 
 interface SignInFormData {
@@ -30,6 +30,7 @@ const SignInForm: React.FC = () => {
   const onSubmit = (data: SignInFormData) => {
     const urlParams = new URLSearchParams(window.location.search);
     const request_token = urlParams.get('request_token') || '';
+
     dispatch(signIn({ ...data, request_token }));
   };
 
@@ -37,7 +38,7 @@ const SignInForm: React.FC = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         ref={register}
-        label="Username"
+        label="Usuário"
         type="text"
         name="username"
         error={errors.username?.message}
@@ -46,7 +47,7 @@ const SignInForm: React.FC = () => {
 
       <TextField
         ref={register}
-        label="Password"
+        label="Senha"
         type="password"
         name="password"
         error={errors.password?.message}
