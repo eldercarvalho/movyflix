@@ -19,11 +19,21 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
   const history = useHistory();
   const containerRef = useRef<HTMLDivElement>(null);
   const textFieldRef = useRef<HTMLInputElement>(null);
+  const hasLoaded = useRef(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [search, setSearch] = useState('');
   const { searchLoading } = useSelector((store: Store) => store.movies);
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query') || '';
+
+    if (query && !hasLoaded.current) {
+      setIsSearchActive(true);
+      setSearch(query);
+      onSearchChange(query);
+    }
+
     const handleOutsideClick = (event: Event) => {
       if (
         (containerRef.current &&
@@ -44,12 +54,14 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
       }
     });
 
+    hasLoaded.current = true;
+
     return () => {
       document.addEventListener('click', handleOutsideClick);
 
       unlisten();
     };
-  }, [history]);
+  }, [history, onSearchChange]);
 
   const handleOpenClick = () => {
     setIsSearchActive(true);

@@ -35,6 +35,7 @@ const MainHeader: React.FC = () => {
     if (query) window.history.replaceState({}, 'query', `?query=${query}`);
     if (!query) history.goBack();
 
+    window.scrollTo(0, 0);
     dispatch(searchMovies(query));
   };
 

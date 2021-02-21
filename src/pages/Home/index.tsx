@@ -40,7 +40,7 @@ const Home: React.FC = () => {
         <Section>
           <SectionTitle>Popular</SectionTitle>
 
-          <MoviesGrid data={popular.results.slice(0, 16)} />
+          <MoviesGrid horizontalOnMobile data={popular.results.slice(0, 16)} />
         </Section>
 
         <Section>

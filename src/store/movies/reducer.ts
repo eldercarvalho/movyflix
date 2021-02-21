@@ -75,7 +75,17 @@ export const moviesReducer = (
     case MoviesActions.SetSearchLoading:
       return { ...state, searchLoading: action.payload };
     case MoviesActions.SearchMovies:
-      return { ...state, search: action.payload, searchLoading: false };
+      return {
+        ...state,
+        search:
+          action.payload.page > 1
+            ? {
+                ...action.payload,
+                results: [...state.search.results, ...action.payload.results],
+              }
+            : action.payload,
+        searchLoading: false,
+      };
     case MoviesActions.FetchMovieDetails:
       return { ...state, movieDetails: action.payload, isFetchingMovieDetails: false };
     case MoviesActions.SetIsFetchingMovieDetails:

@@ -96,12 +96,12 @@ export const setSearchLoading = (payload: boolean) => {
   };
 };
 
-export const searchMovies = (query: string) => async (
+export const searchMovies = (query: string, page = 1) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
   if (query) {
     dispatch(setSearchLoading(true));
-    const response = await http.get(`search/movie?query=${query}`);
+    const response = await http.get(`search/movie?query=${query}&page=${page}`);
 
     dispatch({
       type: MoviesActions.SearchMovies,
