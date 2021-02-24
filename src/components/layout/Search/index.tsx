@@ -72,6 +72,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
     event.stopPropagation();
     setSearch('');
     onSearchChange('');
+    textFieldRef.current?.focus();
   };
 
   const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {

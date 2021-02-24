@@ -8,12 +8,14 @@ import {
 } from './actionsTypes';
 
 export interface MoviesState {
+  isFetching: boolean;
   configuration: Configuration;
   trending: IMovie[];
   isFetchingTrending: boolean;
   popular: PaginableResult;
   nowPlaying: PaginableResult;
   upcoming: PaginableResult;
+  topRated: PaginableResult;
   search: PaginableResult;
   searchLoading: boolean;
   genres: Genre[];
@@ -40,12 +42,14 @@ export const initialConfiguration: Configuration = {
 };
 
 const intitalState = {
+  isFetching: false,
   configuration: initialConfiguration,
   trending: [] as IMovie[],
   isFetchingTrending: false,
   popular: initialPaginableResult,
   nowPlaying: initialPaginableResult,
   upcoming: initialPaginableResult,
+  topRated: initialPaginableResult,
   search: initialPaginableResult,
   searchLoading: false,
   genres: [] as Genre[],
@@ -58,6 +62,8 @@ export const moviesReducer = (
   action: MoviesActionsType,
 ): MoviesState => {
   switch (action.type) {
+    case MoviesActions.SetIsFetchingMovies:
+      return { ...state, isFetching: true };
     case MoviesActions.FetchTrending:
       return { ...state, trending: action.payload, isFetchingTrending: false };
     case MoviesActions.IsFetchingTrending:
@@ -68,6 +74,18 @@ export const moviesReducer = (
       return { ...state, nowPlaying: action.payload };
     case MoviesActions.FetchUpcoming:
       return { ...state, upcoming: action.payload };
+    case MoviesActions.FetchTopRated:
+      return {
+        ...state,
+        topRated:
+          action.payload.page > 1
+            ? {
+                ...action.payload,
+                results: [...state.topRated.results, ...action.payload.results],
+              }
+            : action.payload,
+        isFetching: false,
+      };
     case MoviesActions.FetchGenres:
       return { ...state, genres: action.payload };
     case MoviesActions.FetchConfiguration:

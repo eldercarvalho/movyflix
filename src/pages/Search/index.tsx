@@ -36,7 +36,7 @@ const Home: React.FC = () => {
         page={search.page}
         totalPages={search.total_pages}
         isLoading={searchLoading}
-        onReachEnd={fetchMoreResults}
+        onPaginate={fetchMoreResults}
       />
     </Content>
   );

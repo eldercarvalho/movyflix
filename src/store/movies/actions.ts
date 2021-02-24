@@ -73,6 +73,28 @@ export const fetchUpcomingMovies = () => async (dispatch: Dispatch): Promise<voi
   });
 };
 
+export const setIsFetchingMovies = () => ({
+  type: MoviesActions.SetIsFetchingMovies,
+});
+
+export const fetchTopRatedMovies = (page = 1) => async (
+  dispatch: Dispatch,
+): Promise<void> => {
+  dispatch(setIsFetchingMovies());
+
+  const response = await http.get(`movie/top_rated?page=${page}`);
+
+  response.data.results = response.data.results.map((movie: IMovie) => {
+    movie.year = formatReleaseDate(movie.release_date, 'yyyy');
+    return movie;
+  });
+
+  dispatch({
+    type: MoviesActions.FetchTopRated,
+    payload: response.data,
+  });
+};
+
 export const fetchGenres = () => async (dispatch: Dispatch): Promise<void> => {
   const response = await http.get('genre/movie/list');
   dispatch({

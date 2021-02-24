@@ -231,7 +231,7 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', calculateWidths);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   const handleTransitionEnd = useCallback(() => {
     setIsSliding(false);
@@ -250,35 +250,23 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
 
   const renderItems = useCallback(() => {
     const nodes = Children.toArray(children);
-    const identifiers: string[] = [];
-    const pagesCount = Math.ceil(Children.count(children) / innerItems);
-
-    const tmpPagesMapper: Record<string, string[]> = {};
-    let acum = 0;
-
     const childrenNodes: ReactElement[] = [];
     const firstCloneNodes: ReactElement[] = [];
     const lastCloneNodes: ReactElement[] = [];
 
     nodes.forEach((child, index) => {
-      const identifier = generateRandomKey(8);
-
       if (index < innerItems) {
         lastCloneNodes.push(
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
             key: generateRandomKey(8),
-            identifier: generateRandomKey(8),
           }),
         );
       }
 
-      identifiers.push(identifier);
-
       childrenNodes.push(
         cloneElement(child as ReactElement, {
           style: { width: `${itemWidth}px` },
-          identifier,
         }),
       );
 
@@ -287,19 +275,10 @@ const Carousel: FC<CarouselProps> & CarouselComposition = ({
           cloneElement(child as ReactElement, {
             style: { width: `${itemWidth}px` },
             key: generateRandomKey(8),
-            identifier: generateRandomKey(8),
           }),
         );
       }
     });
-
-    for (let i = 0; i < pagesCount; i++) {
-      tmpPagesMapper[`${i + 1}`] = identifiers.slice(acum, acum + innerItems);
-      acum += innerItems;
-    }
-    pagesMapper.current = tmpPagesMapper;
-
-    // console.log(pagesMapper.current);
 
     if (Children.count(children) < innerItems) {
       return childrenNodes;
@@ -427,16 +406,6 @@ const Item: React.FC<CarouselItemProps> = ({
   isLastActive,
   isFirstActive,
 }) => {
-  // const { currentPage, pagesMapper } = useCarousel();
-  // const isActive = useMemo(() => {
-  // console.log(identifier, pagesMapper);
-  //   return (
-  //     identifier &&
-  //     pagesMapper[currentPage] &&
-  //     pagesMapper[currentPage].includes(identifier)
-  //   );
-  // }, [currentPage, identifier, pagesMapper]);
-
   return (
     <ItemContainer
       style={style}

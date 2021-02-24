@@ -1,5 +1,4 @@
 import React, { ButtonHTMLAttributes, useCallback, MouseEvent } from 'react';
-import { BiLoaderAlt } from 'react-icons/bi';
 import { useHistory } from 'react-router-dom';
 import Loading from '../Loading';
 
@@ -38,7 +37,9 @@ const Button: React.FC<ButtonProps> = ({
   const history = useHistory();
 
   const handleClick = useCallback(
-    (event) => {
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+
       if (onClick && !disabled) {
         onClick(event);
       }
@@ -63,7 +64,7 @@ const Button: React.FC<ButtonProps> = ({
       isOutlined={outline}
       isLoading={loading}
       isRounded={rounded}
-      onClick={(event: MouseEvent<HTMLButtonElement>) => handleClick(event)}
+      onClick={handleClick}
       {...rest}
     >
       {loading ? <Loading dark size={22} thickness={2} /> : children}

@@ -1,10 +1,12 @@
 export enum MoviesActions {
+  SetIsFetchingMovies = 'SET_IS_FETCHING_MOVIES',
   FetchTrending = 'FETCH_TRENDING',
   IsFetchingTrending = 'SET_IS_FETCHING_TRENDING',
   FetchPopular = 'FETCH_POPULAR',
   FetchNowPlaying = 'FETCH_NOW_PLAYNG',
   FetchUpcoming = 'FETCH_UPCOMING',
   FetchGenres = 'FETCH_GENRES',
+  FetchTopRated = 'FETCH_TOP_RATED',
   FetchConfiguration = 'FETCH_CONFIGURATION',
   SearchMovies = 'SEARCH_MOVIES',
   SetSearchLoading = 'SET_SEARCH_LOADING',
@@ -115,6 +117,10 @@ export interface Configuration {
   images: ImageConfiguration;
 }
 
+export interface SetIsFetchingMoviesAction {
+  type: MoviesActions.SetIsFetchingMovies;
+}
+
 export interface FetchTrendingAction {
   type: MoviesActions.FetchTrending;
   payload: IMovie[];
@@ -144,6 +150,11 @@ export interface FetchConfigurationAction {
   payload: Configuration;
 }
 
+export interface FetchTopRatedAction {
+  type: MoviesActions.FetchTopRated;
+  payload: PaginableResult;
+}
+
 export interface FetchGenresAction {
   type: MoviesActions.FetchGenres;
   payload: Genre[];
@@ -163,7 +174,7 @@ export interface SetIsFetchingMovieDetailsAction {
   type: MoviesActions.SetIsFetchingMovieDetails;
 }
 
-export interface FetchMovieDetailsaAction {
+export interface FetchMovieDetailsAction {
   type: MoviesActions.FetchMovieDetails;
   payload: IMovie;
 }
@@ -172,15 +183,17 @@ export interface ClearMovieDetailsAction {
 }
 
 export type MoviesActionsType =
+  | SetIsFetchingMoviesAction
   | FetchTrendingAction
   | IsFetchingTrendingAction
   | FetchPopularAction
   | FetchUpcomingAction
   | FetchNowPlayingAction
+  | FetchTopRatedAction
   | FetchGenresAction
   | FetchConfigurationAction
   | SearchMoviesAction
   | SetSearchLoadingAction
-  | FetchMovieDetailsaAction
+  | FetchMovieDetailsAction
   | SetIsFetchingMovieDetailsAction
   | ClearMovieDetailsAction;

@@ -8,7 +8,7 @@ interface InfiniteLoadingProps {
   totalPages: number;
   isLoading: boolean;
   offetTrigger?: number;
-  onReachEnd(page: number): void;
+  onPaginate(page: number): void;
 }
 
 const InfiniteLoading = memo(
@@ -17,10 +17,8 @@ const InfiniteLoading = memo(
     totalPages,
     isLoading,
     offetTrigger = 0,
-    onReachEnd,
+    onPaginate,
   }: InfiniteLoadingProps) => {
-    console.log(isLoading);
-
     useEffect(() => {
       const handleWindowScroll = () => {
         const isScrollTrigger =
@@ -29,7 +27,7 @@ const InfiniteLoading = memo(
 
         if (isScrollTrigger && page < totalPages && totalPages > 1 && !isLoading) {
           page++;
-          onReachEnd(page);
+          onPaginate(page);
         }
       };
 
@@ -38,9 +36,9 @@ const InfiniteLoading = memo(
       return () => {
         window.removeEventListener('scroll', handleWindowScroll);
       };
-    }, [onReachEnd, totalPages, offetTrigger]); // eslint-disable-line
+    }, [onPaginate, totalPages, offetTrigger]); // eslint-disable-line
 
-    return isLoading ? (
+    return isLoading && page > 1 ? (
       <Container>
         <Loading size={60} />
       </Container>
