@@ -18,19 +18,6 @@ export const AnimatedLi = styled(animated.li)`
     margin-top: 3rem;
   }
 
-  :hover {
-    transform: scale(1.1) !important;
-
-    a {
-      border-color: ${({ theme }) => theme.colors.accent};
-    }
-
-    ${MovieActionsContainer} {
-      opacity: 1;
-      left: 0;
-    }
-  }
-
   strong {
     font-size: 2.4rem;
     margin-right: 1.6rem;
@@ -38,22 +25,37 @@ export const AnimatedLi = styled(animated.li)`
   }
 
   ${MovieActionsContainer} {
+    flex: 1;
     position: relative;
     transition: all 0.3s;
     opacity: 0;
-    left: 50px;
+    display: flex;
+    justify-content: center;
+    /* text-align: center; */
+  }
+
+  @media screen and (min-width: 1024px) {
+    :hover {
+      transform: scale(1.05) !important;
+
+      a {
+        border-color: ${({ theme }) => theme.colors.accent};
+      }
+
+      ${MovieActionsContainer} {
+        opacity: 1;
+      }
+    }
   }
 
   @media ${devices.tablet} {
     ${MovieActionsContainer} {
-      left: auto;
       opacity: 1;
     }
   }
 
   @media ${devices.mobileL} {
     ${MovieActionsContainer} {
-      left: 0;
       margin: 1rem 0 0;
     }
 
@@ -79,7 +81,7 @@ export const Movie = styled.div`
     flex-shrink: 0;
   }
 
-  div {
+  > div {
     flex: 1;
     display: flex;
     align-items: center;
@@ -116,9 +118,14 @@ export const Movie = styled.div`
       width: 100px;
     }
 
-    div {
+    > div {
       h2 {
+        max-width: 200px;
         font-size: 2rem;
+      }
+
+      > span {
+        margin-left: 1.6rem;
       }
     }
   }
@@ -134,7 +141,7 @@ export const Movie = styled.div`
         margin-bottom: 1rem;
       }
 
-      span {
+      > span {
         font-size: 1.6rem;
         margin-left: 0;
 

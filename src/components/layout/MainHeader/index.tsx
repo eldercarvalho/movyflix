@@ -27,7 +27,7 @@ const MainHeader: React.FC = () => {
     hide: hideSigInModal,
   } = useModal();
   const dispatch = useDispatch();
-  const request_token = useSelector((store: Store) => store.auth.request_token);
+  const isUserLoggedIn = useSelector((store: Store) => store.auth.isUserLoggedIn);
 
   const handleSearch = (query: string) => {
     if (!match?.isExact) history.push('/search');
@@ -64,7 +64,7 @@ const MainHeader: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('request_token');
 
-    if (token && urlParams.get('approved') && !request_token) {
+    if (token && urlParams.get('approved') && !isUserLoggedIn) {
       showSigInModal();
     }
 
@@ -85,10 +85,10 @@ const MainHeader: React.FC = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (request_token) {
+    if (isUserLoggedIn) {
       hideSigInModal();
     }
-  }, [hideSigInModal, request_token]);
+  }, [isUserLoggedIn, hideSigInModal]);
 
   return (
     <Container isDarken={isDarken}>
@@ -107,14 +107,14 @@ const MainHeader: React.FC = () => {
           <NavLink to="/genres" activeClassName="--active">
             Gêneros
           </NavLink>
-          {request_token && (
+          {isUserLoggedIn && (
             <NavLink to="/trending" activeClassName="--active">
               <FiHeart size={22} />
             </NavLink>
           )}
         </Menu>
 
-        {request_token ? (
+        {isUserLoggedIn ? (
           <Button textOnly iconOnly onClick={handleSignOutClick}>
             <FiLogOut size={22} />
           </Button>

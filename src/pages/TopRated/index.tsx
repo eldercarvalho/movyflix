@@ -28,10 +28,6 @@ const TopRated: React.FC = () => {
     dispatch(fetchTopRatedMovies());
   }, [dispatch]);
 
-  const paginate = (page: number) => {
-    dispatch(fetchTopRatedMovies(page));
-  };
-
   return (
     <Content headerOffset>
       <Container>
@@ -68,7 +64,7 @@ const TopRated: React.FC = () => {
           page={topRated.page}
           totalPages={topRated.total_pages}
           isLoading={isFetching}
-          onPaginate={paginate}
+          onPaginate={(page: number) => dispatch(fetchTopRatedMovies(page))}
         />
       </Container>
     </Content>

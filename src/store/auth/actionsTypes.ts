@@ -10,9 +10,30 @@ export interface AuthData {
   request_token: string;
 }
 
+type Gravatar = {
+  hash: string;
+};
+
+type Avatar = {
+  gravatar: Gravatar;
+};
+
+export interface userData {
+  id: number;
+  avatar: Avatar;
+  name: string;
+  username: string;
+}
+
+export interface Account {
+  requestToken: string;
+  sessionId: string;
+  user: userData;
+}
+
 export interface SignInAction {
   type: AuthActions.SignIn;
-  payload: string;
+  payload: Account;
 }
 
 export interface SignOutAction {

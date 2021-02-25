@@ -16,13 +16,13 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const request_token = useSelector((store: Store) => store.auth.request_token);
+  const { isUserLoggedIn } = useSelector((store: Store) => store.auth);
 
   return (
     <ReactRoute
       {...rest}
       render={() => {
-        return isPrivate === !!request_token ? (
+        return isPrivate === isUserLoggedIn ? (
           <Component />
         ) : isPrivate ? (
           <Redirect to={{ pathname: '/' }} />

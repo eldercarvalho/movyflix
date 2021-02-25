@@ -14,9 +14,21 @@ export const signIn = (authData: AuthData) => async (
       authData,
     );
 
+    const sessionResponse = await http.post('/authentication/session/new', {
+      request_token: response.data.request_token,
+    });
+
+    const accountResponse = await http.get(
+      `/account?session_id=${sessionResponse.data.session_id}`,
+    );
+
     dispatch({
       type: AuthActions.SignIn,
-      payload: response.data.request_token,
+      payload: {
+        requestToken: response.data.request_token,
+        sessionId: sessionResponse.data.session_id,
+        user: accountResponse.data,
+      },
     });
   } catch (err) {
     dispatch({ type: AuthActions.SetIsFetching, payload: false });
