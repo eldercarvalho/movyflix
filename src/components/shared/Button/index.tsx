@@ -16,6 +16,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   outline?: boolean;
   loading?: boolean;
   rounded?: boolean;
+  reduced?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -32,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   outline,
   loading = false,
   rounded = false,
+  reduced = false,
   ...rest
 }) => {
   const history = useHistory();
@@ -64,6 +66,7 @@ const Button: React.FC<ButtonProps> = ({
       isOutlined={outline}
       isLoading={loading}
       isRounded={rounded}
+      isReduced={reduced}
       onClick={handleClick}
       {...rest}
     >

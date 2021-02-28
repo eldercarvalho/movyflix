@@ -1,13 +1,15 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { moviesReducer, MoviesState } from './movies/reducer';
 import { authReducer, AuthState } from './auth/reducer';
+import { profileReducer, ProfileState } from './profile/reducer';
+import { moviesReducer, MoviesState } from './movies/reducer';
 import { feedbackReducer, FeedbackState } from './feedback/reducer';
 
 export * from './feedback';
 export * from './movies';
 export * from './auth';
+export * from './profile';
 
 declare global {
   interface Window {
@@ -23,12 +25,14 @@ export interface Store {
   feedback: FeedbackState;
   movies: MoviesState;
   auth: AuthState;
+  profile: ProfileState;
 }
 
 const reducers = combineReducers({
   feedback: feedbackReducer,
   movies: moviesReducer,
   auth: authReducer,
+  profile: profileReducer,
 });
 
 const persistedState = localStorage.getItem(STORAGE_STATE_KEY)
@@ -44,6 +48,6 @@ export const store = createStore(
 store.subscribe(() => {
   localStorage.setItem(
     STORAGE_STATE_KEY,
-    JSON.stringify({ auth: store.getState().auth }),
+    JSON.stringify({ auth: store.getState().auth, profile: store.getState().profile }),
   );
 });

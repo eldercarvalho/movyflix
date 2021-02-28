@@ -6,7 +6,6 @@ import Home from '../pages/Home';
 import Search from '../pages/Search';
 import TopRated from '../pages/TopRated';
 import Genres from '../pages/Genres';
-import Movies from '../pages/Movies';
 import MovieDetails from '../pages/MovieDetails';
 import ScrollToTop from './ScrollToTop';
 

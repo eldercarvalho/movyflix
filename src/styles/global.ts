@@ -17,6 +17,11 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 1.6rem;
     color: #FFFFFF;
     -webkit-font-smoothing: antialiased;
+
+    &.no-scroll {
+      overflow: hidden;
+      padding-right: 15px;
+    }
   }
 
   body, input, button {
@@ -42,10 +47,6 @@ export const GlobalStyles = createGlobalStyle`
 
   .spacer {
     flex: 1 !important;
-  }
-
-  .no-scroll {
-    overflow: hidden;
   }
 
   .text-center {

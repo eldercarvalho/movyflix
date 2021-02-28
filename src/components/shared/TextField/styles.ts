@@ -73,6 +73,7 @@ export const Container = styled.div<ContainerProps>`
       color: #333;
       padding: 0 1.6rem;
       transition: 0.3s;
+      font-weight: 500;
 
       &::placeholder {
         color: rgba(0, 0, 0, 0.7);

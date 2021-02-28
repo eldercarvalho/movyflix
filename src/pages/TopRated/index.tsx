@@ -26,7 +26,7 @@ const TopRated: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchTopRatedMovies());
-  }, [dispatch]);
+  }, []); // eslint-disable-line
 
   return (
     <Content headerOffset>
@@ -53,7 +53,7 @@ const TopRated: React.FC = () => {
                     <FiStar size={26} /> {movie.vote_average}
                   </span>
 
-                  <MovieActions />
+                  <MovieActions movieId={movie.id} />
                 </div>
               </Movie>
             </AnimatedLi>

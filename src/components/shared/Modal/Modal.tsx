@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { FiX } from 'react-icons/fi';
 
@@ -19,7 +19,7 @@ const Modal = React.memo(({ children, showClose, width, closeModal }: Props) => 
   if (!domEl) return null;
 
   return ReactDOM.createPortal(
-    <Container>
+    <Container onClick={(event: MouseEvent) => event.stopPropagation()}>
       <ModalContainer width={width}>
         {showClose && (
           <Button iconOnly onClick={closeModal}>

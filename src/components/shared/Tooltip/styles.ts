@@ -13,9 +13,9 @@ export const Container = styled.span`
   span {
     display: inline-block;
     position: absolute;
-    width: 180px;
     top: 100%;
     left: 50%;
+    text-align: center;
     transform: translateX(-50%);
     font-size: 1.4rem;
     font-weight: 500;
@@ -26,6 +26,7 @@ export const Container = styled.span`
     line-height: 1;
     opacity: 0;
     transition: 0.3s;
+    white-space: nowrap;
     pointer-events: none;
 
     ::before {

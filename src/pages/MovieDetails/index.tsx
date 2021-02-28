@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiBookmark, FiHeart, FiList, FiStar } from 'react-icons/fi';
+import { FiArrowLeft, FiStar } from 'react-icons/fi';
 import { formatReleaseDate } from '../../utils/formatReleaseDate';
 
 import { clearMovieDetails, fetchMovieDetails, Store } from '../../store';
@@ -18,7 +18,6 @@ import {
   MovieContent,
   Info,
   Banner,
-  Actions,
   VoteAverage,
   InfoSection,
   ShortSpecifications,
@@ -33,6 +32,7 @@ import { SectionTitle } from '../../styles/SectionTitle';
 import MoviesCarousel from '../../components/layout/MoviesCarousel';
 import { mediaSizes } from '../../utils/media';
 import Loading from '../../components/shared/Loading';
+import MovieActions from '../../components/layout/MovieActions';
 
 interface RouteParams {
   id: string;
@@ -169,19 +169,7 @@ const MovieDetails: React.FC = () => {
                   <span>{movieDetails.vote_count} votos</span>
                 </VoteAverage>
 
-                <Actions>
-                  <Button iconOnly rounded>
-                    <FiList size={22} />
-                  </Button>
-
-                  <Button iconOnly rounded>
-                    <FiHeart size={22} />
-                  </Button>
-
-                  <Button iconOnly rounded>
-                    <FiBookmark size={22} />
-                  </Button>
-                </Actions>
+                <MovieActions movieId={movieDetails.id} />
               </Banner>
 
               <InfoSection>

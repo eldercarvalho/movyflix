@@ -1,5 +1,6 @@
 import { Link, LinkProps } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
+import { Container as MovieActionsContainer } from '../../components/layout/MovieActions/styles';
 
 import devices from '../../utils/media';
 
@@ -78,6 +79,16 @@ export const Banner = styled.section`
     span {
       font-weight: 400;
       opacity: 0.8;
+    }
+  }
+
+  ${MovieActionsContainer} {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    @media ${devices.mobileL} {
+      position: relative;
     }
   }
 
@@ -196,21 +207,6 @@ export const VoteAverage = styled.div<VoteAverageProps>`
       color: ${theme.colors[color]};
     }
   `}
-`;
-
-export const Actions = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-
-  button {
-    margin-left: 1.6rem;
-  }
-
-  @media ${devices.mobileL} {
-    position: relative;
-    text-align: center;
-  }
 `;
 
 export const InfoSection = styled.div`

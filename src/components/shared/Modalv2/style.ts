@@ -29,7 +29,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9998;
-  /* animation: ${showModalAnimation} 0.5s forwards; */
+  animation: ${showModalAnimation} 0.5s forwards;
   padding: 1.6rem;
 `;
 
@@ -45,7 +45,7 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   background: #fff;
   border-radius: 3px;
   padding: 1.6rem;
-  /* animation: ${showModalPopupAnimation} 0.3s forwards; */
+  animation: ${showModalPopupAnimation} 0.3s forwards;
 
   > div {
     border-radius: 3px;

@@ -4,7 +4,7 @@ import {
   IMovie,
   Genre,
   Configuration,
-  PaginableResult,
+  MoviesPaginableResult,
 } from './actionsTypes';
 
 export interface MoviesState {
@@ -12,18 +12,18 @@ export interface MoviesState {
   configuration: Configuration;
   trending: IMovie[];
   isFetchingTrending: boolean;
-  popular: PaginableResult;
-  nowPlaying: PaginableResult;
-  upcoming: PaginableResult;
-  topRated: PaginableResult;
-  search: PaginableResult;
+  popular: MoviesPaginableResult;
+  nowPlaying: MoviesPaginableResult;
+  upcoming: MoviesPaginableResult;
+  topRated: MoviesPaginableResult;
+  search: MoviesPaginableResult;
   searchLoading: boolean;
   genres: Genre[];
   movieDetails: IMovie;
   isFetchingMovieDetails: boolean;
 }
 
-export const initialPaginableResult: PaginableResult = {
+export const initialPaginableResult: MoviesPaginableResult = {
   page: 0,
   results: [],
   total_pages: 0,

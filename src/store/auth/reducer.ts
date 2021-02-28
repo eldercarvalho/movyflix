@@ -1,14 +1,14 @@
-import { AuthActionsType, AuthActions, Account } from './actionsTypes';
+import { AuthActionsType, AuthActions } from './actionsTypes';
 
 export interface AuthState {
+  sessionId: string;
   isUserLoggedIn: boolean;
-  account: Account | null;
   isFetching: boolean;
 }
 
 const initialState = {
+  sessionId: '',
   isUserLoggedIn: false,
-  account: null,
   isFetching: false,
 };
 
@@ -17,12 +17,12 @@ export const authReducer = (state = initialState, action: AuthActionsType): Auth
     case AuthActions.SignIn:
       return {
         ...state,
-        account: action.payload,
+        sessionId: action.payload,
         isUserLoggedIn: true,
         isFetching: false,
       };
     case AuthActions.SignOut:
-      return { ...state, account: null, isUserLoggedIn: false };
+      return { ...state, sessionId: '', isUserLoggedIn: false };
     case AuthActions.SetIsFetching:
       return { ...state, isFetching: action.payload };
     default:

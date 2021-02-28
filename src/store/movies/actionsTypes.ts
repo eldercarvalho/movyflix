@@ -1,3 +1,5 @@
+import { PaginableResult } from '../types';
+
 export enum MoviesActions {
   SetIsFetchingMovies = 'SET_IS_FETCHING_MOVIES',
   FetchTrending = 'FETCH_TRENDING',
@@ -63,6 +65,8 @@ export interface MovieVideoResults {
   results: MovieVideo[];
 }
 
+export type MoviesPaginableResult = PaginableResult<IMovie[]>;
+
 export interface IMovie {
   id: number;
   poster_path: string;
@@ -88,22 +92,13 @@ export interface IMovie {
   tagline?: string;
   video: boolean;
   credits: Cast;
-  similar: PaginableResult;
+  similar: MoviesPaginableResult;
   year: string;
   original_title: string;
   original_language: string;
   videos: MovieVideoResults;
   images: MovieImages;
 }
-
-export interface PaginableResult {
-  page: number;
-  results: IMovie[];
-  dates?: Record<string, string>;
-  total_results: number;
-  total_pages: number;
-}
-
 export interface ImageConfiguration {
   secure_base_url: string;
   backdrop_sizes: string[];
@@ -132,17 +127,17 @@ export interface IsFetchingTrendingAction {
 
 export interface FetchPopularAction {
   type: MoviesActions.FetchPopular;
-  payload: PaginableResult;
+  payload: MoviesPaginableResult;
 }
 
 export interface FetchUpcomingAction {
   type: MoviesActions.FetchUpcoming;
-  payload: PaginableResult;
+  payload: MoviesPaginableResult;
 }
 
 export interface FetchNowPlayingAction {
   type: MoviesActions.FetchNowPlaying;
-  payload: PaginableResult;
+  payload: MoviesPaginableResult;
 }
 
 export interface FetchConfigurationAction {
@@ -152,7 +147,7 @@ export interface FetchConfigurationAction {
 
 export interface FetchTopRatedAction {
   type: MoviesActions.FetchTopRated;
-  payload: PaginableResult;
+  payload: MoviesPaginableResult;
 }
 
 export interface FetchGenresAction {
@@ -162,7 +157,7 @@ export interface FetchGenresAction {
 
 export interface SearchMoviesAction {
   type: MoviesActions.SearchMovies;
-  payload: PaginableResult;
+  payload: MoviesPaginableResult;
 }
 
 export interface SetSearchLoadingAction {

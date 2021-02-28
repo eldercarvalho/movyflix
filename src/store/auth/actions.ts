@@ -1,6 +1,8 @@
 import { Dispatch } from 'redux';
 import { http } from '../../services/http';
+
 import { addToast, ToastData } from '../feedback';
+import { ProfileActions } from '../profile';
 import { AuthActions, AuthData } from './actionsTypes';
 
 export const signIn = (authData: AuthData) => async (
@@ -9,25 +11,35 @@ export const signIn = (authData: AuthData) => async (
   try {
     dispatch({ type: AuthActions.SetIsFetching, payload: true });
 
-    const response = await http.post(
+    const validationResponse = await http.post(
       '/authentication/token/validate_with_login',
       authData,
     );
 
     const sessionResponse = await http.post('/authentication/session/new', {
-      request_token: response.data.request_token,
+      request_token: validationResponse.data.request_token,
     });
 
     const accountResponse = await http.get(
       `/account?session_id=${sessionResponse.data.session_id}`,
     );
 
+    const listsResponse = await http.get(
+      `/account/${accountResponse.data.id}/lists?session_id=${sessionResponse.data.session_id}`,
+    );
+
+    http.defaults.params.session_id = sessionResponse.data.session_id;
+
     dispatch({
       type: AuthActions.SignIn,
+      payload: sessionResponse.data.session_id,
+    });
+
+    dispatch({
+      type: ProfileActions.SetProfile,
       payload: {
-        requestToken: response.data.request_token,
-        sessionId: sessionResponse.data.session_id,
-        user: accountResponse.data,
+        account: accountResponse.data,
+        lists: listsResponse.data.results,
       },
     });
   } catch (err) {
@@ -43,10 +55,20 @@ export const signIn = (authData: AuthData) => async (
   }
 };
 
-export const signOut = () => {
-  return {
+export const signOut = () => (dispatch: Dispatch) => {
+  delete http.defaults.params.session_id;
+
+  dispatch({
     type: AuthActions.SignOut,
-  };
+  });
+
+  dispatch({
+    type: ProfileActions.SetProfile,
+    payload: {
+      account: null,
+      lists: [],
+    },
+  });
 };
 
 export const requestToken = () => async (): Promise<void> => {

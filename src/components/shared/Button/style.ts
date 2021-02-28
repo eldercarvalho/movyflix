@@ -13,6 +13,7 @@ interface IContainerProps {
   isOutlined?: boolean;
   isLoading?: boolean;
   isRounded?: boolean;
+  isReduced?: boolean;
 }
 
 const loadingAnimation = keyframes`
@@ -135,5 +136,12 @@ export const Container = styled.button<IContainerProps>`
     props.isRounded &&
     css`
       border-radius: 20px;
+    `}
+
+    ${(props) =>
+    props.isReduced &&
+    css`
+      padding-left: 0;
+      padding-right: 0;
     `}
 `;
