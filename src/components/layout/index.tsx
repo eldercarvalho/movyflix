@@ -4,14 +4,14 @@ import MainHeader from './MainHeader';
 import ToastContainer from '../shared/ToastContainer';
 import Footer from './Footer';
 
-import { Store } from '../../store';
+import { RootState } from '../../store';
 
 import { LayoutContainer, MainContainer } from './styles';
 
 const Layout: React.FC = ({ children }) => {
-  const backdropPath = useSelector((store: Store) => {
-    if (store.movies.movieDetails.backdrop_path) {
-      return `https://image.tmdb.org/t/p/original/${store.movies.movieDetails.backdrop_path}`;
+  const backdropPath = useSelector((state: RootState) => {
+    if (state.movies.movieDetails.backdrop_path) {
+      return `https://image.tmdb.org/t/p/original/${state.movies.movieDetails.backdrop_path}`;
     }
 
     return null;
@@ -20,8 +20,11 @@ const Layout: React.FC = ({ children }) => {
   return (
     <LayoutContainer bgImage={backdropPath}>
       <ToastContainer />
+
       <MainHeader />
+
       <MainContainer>{children}</MainContainer>
+
       <Footer />
     </LayoutContainer>
   );

@@ -13,7 +13,7 @@ interface InfiniteLoadingProps {
 
 const InfiniteLoading = memo(
   ({
-    page,
+    page = 1,
     totalPages,
     isLoading,
     offetTrigger = 0,

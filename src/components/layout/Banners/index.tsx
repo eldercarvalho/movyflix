@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Store } from '../../../store';
+import { RootState } from '../../../store';
 
 import Button from '../../shared/Button';
 import Carousel from '../../shared/Carousel';
@@ -11,7 +11,9 @@ import Loading from '../../shared/Loading';
 
 const Banners: React.FC = () => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const { trending, isFetchingTrending } = useSelector((store: Store) => store.movies);
+  const { trending, isFetchingTrending } = useSelector(
+    (state: RootState) => state.movies,
+  );
 
   return (
     <Container>

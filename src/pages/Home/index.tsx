@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import {
   fetchConfigs,
@@ -8,8 +9,7 @@ import {
   fetchPopularMovies,
   fetchTrendingMovies,
   fetchUpcomingMovies,
-  Store,
-} from '../../store';
+} from '../../store/slices/movies';
 
 import Banners from '../../components/layout/Banners';
 import MoviesGrid from '../../components/layout/MoviesGrid';
@@ -20,8 +20,8 @@ import { SectionTitle } from '../../styles/SectionTitle';
 import { Container, Section } from './styles';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
-  const { popular, nowPlaying, upcoming } = useSelector((store: Store) => store.movies);
+  const dispatch = useAppDispatch();
+  const { popular, nowPlaying, upcoming } = useAppSelector((state) => state.movies);
 
   useEffect(() => {
     dispatch(fetchConfigs());
