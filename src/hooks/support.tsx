@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { ImageConfiguration, Store } from '../store';
+import { RootState } from '../store';
+import { ImageConfiguration } from '../store/slices/movies';
 
 type SizeKeys =
   | 'w45'
@@ -27,7 +28,7 @@ export const SupportContext = createContext<SupportContextData>({} as SupportCon
 
 export const SupportProvider: React.FC = ({ children }) => {
   const { secure_base_url, ...imagesTypes } = useSelector(
-    (store: Store) => store.movies.configuration.images,
+    (state: RootState) => state.movies.configuration.images,
   );
 
   const sizes = Object.keys(imagesTypes).reduce((acum, cur) => {

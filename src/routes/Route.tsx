@@ -4,7 +4,7 @@ import {
   RouteProps as ReactRouteProps,
   Redirect,
 } from 'react-router-dom';
-import { Store } from '../store';
+import { RootState } from '../store';
 
 interface RouteProps extends ReactRouteProps {
   isPrivate?: boolean;
@@ -16,7 +16,7 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { isUserLoggedIn } = useSelector((store: Store) => store.auth);
+  const { isUserLoggedIn } = useSelector((state: RootState) => state.auth);
 
   return (
     <ReactRoute

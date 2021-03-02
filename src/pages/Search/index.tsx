@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { CgClapperBoard } from 'react-icons/cg';
 
-import { searchMovies, Store } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { searchMovies } from '../../store/slices/movies';
 
 import MoviesGrid from '../../components/layout/MoviesGrid';
 import InfiniteLoading from '../../components/shared/InfiniteLoading';
@@ -11,14 +11,15 @@ import { Content } from '../../styles/Content';
 import { NoResultFound } from './styles';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
-  const { search, searchLoading } = useSelector((store: Store) => store.movies);
+  const dispatch = useAppDispatch();
+  const search = useAppSelector((state) => state.movies.search);
+  const searchLoading = useAppSelector((state) => state.movies.searchLoading);
 
   const fetchMoreResults = (page: number) => {
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('query') || '';
 
-    dispatch(searchMovies(query, page));
+    dispatch(searchMovies({ query, page }));
   };
 
   return (

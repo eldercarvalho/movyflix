@@ -1,53 +1,29 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 
-import { authReducer, AuthState } from './auth/reducer';
-import { profileReducer, ProfileState } from './profile/reducer';
-import { moviesReducer, MoviesState } from './movies/reducer';
-import { feedbackReducer, FeedbackState } from './feedback/reducer';
+import authReducer from './slices/auth';
+import moviesReducer from './slices/movies';
+import profileReducer from './slices/profile';
+import feedbackReducer from './slices/feedback';
 
-export * from './feedback';
-export * from './movies';
-export * from './auth';
-export * from './profile';
+export const STORAGE_STATE_KEY = '@MovyFlix:state';
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-  }
-}
+const preloadedState = JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || '{}');
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export const STORAGE_STATE_KEY = '@MovyFlixStore:state';
-
-export interface Store {
-  feedback: FeedbackState;
-  movies: MoviesState;
-  auth: AuthState;
-  profile: ProfileState;
-}
-
-const reducers = combineReducers({
-  feedback: feedbackReducer,
-  movies: moviesReducer,
-  auth: authReducer,
-  profile: profileReducer,
+export const store = configureStore({
+  preloadedState,
+  reducer: {
+    auth: authReducer,
+    movies: moviesReducer,
+    profile: profileReducer,
+    feedback: feedbackReducer,
+  },
 });
-
-const persistedState = localStorage.getItem(STORAGE_STATE_KEY)
-  ? JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || '')
-  : {};
-
-export const store = createStore(
-  reducers,
-  persistedState,
-  composeEnhancers(applyMiddleware(thunk)),
-);
 
 store.subscribe(() => {
-  localStorage.setItem(
-    STORAGE_STATE_KEY,
-    JSON.stringify({ auth: store.getState().auth, profile: store.getState().profile }),
-  );
+  const { auth, profile } = store.getState();
+
+  localStorage.setItem(STORAGE_STATE_KEY, JSON.stringify({ auth, profile }));
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

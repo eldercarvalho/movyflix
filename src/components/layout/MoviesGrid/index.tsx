@@ -1,4 +1,4 @@
-import { IMovie } from '../../../store';
+import { IMovie } from '../../../store/slices/movies';
 
 import Movie from '../Movie';
 

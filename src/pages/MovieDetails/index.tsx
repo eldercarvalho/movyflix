@@ -1,15 +1,21 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiStar } from 'react-icons/fi';
 import { formatReleaseDate } from '../../utils/formatReleaseDate';
+import { mediaSizes } from '../../utils/media';
 
-import { clearMovieDetails, fetchMovieDetails, Store } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { clearMovieDetails, fetchMovieDetails } from '../../store/slices/movies';
 
 import Carousel from '../../components/shared/Carousel';
+import Button from '../../components/shared/Button';
 import { Image } from '../../components/shared/Image';
+import MoviesCarousel from '../../components/layout/MoviesCarousel';
+import Loading from '../../components/shared/Loading';
+import MovieActions from '../../components/layout/MovieActions';
 
 import { Content } from '../../styles/Content';
+import { SectionTitle } from '../../styles/SectionTitle';
 
 import {
   CenterContainer,
@@ -27,22 +33,16 @@ import {
   Similar,
 } from './styles';
 
-import Button from '../../components/shared/Button';
-import { SectionTitle } from '../../styles/SectionTitle';
-import MoviesCarousel from '../../components/layout/MoviesCarousel';
-import { mediaSizes } from '../../utils/media';
-import Loading from '../../components/shared/Loading';
-import MovieActions from '../../components/layout/MovieActions';
-
 interface RouteParams {
   id: string;
 }
 
 const MovieDetails: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
-  const { movieDetails, isFetchingMovieDetails } = useSelector(
-    (store: Store) => store.movies,
+  const movieDetails = useAppSelector((state) => state.movies.movieDetails);
+  const isFetchingMovieDetails = useAppSelector(
+    (state) => state.movies.isFetchingMovieDetails,
   );
   const { id } = useParams<RouteParams>();
 

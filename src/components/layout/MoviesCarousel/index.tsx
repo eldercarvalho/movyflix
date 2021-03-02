@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IMovie } from '../../../store';
+import { IMovie } from '../../../store/slices/movies';
 
 import Carousel from '../../shared/Carousel';
 import Movie, { ElementData } from '../Movie';

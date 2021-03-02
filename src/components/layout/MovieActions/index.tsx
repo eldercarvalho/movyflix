@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FiBookmark, FiHeart, FiList } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMovieToList, Store } from '../../../store';
+
+import { RootState } from '../../../store';
+import { addMovieToList } from '../../../store/slices/profile';
 
 import Button from '../../shared/Button';
 import Select from '../../shared/Select';
@@ -17,11 +19,11 @@ interface MovieActionsProps {
 const MovieActions: React.FC<MovieActionsProps> = ({ movieId }) => {
   const dispatch = useDispatch();
   const [isAddToListModalShowing, setIsAddToListModalShowing] = useState(false);
-  const isUserLoggedIn = useSelector((store: Store) => store.auth.isUserLoggedIn);
-  const isFetching = useSelector((store: Store) => store.profile.isFetching);
-  const addMovieToListSuccess = useSelector((store: Store) => store.profile.success);
-  const userLists = useSelector((store: Store) =>
-    store.profile.lists.map((list) => ({
+  const isUserLoggedIn = useSelector((state: RootState) => state.auth.isUserLoggedIn);
+  const isFetching = useSelector((state: RootState) => state.profile.isFetching);
+  const addMovieToListSuccess = useSelector((state: RootState) => state.profile.success);
+  const userLists = useSelector((state: RootState) =>
+    state.profile.lists.map((list) => ({
       id: list.id,
       text: `${list.name} (${list.item_count})`,
     })),
@@ -40,7 +42,7 @@ const MovieActions: React.FC<MovieActionsProps> = ({ movieId }) => {
     : 'Faça login para adicionar à lista de interesses';
 
   const handleSelectOnChange = useCallback((listId: number) => {
-    dispatch(addMovieToList(movieId, listId));
+    dispatch(addMovieToList({ movieId, listId }));
   }, []); // eslint-disable-line
 
   useEffect(() => {

@@ -1,19 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { FiHeart, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
-import { searchMovies, requestToken, Store, signOut } from '../../../store';
+
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { searchMovies } from '../../../store/slices/movies';
+import { signOut, requestToken } from '../../../store/slices/auth';
+
+import { debounce } from '../../../utils/debounce';
 
 import Button from '../../shared/Button';
 import Logo from '../Logo';
 import SignInForm from '../SignInForm';
 import Search from '../Search';
-
-import { debounce } from '../../../utils/debounce';
+import { useModal } from '../../shared/Modal';
 
 import { Container, MenuWrapper, Menu, MenuButton, ModalContent } from './styles';
-import { useModal } from '../../shared/Modal';
 
 const MainHeader: React.FC = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -26,8 +27,8 @@ const MainHeader: React.FC = () => {
     show: showSigInModal,
     hide: hideSigInModal,
   } = useModal();
-  const dispatch = useDispatch();
-  const isUserLoggedIn = useSelector((store: Store) => store.auth.isUserLoggedIn);
+  const dispatch = useAppDispatch();
+  const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
 
   const handleSearch = (query: string) => {
     if (!match?.isExact) history.push('/search');
@@ -36,7 +37,9 @@ const MainHeader: React.FC = () => {
     if (!query) history.goBack();
 
     window.scrollTo(0, 0);
-    dispatch(searchMovies(query));
+
+    const page = 1;
+    dispatch(searchMovies({ query, page }));
   };
 
   const handleSignInClick = useCallback(() => {

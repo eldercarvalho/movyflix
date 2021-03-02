@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { useTransition } from 'react-spring';
 
-import { Store } from '../../../store';
+import { RootState } from '../../../store';
 
 import Toast from './Toast';
 
 import { Container } from './styles';
 
 const ToastContainer: React.FC = () => {
-  const toasts = useSelector((store: Store) => store.feedback.toasts);
+  const toasts = useSelector((state: RootState) => state.feedback.toasts);
 
   const toastsWithTransition = useTransition(toasts, (toast) => toast.id, {
     from: { right: '-110%', opacity: 0 },

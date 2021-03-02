@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { FiStar } from 'react-icons/fi';
 import { useTransition } from 'react-spring';
 
-import { useHistory } from 'react-router-dom';
-import { Store, fetchTopRatedMovies } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchTopRatedMovies } from '../../store/slices/movies';
 
 import InfiniteLoading from '../../components/shared/InfiniteLoading';
 import MovieActions from '../../components/layout/MovieActions';
@@ -15,17 +15,19 @@ import { SectionTitle } from '../../styles/SectionTitle';
 
 const TopRated: React.FC = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { topRated, isFetching } = useSelector((store: Store) => store.movies);
+  const dispatch = useAppDispatch();
+  const topRated = useAppSelector((state) => state.movies.topRated);
+  const isFetching = useAppSelector((state) => state.movies.isFetching);
   const moviesWithTransition = useTransition(topRated.results, (movie) => movie.id, {
     from: { top: '50px', opacity: 0 },
     enter: { top: '0', opacity: 1 },
     leave: { top: '50px', opacity: 0 },
-    trail: 300,
+    trail: 200,
   });
 
   useEffect(() => {
-    dispatch(fetchTopRatedMovies());
+    const page = 1;
+    dispatch(fetchTopRatedMovies(page));
   }, []); // eslint-disable-line
 
   return (

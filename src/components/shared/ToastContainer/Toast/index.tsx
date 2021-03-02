@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container } from './styles';
 
-import { ToastData, removeToast } from '../../../../store';
+import { ToastData, removeToast } from '../../../../store/slices/feedback';
 
 interface ToastProps {
   data: ToastData;

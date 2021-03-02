@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
 import { http } from './services/http';
 
-import { store, Store, STORAGE_STATE_KEY } from './store';
+import { store, RootState, STORAGE_STATE_KEY } from './store';
 import { theme } from './utils/theme';
 
 import { SupportProvider } from './hooks/support';
@@ -14,7 +14,7 @@ import Layout from './components/layout';
 
 import Routes from './routes';
 
-const state: Store = JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || '{}');
+const state: RootState = JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || '{}');
 
 if ('auth' in state && state.auth.isUserLoggedIn) {
   http.defaults.params.session_id = state.auth.sessionId;

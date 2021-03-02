@@ -3,7 +3,7 @@ import { FiSearch, FiX } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
-import { Store } from '../../../store';
+import { RootState } from '../../../store';
 
 import TextField from '../../shared/TextField';
 import Button from '../../shared/Button';
@@ -22,7 +22,7 @@ const Search: React.FC<SearchProps> = ({ onSearchChange }) => {
   const hasLoaded = useRef(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [search, setSearch] = useState('');
-  const { searchLoading } = useSelector((store: Store) => store.movies);
+  const { searchLoading } = useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
