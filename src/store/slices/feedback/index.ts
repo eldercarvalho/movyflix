@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import generateRandomKey from '../../../utils/generateRandomKey';
 import { ToastData, ToastDataPayload } from './types';
 
 export * from './types';
@@ -12,12 +13,12 @@ const initialState = {
 };
 
 const { actions, reducer } = createSlice({
-  name: 'auth',
+  name: 'feedback',
   initialState,
   reducers: {
     addToast(state, action: PayloadAction<ToastDataPayload>) {
       state.toasts.push({
-        id: '',
+        id: generateRandomKey(8),
         ...action.payload,
       });
     },

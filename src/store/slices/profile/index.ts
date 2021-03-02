@@ -92,7 +92,7 @@ export const addMovieToFavorites = createAsyncThunk(
 );
 
 const { actions, reducer } = createSlice({
-  name: 'auth',
+  name: 'profile',
   initialState,
   reducers: {
     setProfile(state, action: PayloadAction<Pick<ProfileState, 'account' | 'lists'>>) {
