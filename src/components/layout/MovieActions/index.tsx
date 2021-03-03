@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FiBookmark, FiHeart, FiList } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 
-import { RootState } from '../../../store';
-import { addMovieToList } from '../../../store/slices/profile';
+import { addMovieToFavorites, addMovieToList } from '../../../store/slices/profile';
+import { MovieAccountState } from '../../../store/slices/movies';
 
 import Button from '../../shared/Button';
 import Select from '../../shared/Select';
@@ -14,15 +14,23 @@ import { Container, ModalContent } from './styles';
 
 interface MovieActionsProps {
   movieId: number;
+  isFavorite: boolean;
+  isInWatchList: boolean;
+  context: string;
 }
 
-const MovieActions: React.FC<MovieActionsProps> = ({ movieId }) => {
-  const dispatch = useDispatch();
+const MovieActions: React.FC<MovieActionsProps> = ({
+  movieId,
+  isFavorite = false,
+  isInWatchList = false,
+  context,
+}) => {
+  const dispatch = useAppDispatch();
   const [isAddToListModalShowing, setIsAddToListModalShowing] = useState(false);
-  const isUserLoggedIn = useSelector((state: RootState) => state.auth.isUserLoggedIn);
-  const isFetching = useSelector((state: RootState) => state.profile.isFetching);
-  const addMovieToListSuccess = useSelector((state: RootState) => state.profile.success);
-  const userLists = useSelector((state: RootState) =>
+  const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
+  const isFetching = useAppSelector((state) => state.profile.isFetching);
+  const addMovieToListSuccess = useAppSelector((state) => state.profile.success);
+  const userLists = useAppSelector((state) =>
     state.profile.lists.map((list) => ({
       id: list.id,
       text: `${list.name} (${list.item_count})`,
@@ -64,8 +72,23 @@ const MovieActions: React.FC<MovieActionsProps> = ({ movieId }) => {
       </Tooltip>
 
       <Tooltip text={addToFavoriesText}>
-        <Button iconOnly rounded>
-          <FiHeart size={22} />
+        <Button
+          iconOnly
+          rounded
+          onClick={
+            isUserLoggedIn
+              ? () =>
+                  dispatch(
+                    addMovieToFavorites({
+                      movieId,
+                      isFavorite: !isFavorite,
+                      context,
+                    }),
+                  )
+              : undefined
+          }
+        >
+          {isFavorite ? <FiHeart size={22} fill="#FFF" /> : <FiHeart size={22} />}
         </Button>
       </Tooltip>
 

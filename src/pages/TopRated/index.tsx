@@ -55,7 +55,12 @@ const TopRated: React.FC = () => {
                     <FiStar size={26} /> {movie.vote_average}
                   </span>
 
-                  <MovieActions movieId={movie.id} />
+                  <MovieActions
+                    movieId={movie.id}
+                    isFavorite={movie.isFavorite}
+                    isInWatchList={movie.isInWatchList}
+                    context="topRated"
+                  />
                 </div>
               </Movie>
             </AnimatedLi>

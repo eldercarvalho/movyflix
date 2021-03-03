@@ -4,6 +4,7 @@ import { List, Account } from './types';
 import { store } from '../..';
 import { PaginableResult } from '../../types';
 import { addToast, ToastDataPayload } from '../feedback';
+import { setMovieFavorite } from '../movies';
 
 export * from './types';
 
@@ -76,11 +77,12 @@ export const fetchLists = createAsyncThunk('profile/FETCH_LISTS', async () => {
 type AddMovieToFavoritesArgs = {
   movieId: number;
   isFavorite: boolean;
+  context: string;
 };
 
 export const addMovieToFavorites = createAsyncThunk(
   'profile/ADD_TO_FAVORITES',
-  async ({ movieId, isFavorite }: AddMovieToFavoritesArgs) => {
+  async ({ movieId, isFavorite, context }: AddMovieToFavoritesArgs, { dispatch }) => {
     const { account } = store.getState().profile as ProfileState;
 
     await http.post(`/account/${account?.id}/favorite`, {
@@ -88,6 +90,14 @@ export const addMovieToFavorites = createAsyncThunk(
       media_type: 'movie',
       favorite: isFavorite,
     });
+
+    dispatch(
+      setMovieFavorite({
+        movieId,
+        isFavorite,
+        context,
+      }),
+    );
   },
 );
 

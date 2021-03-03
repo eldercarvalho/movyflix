@@ -1,8 +1,14 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { http } from '../../../services/http';
 import { formatReleaseDate } from '../../../utils/formatReleaseDate';
 import { reduceCrewByDepartment } from '../../../utils/reduceCrewByDepartment';
-import { IMovie, Configuration, Genre } from './types';
+import {
+  IMovie,
+  Configuration,
+  Genre,
+  MovieAccountState,
+  MovieAccountStatePayload,
+} from './types';
 import { PaginableResult } from '../../types';
 
 export * from './types';
@@ -135,13 +141,29 @@ export const fetchMovieDetails = createAsyncThunk(
   'movies/FETCH_MOVIE_DETAILS',
   async (movieId: string) => {
     const response = await http.get<IMovie>(
-      `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations,external_ids`,
+      `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations,external_ids,account_states`,
+    );
+
+    const movieAccountStateResponse = await http.get<MovieAccountState>(
+      `/movie/${movieId}/account_states`,
     );
 
     response.data.year = formatReleaseDate(response.data.release_date, 'yyyy');
     response.data.credits.crew = reduceCrewByDepartment(response.data.credits.crew);
+    response.data.account_state = movieAccountStateResponse.data;
 
     return response.data;
+  },
+);
+
+export const fetchMovieAccountState = createAsyncThunk(
+  'movies/FETCH_MOVIE_ACCOUNT_STATE',
+  async (movieId: string) => {
+    const movieAccountStateResponse = await http.get<MovieAccountState>(
+      `/movie/${movieId}/account_states`,
+    );
+
+    return movieAccountStateResponse.data;
   },
 );
 
@@ -157,6 +179,23 @@ const { actions, reducer } = createSlice({
   reducers: {
     clearMovieDetails(state) {
       state.movieDetails = {} as IMovie;
+    },
+    setMovieFavorite(state, action: PayloadAction<MovieAccountStatePayload>) {
+      const { movieId, isFavorite, context } = action.payload;
+
+      if (context === 'movieDetails') {
+        state.movieDetails.isFavorite = isFavorite;
+      }
+
+      if (context === 'topRated') {
+        state.topRated.results = state.topRated.results.map((movie) => {
+          if (movie.id === movieId) {
+            movie.isFavorite = isFavorite;
+          }
+
+          return movie;
+        });
+      }
     },
   },
   extraReducers: (builder) => {
@@ -220,6 +259,6 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export const { clearMovieDetails } = actions;
+export const { clearMovieDetails, setMovieFavorite } = actions;
 
 export default reducer;

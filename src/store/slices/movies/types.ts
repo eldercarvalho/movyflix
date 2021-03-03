@@ -52,8 +52,12 @@ export interface MovieVideo {
 export interface MovieVideoResults {
   results: MovieVideo[];
 }
-
-export type MoviesPaginableResult = PaginableResult<IMovie[]>;
+export interface MovieAccountState {
+  id: number;
+  favorite: boolean;
+  rated: boolean;
+  watchlist: boolean;
+}
 
 export interface IMovie {
   id: number;
@@ -80,12 +84,15 @@ export interface IMovie {
   tagline?: string;
   video: boolean;
   credits: Cast;
-  similar: MoviesPaginableResult;
+  similar: PaginableResult<IMovie[]>;
   year: string;
   original_title: string;
   original_language: string;
   videos: MovieVideoResults;
   images: MovieImages;
+  account_state: MovieAccountState;
+  isFavorite: boolean;
+  isInWatchList: boolean;
 }
 export interface ImageConfiguration {
   secure_base_url: string;
@@ -94,3 +101,9 @@ export interface ImageConfiguration {
   poster_sizes: string[];
   profile_sizes: string[];
 }
+
+export type MovieAccountStatePayload = {
+  movieId: number;
+  isFavorite: boolean;
+  context: string;
+};

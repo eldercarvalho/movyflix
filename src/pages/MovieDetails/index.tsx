@@ -169,7 +169,12 @@ const MovieDetails: React.FC = () => {
                   <span>{movieDetails.vote_count} votos</span>
                 </VoteAverage>
 
-                <MovieActions movieId={movieDetails.id} />
+                <MovieActions
+                  movieId={movieDetails.id}
+                  isFavorite={movieDetails.isFavorite}
+                  isInWatchList={movieDetails.isInWatchList}
+                  context="movieDetails"
+                />
               </Banner>
 
               <InfoSection>
