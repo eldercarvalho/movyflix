@@ -48,7 +48,14 @@ const TopRated: React.FC = () => {
             >
               <strong>{index + 1}</strong>
 
-              <Movie onClick={() => history.push(`movies/${movie.id}`)}>
+              <Movie
+                onClick={() =>
+                  history.push({
+                    pathname: `movies/${movie.id}`,
+                    state: { backdrop: movie.backdrop_path },
+                  })
+                }
+              >
                 <img
                   src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}`}
                   alt={movie.title}

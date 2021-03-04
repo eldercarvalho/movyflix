@@ -5,7 +5,7 @@ import { reduceCrewByDepartment } from '../../../utils/reduceCrewByDepartment';
 import { IMovie, Configuration, Genre, MovieAccountState } from './types';
 import { PaginableResult } from '../../types';
 import { ProfileState } from '../profile';
-import { store } from '../..';
+import { RootState, store } from '../..';
 
 export * from './types';
 
@@ -135,19 +135,24 @@ export const searchMovies = createAsyncThunk(
 
 export const fetchMovieDetails = createAsyncThunk(
   'movies/FETCH_MOVIE_DETAILS',
-  async (movieId: string) => {
+  async (movieId: string, { getState }) => {
+    const { auth } = getState() as RootState;
+
     const response = await http.get<IMovie>(
       `/movie/${movieId}?&append_to_response=credits,similar,videos,images,recommendations,external_ids,account_states`,
     );
 
-    const movieAccountStateResponse = await http.get<MovieAccountState>(
-      `/movie/${movieId}/account_states`,
-    );
-
     response.data.year = formatReleaseDate(response.data.release_date, 'yyyy');
     response.data.credits.crew = reduceCrewByDepartment(response.data.credits.crew);
-    response.data.isFavorite = movieAccountStateResponse.data.favorite;
-    response.data.isInWatchList = movieAccountStateResponse.data.watchlist;
+
+    if (auth.isUserLoggedIn) {
+      const movieAccountStateResponse = await http.get<MovieAccountState>(
+        `/movie/${movieId}/account_states`,
+      );
+
+      response.data.isFavorite = movieAccountStateResponse.data.favorite;
+      response.data.isInWatchList = movieAccountStateResponse.data.watchlist;
+    }
 
     return response.data;
   },
