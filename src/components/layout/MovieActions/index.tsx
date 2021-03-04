@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { FiBookmark, FiHeart, FiList } from 'react-icons/fi';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 
-import { addMovieToFavorites, addMovieToList } from '../../../store/slices/profile';
-import { MovieAccountState } from '../../../store/slices/movies';
+import { addMovieToList } from '../../../store/slices/profile';
+import { addMovieToFavorites, addMovieToWatchList } from '../../../store/slices/movies';
 
 import Button from '../../shared/Button';
 import Select from '../../shared/Select';
@@ -42,11 +42,15 @@ const MovieActions: React.FC<MovieActionsProps> = ({
     : 'Faça login para adicionar à uma lista';
 
   const addToFavoriesText = isUserLoggedIn
-    ? 'Marcar como favorito'
+    ? isFavorite
+      ? 'Remover dos favoritos'
+      : 'Marcar como favorito'
     : 'Faça login para adicionar aos favoritos';
 
   const addToWatchListText = isUserLoggedIn
-    ? 'Adicionar à sua lista de interesses'
+    ? isInWatchList
+      ? 'Remover da lista de interesses'
+      : 'Adicionar à sua lista de interesses'
     : 'Faça login para adicionar à lista de interesses';
 
   const handleSelectOnChange = useCallback((listId: number) => {
@@ -93,8 +97,27 @@ const MovieActions: React.FC<MovieActionsProps> = ({
       </Tooltip>
 
       <Tooltip text={addToWatchListText}>
-        <Button iconOnly rounded>
-          <FiBookmark size={22} />
+        <Button
+          iconOnly
+          rounded
+          onClick={
+            isUserLoggedIn
+              ? () =>
+                  dispatch(
+                    addMovieToWatchList({
+                      movieId,
+                      isInWatchList: !isInWatchList,
+                      context,
+                    }),
+                  )
+              : undefined
+          }
+        >
+          {isInWatchList ? (
+            <FiBookmark size={22} fill="#FFF" />
+          ) : (
+            <FiBookmark size={22} />
+          )}
         </Button>
       </Tooltip>
 

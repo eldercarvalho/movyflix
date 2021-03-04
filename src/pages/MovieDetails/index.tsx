@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiStar } from 'react-icons/fi';
 import { formatReleaseDate } from '../../utils/formatReleaseDate';
 import { mediaSizes } from '../../utils/media';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { clearMovieDetails, fetchMovieDetails } from '../../store/slices/movies';
+import {
+  clearMovieDetails,
+  fetchMovieDetails,
+  setMovieDetailsBackdrop,
+} from '../../store/slices/movies';
 
 import Carousel from '../../components/shared/Carousel';
 import Button from '../../components/shared/Button';
@@ -37,7 +41,12 @@ interface RouteParams {
   id: string;
 }
 
+interface LocationState {
+  backdrop: string;
+}
+
 const MovieDetails: React.FC = () => {
+  const location = useLocation<LocationState>();
   const dispatch = useAppDispatch();
   const history = useHistory();
   const movieDetails = useAppSelector((state) => state.movies.movieDetails);
@@ -67,14 +76,13 @@ const MovieDetails: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(setMovieDetailsBackdrop(location.state.backdrop));
     dispatch(fetchMovieDetails(id));
-  }, [dispatch, id]);
 
-  useEffect(() => {
     return () => {
       dispatch(clearMovieDetails());
     };
-  }, [dispatch]);
+  }, [dispatch, id, location.state.backdrop]);
 
   return (
     <Content headerOffset>

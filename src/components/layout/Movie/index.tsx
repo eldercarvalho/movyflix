@@ -82,7 +82,7 @@ const Movie: React.FC<MovieProps> = ({
   return (
     <Container
       ref={containerRef}
-      to={`/movies/${data.id}`}
+      to={{ pathname: `/movies/${data.id}`, state: { backdrop: data.backdrop_path } }}
       type={type}
       style={style}
       onMouseEnter={type === 'backdrop' ? handleMouseEnter : undefined}

@@ -4,7 +4,7 @@ import { FiStar } from 'react-icons/fi';
 import { useTransition } from 'react-spring';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchTopRatedMovies } from '../../store/slices/movies';
+import { fetchMovieAccountState, fetchTopRatedMovies } from '../../store/slices/movies';
 
 import InfiniteLoading from '../../components/shared/InfiniteLoading';
 import MovieActions from '../../components/layout/MovieActions';
@@ -37,7 +37,15 @@ const TopRated: React.FC = () => {
 
         <ul>
           {moviesWithTransition.map(({ item: movie, key, props }, index) => (
-            <AnimatedLi key={key} style={props}>
+            <AnimatedLi
+              key={key}
+              style={props}
+              onMouseEnter={() =>
+                dispatch(
+                  fetchMovieAccountState({ movieId: movie.id, context: ' topRated' }),
+                )
+              }
+            >
               <strong>{index + 1}</strong>
 
               <Movie onClick={() => history.push(`movies/${movie.id}`)}>

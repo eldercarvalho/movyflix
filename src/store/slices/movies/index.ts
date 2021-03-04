@@ -2,14 +2,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { http } from '../../../services/http';
 import { formatReleaseDate } from '../../../utils/formatReleaseDate';
 import { reduceCrewByDepartment } from '../../../utils/reduceCrewByDepartment';
-import {
-  IMovie,
-  Configuration,
-  Genre,
-  MovieAccountState,
-  MovieAccountStatePayload,
-} from './types';
+import { IMovie, Configuration, Genre, MovieAccountState } from './types';
 import { PaginableResult } from '../../types';
+import { ProfileState } from '../profile';
+import { store } from '../..';
 
 export * from './types';
 
@@ -150,20 +146,30 @@ export const fetchMovieDetails = createAsyncThunk(
 
     response.data.year = formatReleaseDate(response.data.release_date, 'yyyy');
     response.data.credits.crew = reduceCrewByDepartment(response.data.credits.crew);
-    response.data.account_state = movieAccountStateResponse.data;
+    response.data.isFavorite = movieAccountStateResponse.data.favorite;
+    response.data.isInWatchList = movieAccountStateResponse.data.watchlist;
 
     return response.data;
   },
 );
 
+type FetchMovieAccountStateArgs = {
+  movieId: number;
+  context: string;
+};
+
 export const fetchMovieAccountState = createAsyncThunk(
   'movies/FETCH_MOVIE_ACCOUNT_STATE',
-  async (movieId: string) => {
+  async ({ movieId, context }: FetchMovieAccountStateArgs) => {
     const movieAccountStateResponse = await http.get<MovieAccountState>(
       `/movie/${movieId}/account_states`,
     );
 
-    return movieAccountStateResponse.data;
+    return {
+      movieId,
+      accountState: movieAccountStateResponse.data,
+      context,
+    };
   },
 );
 
@@ -173,6 +179,56 @@ export const fetchGenres = createAsyncThunk('movies/FETCH_GENRES', async () => {
   return response.data.genres as Genre[];
 });
 
+type AddMovieToFavoritesArgs = {
+  movieId: number;
+  isFavorite: boolean;
+  context: string;
+};
+
+export const addMovieToFavorites = createAsyncThunk(
+  'profile/ADD_TO_FAVORITES',
+  async ({ movieId, isFavorite, context }: AddMovieToFavoritesArgs) => {
+    const { account } = store.getState().profile as ProfileState;
+
+    await http.post(`/account/${account?.id}/favorite`, {
+      media_id: movieId,
+      media_type: 'movie',
+      favorite: isFavorite,
+    });
+
+    return {
+      movieId,
+      isFavorite,
+      context,
+    };
+  },
+);
+
+type AddMovieToWatchlistArgs = {
+  movieId: number;
+  isInWatchList: boolean;
+  context: string;
+};
+
+export const addMovieToWatchList = createAsyncThunk(
+  'profile/ADD_TO_WATCHLIST',
+  async ({ movieId, isInWatchList, context }: AddMovieToWatchlistArgs) => {
+    const { account } = store.getState().profile as ProfileState;
+
+    await http.post(`/account/${account?.id}/watchlist`, {
+      media_id: movieId,
+      media_type: 'movie',
+      watchlist: isInWatchList,
+    });
+
+    return {
+      movieId,
+      isInWatchList,
+      context,
+    };
+  },
+);
+
 const { actions, reducer } = createSlice({
   name: 'movies',
   initialState,
@@ -180,22 +236,8 @@ const { actions, reducer } = createSlice({
     clearMovieDetails(state) {
       state.movieDetails = {} as IMovie;
     },
-    setMovieFavorite(state, action: PayloadAction<MovieAccountStatePayload>) {
-      const { movieId, isFavorite, context } = action.payload;
-
-      if (context === 'movieDetails') {
-        state.movieDetails.isFavorite = isFavorite;
-      }
-
-      if (context === 'topRated') {
-        state.topRated.results = state.topRated.results.map((movie) => {
-          if (movie.id === movieId) {
-            movie.isFavorite = isFavorite;
-          }
-
-          return movie;
-        });
-      }
+    setMovieDetailsBackdrop(state, action: PayloadAction<string>) {
+      state.movieDetails.backdrop_path = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -256,9 +298,59 @@ const { actions, reducer } = createSlice({
     builder.addCase(fetchGenres.fulfilled, (state, action) => {
       state.genres = action.payload;
     });
+
+    builder.addCase(addMovieToFavorites.fulfilled, (state, action) => {
+      const { movieId, isFavorite, context } = action.payload;
+
+      if (context === 'movieDetails') {
+        state.movieDetails.isFavorite = isFavorite;
+      }
+
+      if (context === 'topRated') {
+        state.topRated.results = state.topRated.results.map((movie) => {
+          if (movie.id === movieId) {
+            movie.isFavorite = isFavorite;
+          }
+
+          return movie;
+        });
+      }
+    });
+    builder.addCase(addMovieToWatchList.fulfilled, (state, action) => {
+      const { movieId, isInWatchList, context } = action.payload;
+
+      if (context === 'movieDetails') {
+        state.movieDetails.isInWatchList = isInWatchList;
+      }
+
+      if (context === 'topRated') {
+        state.topRated.results = state.topRated.results.map((movie) => {
+          if (movie.id === movieId) {
+            movie.isInWatchList = isInWatchList;
+          }
+
+          return movie;
+        });
+      }
+    });
+
+    builder.addCase(fetchMovieAccountState.fulfilled, (state, action) => {
+      const { movieId, context, accountState } = action.payload;
+
+      if (context === 'topRated') {
+        state.topRated.results = state.topRated.results.map((movie) => {
+          if (movie.id === movieId) {
+            movie.isFavorite = accountState.favorite;
+            movie.isInWatchList = accountState.watchlist;
+          }
+
+          return movie;
+        });
+      }
+    });
   },
 });
 
-export const { clearMovieDetails, setMovieFavorite } = actions;
+export const { clearMovieDetails, setMovieDetailsBackdrop } = actions;
 
 export default reducer;
