@@ -10,6 +10,16 @@ export interface Genre {
   name: string;
 }
 
+export interface ExternalIds {
+  facebook_id: string;
+  freebase_id: string;
+  freebase_mid: string;
+  imdb_id: string;
+  instagram_id: string;
+  tvrage_id: string;
+  twitter_id: string;
+}
+
 export interface CastPerson {
   adult: boolean;
   cast_id: number;
@@ -25,6 +35,11 @@ export interface CastPerson {
   profile_path: string;
   department: string;
   job: string;
+  biography: string;
+  external_ids: ExternalIds;
+  birthday: string;
+  deathday: string;
+  place_of_birth: string;
 }
 
 export interface Cast {

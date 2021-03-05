@@ -50,9 +50,7 @@ const MovieDetails: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const movieDetails = useAppSelector((state) => state.movies.movieDetails);
-  const isFetchingMovieDetails = useAppSelector(
-    (state) => state.movies.isFetchingMovieDetails,
-  );
+  const isFetchingDetails = useAppSelector((state) => state.movies.isFetchingDetails);
   const { id } = useParams<RouteParams>();
 
   const getVoteAvarageColor = (voteAverage: number): string => {
@@ -86,7 +84,7 @@ const MovieDetails: React.FC = () => {
 
   return (
     <Content headerOffset>
-      {isFetchingMovieDetails ? (
+      {isFetchingDetails ? (
         <Loading screenCenter size={100} />
       ) : (
         <CenterContainer>

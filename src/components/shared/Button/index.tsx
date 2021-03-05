@@ -1,12 +1,18 @@
 import React, { ButtonHTMLAttributes, useCallback, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
+import { string } from 'yup/lib/locale';
 import Loading from '../Loading';
 
 import { Container } from './style';
 
+type LocationObject = {
+  pathname: string;
+  state?: Record<string, string>;
+};
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
-  to?: string;
+  to?: string | LocationObject;
   iconOnly?: boolean;
   full?: boolean;
   small?: boolean;

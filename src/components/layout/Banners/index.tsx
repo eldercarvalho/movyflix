@@ -38,7 +38,14 @@ const Banners: React.FC = () => {
                   <h1>{movie.title}</h1>
                   <p>{movie.overview}</p>
                   <div>
-                    <Button to={`/movies/${movie.id}`}>Mais detalhes</Button>
+                    <Button
+                      to={{
+                        pathname: `/movies/${movie.id}`,
+                        state: { backdrop: movie.backdrop_path },
+                      }}
+                    >
+                      Mais detalhes
+                    </Button>
                     <span>{movie.formatted_release_date}</span>
                   </div>
                 </BannerInfo>

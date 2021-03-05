@@ -2,10 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { http } from '../../../services/http';
 import { formatReleaseDate } from '../../../utils/formatReleaseDate';
 import { reduceCrewByDepartment } from '../../../utils/reduceCrewByDepartment';
-import { IMovie, Configuration, Genre, MovieAccountState } from './types';
+import { IMovie, Configuration, Genre, MovieAccountState, CastPerson } from './types';
 import { PaginableResult } from '../../types';
-import { ProfileState } from '../profile';
-import { RootState, store } from '../..';
+import { RootState } from '../..';
 
 export * from './types';
 
@@ -22,7 +21,8 @@ export interface MoviesState {
   searchLoading: boolean;
   genres: Genre[];
   movieDetails: IMovie;
-  isFetchingMovieDetails: boolean;
+  personDetails: CastPerson;
+  isFetchingDetails: boolean;
 }
 
 export const initialPaginableResult: PaginableResult<IMovie[]> = {
@@ -46,7 +46,7 @@ export const initialConfiguration: Configuration = {
 const initialState: MoviesState = {
   isFetching: false,
   isFetchingTrending: false,
-  isFetchingMovieDetails: false,
+  isFetchingDetails: false,
   searchLoading: false,
   configuration: initialConfiguration,
   trending: [] as IMovie[],
@@ -57,6 +57,7 @@ const initialState: MoviesState = {
   search: initialPaginableResult,
   genres: [] as Genre[],
   movieDetails: {} as IMovie,
+  personDetails: {} as CastPerson,
 };
 
 export const fetchConfigs = createAsyncThunk('movies/FETCH_CONFIGS', async () => {
@@ -192,10 +193,10 @@ type AddMovieToFavoritesArgs = {
 
 export const addMovieToFavorites = createAsyncThunk(
   'profile/ADD_TO_FAVORITES',
-  async ({ movieId, isFavorite, context }: AddMovieToFavoritesArgs) => {
-    const { account } = store.getState().profile as ProfileState;
+  async ({ movieId, isFavorite, context }: AddMovieToFavoritesArgs, { getState }) => {
+    const { profile } = getState() as RootState;
 
-    await http.post(`/account/${account?.id}/favorite`, {
+    await http.post(`/account/${profile.account?.id}/favorite`, {
       media_id: movieId,
       media_type: 'movie',
       favorite: isFavorite,
@@ -217,10 +218,10 @@ type AddMovieToWatchlistArgs = {
 
 export const addMovieToWatchList = createAsyncThunk(
   'profile/ADD_TO_WATCHLIST',
-  async ({ movieId, isInWatchList, context }: AddMovieToWatchlistArgs) => {
-    const { account } = store.getState().profile as ProfileState;
+  async ({ movieId, isInWatchList, context }: AddMovieToWatchlistArgs, { getState }) => {
+    const { profile } = getState() as RootState;
 
-    await http.post(`/account/${account?.id}/watchlist`, {
+    await http.post(`/account/${profile.account?.id}/watchlist`, {
       media_id: movieId,
       media_type: 'movie',
       watchlist: isInWatchList,
@@ -231,6 +232,17 @@ export const addMovieToWatchList = createAsyncThunk(
       isInWatchList,
       context,
     };
+  },
+);
+
+export const fetchPersonDetails = createAsyncThunk(
+  'movies/FETCH_PERSON_DETAILS',
+  async (personId: number) => {
+    const response = await http.get<CastPerson>(
+      `/person/${personId}?append_to_response=external_ids`,
+    );
+
+    return response.data;
   },
 );
 
@@ -293,10 +305,10 @@ const { actions, reducer } = createSlice({
     });
 
     builder.addCase(fetchMovieDetails.pending, (state) => {
-      state.isFetchingMovieDetails = true;
+      state.isFetchingDetails = true;
     });
     builder.addCase(fetchMovieDetails.fulfilled, (state, action) => {
-      state.isFetchingMovieDetails = false;
+      state.isFetchingDetails = false;
       state.movieDetails = action.payload;
     });
 
@@ -352,6 +364,14 @@ const { actions, reducer } = createSlice({
           return movie;
         });
       }
+    });
+
+    builder.addCase(fetchPersonDetails.pending, (state) => {
+      state.isFetchingDetails = true;
+    });
+    builder.addCase(fetchPersonDetails.fulfilled, (state, action) => {
+      state.isFetchingDetails = false;
+      state.personDetails = action.payload;
     });
   },
 });
