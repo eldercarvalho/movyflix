@@ -11,7 +11,7 @@ import { LayoutContainer, MainContainer } from './styles';
 const Layout: React.FC = ({ children }) => {
   const backdropPath = useSelector((state: RootState) => {
     if (state.movies.movieDetails.backdrop_path) {
-      return `https://image.tmdb.org/t/p/original/${state.movies.movieDetails.backdrop_path}`;
+      return `https://image.tmdb.org/t/p/w1280/${state.movies.movieDetails.backdrop_path}`;
     }
 
     return null;

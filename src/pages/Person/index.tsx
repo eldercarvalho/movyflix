@@ -57,7 +57,10 @@ const Person: React.FC = () => {
 
     const laterDate = deathday ? parseISO(deathday) : new Date();
 
-    return `${differenceInYears(laterDate, parseISO(birthday))} anos`;
+    return `${format(parseISO(birthday), 'dd/MM/yyyy')} (${differenceInYears(
+      laterDate,
+      parseISO(birthday),
+    )} anos)`;
   };
 
   const renderSocials = () => {
@@ -66,7 +69,7 @@ const Person: React.FC = () => {
         .filter(
           (key) =>
             allowedSocials.includes(key) &&
-            !!mapSocialsUrls[key as keyof typeof mapSocialsUrls],
+            !!personDetails.external_ids[key as keyof typeof mapSocialsUrls],
         )
         .map((key) => {
           const SocialIcon = mapSocialIcons[key as keyof typeof mapSocialIcons];
@@ -112,12 +115,12 @@ const Person: React.FC = () => {
 
               <PersonInfoList>
                 <li>
-                  <strong>Idade: </strong>{' '}
+                  <strong>Nascimento: </strong>{' '}
                   {getPersonAge(personDetails.birthday, personDetails.deathday)}
                 </li>
                 {!!personDetails.deathday && (
                   <li>
-                    <strong>Morte: </strong>{' '}
+                    <strong>Falecimento: </strong>{' '}
                     {format(parseISO(personDetails.deathday), 'dd/MM/yyyy')}
                   </li>
                 )}

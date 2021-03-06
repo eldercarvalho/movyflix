@@ -114,4 +114,9 @@ export const Socials = styled.div`
   svg {
     transition: 0.3s;
   }
+
+  @media ${devices.mobileL} {
+    position: relative;
+    margin: 0 0 3rem;
+  }
 `;

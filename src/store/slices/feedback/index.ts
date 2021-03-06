@@ -8,7 +8,7 @@ export interface FeedbackState {
   toasts: ToastData[];
 }
 
-const initialState = {
+const initialState: FeedbackState = {
   toasts: [] as ToastData[],
 };
 
