@@ -32,9 +32,9 @@ const TopRated: React.FC = () => {
 
   return (
     <Content headerOffset>
-      <Container>
-        <SectionTitle>Melhores Avaliados</SectionTitle>
+      <SectionTitle>Melhores Avaliados</SectionTitle>
 
+      <Container>
         <ul>
           {moviesWithTransition.map(({ item: movie, key, props }, index) => (
             <AnimatedLi

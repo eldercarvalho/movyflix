@@ -18,6 +18,7 @@ export interface MoviesState {
   upcoming: PaginableResult<IMovie[]>;
   topRated: PaginableResult<IMovie[]>;
   search: PaginableResult<IMovie[]>;
+  discover: PaginableResult<IMovie[]>;
   searchLoading: boolean;
   genres: Genre[];
   movieDetails: IMovie;
@@ -55,6 +56,7 @@ const initialState: MoviesState = {
   upcoming: initialPaginableResult,
   topRated: initialPaginableResult,
   search: initialPaginableResult,
+  discover: initialPaginableResult,
   genres: [] as Genre[],
   movieDetails: {} as IMovie,
   personDetails: {} as CastPerson,
@@ -246,6 +248,21 @@ export const fetchPersonDetails = createAsyncThunk(
   },
 );
 
+// type fetchDiscoverArgs = {
+//   genreId: number;
+// };
+
+export const fetchDiscover = createAsyncThunk(
+  'movies/FETCH_DISCOVER',
+  async (genreId: number) => {
+    const response = await http.get<PaginableResult<IMovie[]>>(
+      `/discover/movie?with_genres=${genreId}`,
+    );
+
+    return response.data;
+  },
+);
+
 const { actions, reducer } = createSlice({
   name: 'movies',
   initialState,
@@ -372,6 +389,14 @@ const { actions, reducer } = createSlice({
     builder.addCase(fetchPersonDetails.fulfilled, (state, action) => {
       state.isFetchingDetails = false;
       state.personDetails = action.payload;
+    });
+
+    builder.addCase(fetchDiscover.pending, (state) => {
+      state.isFetchingDetails = true;
+    });
+    builder.addCase(fetchDiscover.fulfilled, (state, action) => {
+      state.isFetching = false;
+      state.discover = action.payload;
     });
   },
 });
