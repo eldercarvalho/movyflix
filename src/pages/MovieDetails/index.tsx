@@ -43,6 +43,7 @@ interface RouteParams {
 
 interface LocationState {
   backdrop: string;
+  from: string;
 }
 
 const MovieDetails: React.FC = () => {
@@ -73,6 +74,16 @@ const MovieDetails: React.FC = () => {
     );
   };
 
+  const navigateBack = () => {
+    history.push({
+      pathname: `${location.state.from}`,
+      state: {
+        backdrop: location.state.backdrop,
+        from: location.pathname,
+      },
+    });
+  };
+
   useEffect(() => {
     dispatch(setMovieDetailsBackdrop(location.state.backdrop));
     dispatch(fetchMovieDetails(id));
@@ -88,7 +99,7 @@ const MovieDetails: React.FC = () => {
         <Loading screenCenter size={100} />
       ) : (
         <CenterContainer>
-          <Button textOnly onClick={() => history.goBack()}>
+          <Button textOnly onClick={navigateBack}>
             <FiArrowLeft size={20} /> Voltar
           </Button>
 

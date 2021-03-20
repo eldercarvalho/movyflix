@@ -248,15 +248,16 @@ export const fetchPersonDetails = createAsyncThunk(
   },
 );
 
-// type fetchDiscoverArgs = {
-//   genreId: number;
-// };
+type FetchDiscoverArgs = {
+  genreId: number;
+  page: number;
+};
 
 export const fetchDiscover = createAsyncThunk(
   'movies/FETCH_DISCOVER',
-  async (genreId: number) => {
+  async ({ genreId, page }: FetchDiscoverArgs) => {
     const response = await http.get<PaginableResult<IMovie[]>>(
-      `/discover/movie?with_genres=${genreId}`,
+      `/discover/movie?with_genres=${genreId}&page=${page}`,
     );
 
     return response.data;
@@ -396,6 +397,11 @@ const { actions, reducer } = createSlice({
     });
     builder.addCase(fetchDiscover.fulfilled, (state, action) => {
       state.isFetching = false;
+
+      if (action.payload.page > 1) {
+        action.payload.results = [...state.discover.results, ...action.payload.results];
+      }
+
       state.discover = action.payload;
     });
   },

@@ -1,33 +1,62 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Content } from '../../styles/Content';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import Button from '../../components/shared/Button';
-
 import { SectionTitle } from '../../styles/SectionTitle';
-import { Container, GenresList } from './styles';
 import { fetchDiscover, fetchGenres } from '../../store/slices/movies';
 import MoviesGrid from '../../components/layout/MoviesGrid';
 
+import { Container, GenresList, GenresListItem } from './styles';
+import InfiniteLoading from '../../components/shared/InfiniteLoading';
+
 const Home: React.FC = () => {
+  const genresListRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const genres = useAppSelector((state) => state.movies.genres);
   const isFetching = useAppSelector((state) => state.movies.isFetching);
   const discover = useAppSelector((state) => state.movies.discover);
-  const firstGenreId = useMemo(() => (genres[0] ? genres[0].id : null), [genres]);
+  const [activeGenreId, setActiveGenreId] = useState(28);
 
   useEffect(() => {
     dispatch(fetchGenres());
+
+    const width = genresListRef.current?.offsetWidth;
+    const rectTop = genresListRef.current?.getBoundingClientRect().top;
+    const headerHeight = 68;
+
+    const restoreGenresListStyle = () => {
+      if (genresListRef.current) {
+        genresListRef.current.style.position = 'initial';
+        genresListRef.current.style.top = 'initial';
+        genresListRef.current.style.width = `initial`;
+      }
+    };
+
+    const handleWindowScroll = () => {
+      if (genresListRef.current && rectTop && window.scrollY >= rectTop - headerHeight) {
+        genresListRef.current.style.position = 'fixed';
+        genresListRef.current.style.top = `${headerHeight}px`;
+        genresListRef.current.style.width = `${width}px`;
+        return;
+      }
+
+      restoreGenresListStyle();
+    };
+
+    window.addEventListener('scroll', handleWindowScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleWindowScroll);
+    };
   }, [dispatch]);
 
   useEffect(() => {
-    if (firstGenreId) {
-      dispatch(fetchDiscover(28));
-    }
-  }, [dispatch, firstGenreId]);
+    const page = 1;
+    dispatch(fetchDiscover({ genreId: activeGenreId, page }));
+  }, [dispatch, activeGenreId]);
 
-  const handleGenreClick = (genreId: number) => {
-    dispatch(fetchDiscover(genreId));
+  const handleOnPaginate = (page: number) => {
+    dispatch(fetchDiscover({ genreId: activeGenreId, page }));
   };
 
   return (
@@ -35,21 +64,31 @@ const Home: React.FC = () => {
       <SectionTitle>Gêneros</SectionTitle>
 
       <Container>
-        <GenresList>
-          {genres.map((genre) => (
-            <button
-              type="button"
-              key={genre.id}
-              onClick={() => handleGenreClick(genre.id)}
-            >
-              {genre.name}
-            </button>
-          ))}
-        </GenresList>
+        <div>
+          <GenresList ref={genresListRef}>
+            {genres.map((genre) => (
+              <GenresListItem
+                type="button"
+                key={genre.id}
+                isActive={activeGenreId === genre.id}
+                onClick={() => setActiveGenreId(genre.id)}
+              >
+                <span>{genre.name}</span>
+              </GenresListItem>
+            ))}
+          </GenresList>
+        </div>
 
         <div>
           <MoviesGrid data={discover.results} />
         </div>
+
+        <InfiniteLoading
+          page={discover.page}
+          totalPages={discover.total_pages}
+          isLoading={isFetching}
+          onPaginate={handleOnPaginate}
+        />
       </Container>
     </Content>
   );

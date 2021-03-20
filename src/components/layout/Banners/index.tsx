@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import useParentRoutePath from '../../../hooks/parentRoutePath';
 
 import { RootState } from '../../../store';
 
@@ -10,6 +11,7 @@ import { Container, BannerItem, BannerInfo } from './styles';
 import Loading from '../../shared/Loading';
 
 const Banners: React.FC = () => {
+  const parentRoutePath = useParentRoutePath();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { trending, isFetchingTrending } = useSelector(
     (state: RootState) => state.movies,
@@ -41,7 +43,7 @@ const Banners: React.FC = () => {
                     <Button
                       to={{
                         pathname: `/movies/${movie.id}`,
-                        state: { backdrop: movie.backdrop_path },
+                        state: { backdrop: movie.backdrop_path, from: parentRoutePath },
                       }}
                     >
                       Mais detalhes

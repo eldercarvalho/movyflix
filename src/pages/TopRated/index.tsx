@@ -12,10 +12,12 @@ import MovieActions from '../../components/layout/MovieActions';
 import { Content } from '../../styles/Content';
 import { Container, AnimatedLi, Movie } from './styles';
 import { SectionTitle } from '../../styles/SectionTitle';
+import useParentRoutePath from '../../hooks/parentRoutePath';
 
 const TopRated: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const parentRoutePath = useParentRoutePath();
   const topRated = useAppSelector((state) => state.movies.topRated);
   const isFetching = useAppSelector((state) => state.movies.isFetching);
   const moviesWithTransition = useTransition(topRated.results, (movie) => movie.id, {
@@ -52,7 +54,7 @@ const TopRated: React.FC = () => {
                 onClick={() =>
                   history.push({
                     pathname: `movies/${movie.id}`,
-                    state: { backdrop: movie.backdrop_path },
+                    state: { backdrop: movie.backdrop_path, from: parentRoutePath },
                   })
                 }
               >

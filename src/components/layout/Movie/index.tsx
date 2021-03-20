@@ -1,6 +1,7 @@
 import { useMemo, MouseEvent, useRef, useCallback, useState } from 'react';
 import { FiStar } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
+import useParentRoutePath from '../../../hooks/parentRoutePath';
 import { RootState } from '../../../store';
 import { IMovie } from '../../../store/slices/movies';
 
@@ -34,6 +35,7 @@ const Movie: React.FC<MovieProps> = ({
   const genres = useSelector((state: RootState) => state.movies.genres);
   const imagePath = type === 'poster' ? data.poster_path : data.backdrop_path;
   const isPoster = type === 'poster';
+  const parentRoutePath = useParentRoutePath();
   const movieGenres = useMemo(
     () =>
       genres
@@ -82,7 +84,10 @@ const Movie: React.FC<MovieProps> = ({
   return (
     <Container
       ref={containerRef}
-      to={{ pathname: `/movies/${data.id}`, state: { backdrop: data.backdrop_path } }}
+      to={{
+        pathname: `/movies/${data.id}`,
+        state: { backdrop: data.backdrop_path, from: parentRoutePath },
+      }}
       type={type}
       style={style}
       onMouseEnter={type === 'backdrop' ? handleMouseEnter : undefined}
