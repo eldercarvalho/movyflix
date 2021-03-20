@@ -20,6 +20,12 @@ const InfiniteLoading = memo(
     onPaginate,
   }: InfiniteLoadingProps) => {
     useEffect(() => {
+      const mainFooter = document.querySelector<HTMLElement>('.main-footer');
+
+      if (totalPages > 1) {
+        mainFooter!.style.display = 'none';
+      }
+
       const handleWindowScroll = () => {
         const isScrollTrigger =
           Math.ceil(window.scrollY) + window.innerHeight >=
@@ -29,12 +35,17 @@ const InfiniteLoading = memo(
           page++;
           onPaginate(page);
         }
+
+        if (page === totalPages) {
+          mainFooter!.style.display = 'flex';
+        }
       };
 
       window.addEventListener('scroll', handleWindowScroll);
 
       return () => {
         window.removeEventListener('scroll', handleWindowScroll);
+        mainFooter!.style.display = 'flex';
       };
     }, [onPaginate, totalPages, offetTrigger]); // eslint-disable-line
 

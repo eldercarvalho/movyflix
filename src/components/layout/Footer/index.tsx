@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 const Footer: React.FC = () => {
   return (
-    <Container>
+    <Container className="main-footer">
       <Logo />
 
       <p>Copyright © Elder Carvalho</p>

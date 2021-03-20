@@ -1,8 +1,7 @@
 import { useMemo, MouseEvent, useRef, useCallback, useState } from 'react';
 import { FiStar } from 'react-icons/fi';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../hooks';
 import useParentRoutePath from '../../../hooks/parentRoutePath';
-import { RootState } from '../../../store';
 import { IMovie } from '../../../store/slices/movies';
 
 import { Container, MovieImage, MovieInfo } from './styles';
@@ -32,7 +31,7 @@ const Movie: React.FC<MovieProps> = ({
   const containerCloneRef = useRef<HTMLAnchorElement>();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const timeoutRef = useRef(0);
-  const genres = useSelector((state: RootState) => state.movies.genres);
+  const genres = useAppSelector((state) => state.movies.genres);
   const imagePath = type === 'poster' ? data.poster_path : data.backdrop_path;
   const isPoster = type === 'poster';
   const parentRoutePath = useParentRoutePath();
