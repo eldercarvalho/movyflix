@@ -44,7 +44,7 @@ const TopRated: React.FC = () => {
               style={props}
               onMouseEnter={() =>
                 dispatch(
-                  fetchMovieAccountState({ movieId: movie.id, context: ' topRated' }),
+                  fetchMovieAccountState({ movieId: movie.id, context: 'topRated' }),
                 )
               }
             >

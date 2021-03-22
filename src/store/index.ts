@@ -9,6 +9,8 @@ export const STORAGE_STATE_KEY = '@MovyFlix:state';
 
 const preloadedState = JSON.parse(localStorage.getItem(STORAGE_STATE_KEY) || '{}');
 
+console.log(preloadedState);
+
 export const store = configureStore({
   preloadedState,
   reducer: {

@@ -10,7 +10,7 @@ type LocationObject = {
   state?: Record<string, string>;
 };
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
   to?: string | LocationObject;
   iconOnly?: boolean;

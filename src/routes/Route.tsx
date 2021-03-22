@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux';
 import {
   Route as ReactRoute,
   RouteProps as ReactRouteProps,
   Redirect,
 } from 'react-router-dom';
-import { RootState } from '../store';
+import { useAppSelector } from '../hooks';
 
 interface RouteProps extends ReactRouteProps {
   isPrivate?: boolean;
@@ -16,7 +15,7 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { isUserLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   return (
     <ReactRoute
