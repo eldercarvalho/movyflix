@@ -11,11 +11,11 @@ import {
   setMovieDetailsBackdrop,
 } from '../../store/slices/movies';
 
-import Carousel from '../../components/shared/Carousel';
-import Button from '../../components/shared/Button';
-import { Image } from '../../components/shared/Image';
+import Carousel from '../../components/base/Carousel';
+import Button from '../../components/base/Button';
+import { Image } from '../../components/base/Image';
 import MoviesCarousel from '../../components/layout/MoviesCarousel';
-import Loading from '../../components/shared/Loading';
+import Loading from '../../components/base/Loading';
 import MovieActions from '../../components/layout/MovieActions';
 
 import { Content } from '../../styles/Content';

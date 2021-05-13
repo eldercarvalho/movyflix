@@ -6,7 +6,7 @@ import { useTransition } from 'react-spring';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchMovieAccountState, fetchTopRatedMovies } from '../../store/slices/movies';
 
-import InfiniteLoading from '../../components/shared/InfiniteLoading';
+import InfiniteLoading from '../../components/base/InfiniteLoading';
 import MovieActions from '../../components/layout/MovieActions';
 
 import { Content } from '../../styles/Content';

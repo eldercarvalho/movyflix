@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import MainHeader from './MainHeader';
-import ToastContainer from '../shared/ToastContainer';
+import ToastContainer from '../base/ToastContainer';
 import Footer from './Footer';
 
 import { RootState } from '../../store';

@@ -7,9 +7,9 @@ import { format } from 'date-fns';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ExternalIds, fetchPersonDetails } from '../../store/slices/movies';
 
-import Button from '../../components/shared/Button';
-import { Image } from '../../components/shared/Image';
-import Loading from '../../components/shared/Loading';
+import Button from '../../components/base/Button';
+import { Image } from '../../components/base/Image';
+import Loading from '../../components/base/Loading';
 
 import { Content } from '../../styles/Content';
 

@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 import devices from '../../../utils/media';
 
-import Button from '../../shared/Button';
+import Button from '../../base/Button';
 
 interface ContainerProps {
   isDarken: boolean;

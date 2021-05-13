@@ -5,10 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { addMovieToList } from '../../../store/slices/profile';
 import { addMovieToFavorites, addMovieToWatchList } from '../../../store/slices/movies';
 
-import Button from '../../shared/Button';
-import Select from '../../shared/Select';
-import Tooltip from '../../shared/Tooltip';
-import Modal from '../../shared/Modalv2';
+import Button from '../../base/Button';
+import Select from '../../base/Select';
+import Tooltip from '../../base/Tooltip';
+import Modal from '../../base/Modalv2';
 
 import { Container, ModalContent } from './styles';
 

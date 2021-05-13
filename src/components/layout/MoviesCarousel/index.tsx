@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IMovie } from '../../../store/slices/movies';
 
-import Carousel from '../../shared/Carousel';
+import Carousel from '../../base/Carousel';
 import Movie, { ElementData } from '../Movie';
 
 import { Container } from './styles';

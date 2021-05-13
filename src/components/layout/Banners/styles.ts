@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { animated } from 'react-spring';
-import { Dot } from '../../shared/Carousel/styles';
+import { Dot } from '../../base/Carousel/styles';
 
 import devices from '../../../utils/media';
 

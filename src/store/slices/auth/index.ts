@@ -89,6 +89,9 @@ const { actions, reducer } = createSlice({
       state.isUserLoggedIn = true;
       state.sessionId = action.payload;
     });
+    builder.addCase(signIn.rejected, (state) => {
+      state.isFetching = false;
+    });
   },
 });
 

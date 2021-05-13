@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { searchMovies } from '../../store/slices/movies';
 
 import MoviesGrid from '../../components/layout/MoviesGrid';
-import InfiniteLoading from '../../components/shared/InfiniteLoading';
+import InfiniteLoading from '../../components/base/InfiniteLoading';
 
 import { Content } from '../../styles/Content';
 

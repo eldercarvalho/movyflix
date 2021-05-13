@@ -90,6 +90,14 @@ export const Container = styled.div<ContainerProps>`
           }
         `}
     }
+
+    button {
+      border: none;
+      background: none;
+      padding: 0 0.8rem;
+      display: flex;
+      align-items: center;
+    }
   }
 `;
 

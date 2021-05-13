@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { RootState } from '../../../store';
 import { signIn } from '../../../store/slices/auth';
 
-import Button from '../../shared/Button';
-import TextField from '../../shared/TextField';
+import Button from '../../base/Button';
+import TextField from '../../base/TextField';
 
 import { Form } from './styles';
 

@@ -1,6 +1,7 @@
 import { Switch } from 'react-router-dom';
 
 import Route from './Route';
+import ScrollToTop from './ScrollToTop';
 
 import Home from '../pages/Home';
 import Search from '../pages/Search';
@@ -8,7 +9,7 @@ import TopRated from '../pages/TopRated';
 import Genres from '../pages/Genres';
 import MovieDetails from '../pages/MovieDetails';
 import Person from '../pages/Person';
-import ScrollToTop from './ScrollToTop';
+import Profile from '../pages/Profile';
 
 const Routes: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const Routes: React.FC = () => {
         <Route path="/genres" component={Genres} />
         <Route path="/movies/:id" component={MovieDetails} />
         <Route path="/person/:id" component={Person} />
+        <Route path="/profile" component={Profile} />
       </Switch>
     </>
   );

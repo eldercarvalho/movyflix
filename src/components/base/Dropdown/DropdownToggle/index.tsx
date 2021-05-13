@@ -4,7 +4,7 @@ import Button, { ButtonProps } from '../../Button';
 export type DropdownToggleProps = ButtonProps;
 
 const DropdownToggle: React.FC<DropdownToggleProps> = ({ children, ...rest }) => {
-  const { setIsDropdownOpened, isDropdownOpened } = useDropdown();
+  const { setIsDropdownOpened } = useDropdown();
 
   return (
     <Button onClick={() => setIsDropdownOpened((oldValue) => !oldValue)} {...rest}>

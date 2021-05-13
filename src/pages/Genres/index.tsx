@@ -7,7 +7,7 @@ import { fetchDiscover, fetchGenres } from '../../store/slices/movies';
 import MoviesGrid from '../../components/layout/MoviesGrid';
 
 import { Container, GenresList, GenresListItem } from './styles';
-import InfiniteLoading from '../../components/shared/InfiniteLoading';
+import InfiniteLoading from '../../components/base/InfiniteLoading';
 
 const Home: React.FC = () => {
   const genresListRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,18 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const page = 1;
-    dispatch(fetchDiscover({ genreId: activeGenreId, page }));
+
+    const asyncFetchDiscover = async () => {
+      await dispatch(fetchDiscover({ genreId: activeGenreId, page }));
+
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    };
+
+    asyncFetchDiscover();
   }, [dispatch, activeGenreId]);
 
   const handleOnPaginate = (page: number) => {

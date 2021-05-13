@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import {
   FiBookmark,
-  FiFlag,
   FiHeart,
   FiList,
   FiLogOut,
@@ -17,14 +16,14 @@ import { signOut, requestToken } from '../../../store/slices/auth';
 
 import { debounce } from '../../../utils/debounce';
 
-import Button from '../../shared/Button';
+import Button from '../../base/Button';
 import Logo from '../Logo';
 import SignInForm from '../SignInForm';
 import Search from '../Search';
-import { useModal } from '../../shared/Modal';
+import { useModal } from '../../base/Modal';
 
 import { Container, MenuWrapper, Menu, MenuButton, ModalContent } from './styles';
-import Dropdown from '../../shared/Dropdown';
+import Dropdown from '../../base/Dropdown';
 
 const MainHeader: React.FC = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -122,31 +121,27 @@ const MainHeader: React.FC = () => {
           </NavLink>
         </Menu>
 
-        {/* <Dropdown>
-          <Dropdown.Toggle iconOnly rounded>
-            <FiUser size={22} />
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => history.push('/profile/lists')}>
-              <FiList size={18} /> Listas
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => history.push('/profile/favorites')}>
-              <FiHeart size={18} /> Favoritos
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => history.push('/profile/watchlist')}>
-              <FiBookmark size={18} /> Lista de interesses
-            </Dropdown.Item>
-            <Dropdown.Item onClick={handleSignOutClick}>
-              <FiLogOut size={18} /> Sair
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown> */}
-
         {isUserLoggedIn ? (
-          <Button textOnly iconOnly onClick={handleSignOutClick}>
-            <FiLogOut size={22} />
-          </Button>
+          <Dropdown>
+            <Dropdown.Toggle iconOnly rounded>
+              <FiUser size={22} />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => history.push('/profile/lists')}>
+                <FiList size={18} /> Minhas Listas
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => history.push('/profile/favorites')}>
+                <FiHeart size={18} /> Favoritos
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => history.push('/profile/watchlist')}>
+                <FiBookmark size={18} /> Lista de interesses
+              </Dropdown.Item>
+              <Dropdown.Item onClick={handleSignOutClick}>
+                <FiLogOut size={18} /> Sair
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         ) : (
           <Button onClick={handleSignInClick}>Sign in</Button>
         )}

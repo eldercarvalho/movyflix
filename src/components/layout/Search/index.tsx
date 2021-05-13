@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootState } from '../../../store';
 
-import TextField from '../../shared/TextField';
-import Button from '../../shared/Button';
+import TextField from '../../base/TextField';
+import Button from '../../base/Button';
 
 import { Container } from './styles';
-import Loading from '../../shared/Loading';
+import Loading from '../../base/Loading';
 
 interface SearchProps {
   onSearchChange(query: string): void;

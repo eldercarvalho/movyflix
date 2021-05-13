@@ -4,11 +4,11 @@ import useParentRoutePath from '../../../hooks/parentRoutePath';
 
 import { RootState } from '../../../store';
 
-import Button from '../../shared/Button';
-import Carousel from '../../shared/Carousel';
+import Button from '../../base/Button';
+import Carousel from '../../base/Carousel';
 
 import { Container, BannerItem, BannerInfo } from './styles';
-import Loading from '../../shared/Loading';
+import Loading from '../../base/Loading';
 
 const Banners: React.FC = () => {
   const parentRoutePath = useParentRoutePath();
